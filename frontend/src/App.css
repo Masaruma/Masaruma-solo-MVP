@@ -1,0 +1,79 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* !gameのcss */
+.game {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid;
+}
+/* ゲームの主たるcontainer */
+.container {
+    border: 5px solid rgb(0, 19, 128);
+    /* padding: 1rem; */
+}
+.cards-container {
+    /* 子要素をgridレイアウトへ */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    background-color: rgba(40, 111, 1, 1);
+}
+/* !１つ１つのカード containerの大きさはこれで決まる*/
+.card {
+    height: 160px;
+    width: 130px;
+    /* border: solid 0.1rem;
+    background-color: white;
+    border-radius: 10px; */
+    /* background-image: url("/images/illustkun-01477-back-of-cards.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center; */
+    /* absoluteの元 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+/* !カードの裏面 */
+.back {
+    background-image: url("/images/card_back.png"),
+        url("/images/illustkun-01477-back-of-cards.png");
+    background-size: 80%, 150%;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* backクラスの背面を非表示 */
+    /* backface-visibility: hidden; */
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    cursor: pointer;
+}
+/* !カードの表面 */
+img {
+    height: 158px;
+    width: 130px;
+    border: solid 0.2rem red;
+    background-color: white;
+    border-radius: 10px;
+    object-fit: contain;
+    /* background: rgb(214, 207, 152); */
+    /* background: linear-gradient(
+        90deg,
+        rgba(12, 213, 0, 1) 0%,
+        rgba(255, 233, 191, 1) 50%,
+        rgba(12, 213, 0, 1) 100%
+    ); */
+}
+/* !クリックされた後 */
+/* .card.open {
+    transform: rotateY(180deg);
+} */
