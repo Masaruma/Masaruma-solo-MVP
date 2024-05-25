@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 function Ranking() {
+    const [history, setHistory] = useState([]);
     // useEffect getでサーバーから画像を取得とりあえず仮のデータを置いておく
     // 日付、名前、スコア
     const tempScore = [
@@ -10,7 +11,7 @@ function Ranking() {
         { id: 4, date: new Date().toString(), name: "まっちゃん", score: 1300 },
     ];
     // ソートする必要あるかも(データベースでorderbyでもOK)
-    // TODO temScoreはデータベースから引っ張ってきたデータに置き換える。
+    // TODO temScoreはデータベースから引っ張ってきたデータに置き換える。history
     const scoreTable = tempScore
         .sort((a, b) => b.score - a.score)
         .map((obj, idx) => {
@@ -25,6 +26,12 @@ function Ranking() {
                 </tr>
             );
         });
+    useEffect(() => {
+        const data = fetch("/api/score?n=15").then((res) => res.json());
+        // Json.stringifyするかどうか
+        setHistory(data);
+        // スコアが更新されるたびgetするかどうか
+    }, []);
     return (
         <>
             <div className="RankDiv">

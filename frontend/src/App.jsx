@@ -6,43 +6,29 @@ import Ranking from "./components/Ranking";
 import GameMain from "./components/GameMain";
 
 function App() {
-    const [count, setCount] = useState(0);
+    // モード選択　ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
+    const [mode, setMode] = useState("irasutoya");
     return (
         <>
-            <div>
-                <h1>こんにちは</h1>
-                <h3>さようなら</h3>
-                <Ranking></Ranking>
-                <GameMain></GameMain>
+            {/* webページの中心に位置させたいため */}
+            <div className="wrapper">
+                <header>
+                    <h1>こんにちは{mode}</h1>
+                    <h3>さようなら</h3>
+                </header>
+                {/* asideを追加したときに横並びにしたいため */}
+                <div className="main-container">
+                    {/* ゲーム画面とランキングの縦並びの位置を調整したいため */}
+                    <main className="game-container">
+                        <Ranking mode={mode}></Ranking>
+
+                        <GameMain mode={mode}></GameMain>
+                    </main>
+                    <aside></aside>
+                </div>
             </div>
         </>
     );
-    // const [count, setCount] = useState(0)
-    // return (
-    // <>
-    //   <div>
-    //     <a href="https://vitejs.dev" target="_blank">
-    //       <img src={viteLogo} className="logo" alt="Vite logo" />
-    //     </a>
-    //     <a href="https://react.dev" target="_blank">
-    //       <img src={reactLogo} className="logo react" alt="React logo" />
-    //     </a>
-    //   </div>
-    //   <h1>Vite + React</h1>
-    //   <div className="card">
-    //     <button onClick={() => setCount((count) => count + 1)}>
-    //       count is {count}
-    //     </button>
-    //     <p>
-    //       Edit <code>src/App.jsx</code> and save to test HMR
-    //     </p>
-    //   </div>
-    //   <p className="read-the-docs">
-    //     Click on the Vite and React logos to learn more
-    //   </p>
-    // </>
-
-    // )
 }
 
 export default App;

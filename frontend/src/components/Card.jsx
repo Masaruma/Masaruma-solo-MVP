@@ -6,7 +6,7 @@ export default function Card({ card, selectedCards, setSelectedCards }) {
     const [isFripped, setIsFripped] = useState(false);
     // !選択したカードのリストが入ってくるヘルパー関数、各カードに仕込んでおく
     const handleClick = () => {
-        // 同じカードが選択されたら、追加されないように
+        // 同じカードが選択されたら、追加されないように、別のカードなら選択stateに
         !selectedCards.includes(card) &&
             setSelectedCards([...selectedCards, card]);
     };

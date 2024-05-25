@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import Input from "./Input";
 import "../App.css";
-
-export default function GameMain() {
+// 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
+export default function GameMain({ mode }) {
+    console.log("初回処理が走りました"); //useEffectがrunするたびに走る
     // !シャッフルされたカードを格納しておく箱
     const [cards, setCards] = useState([]);
     // !カードの選択に利用する子要素で追加、useEffectで2枚選択で初期化
@@ -12,7 +14,7 @@ export default function GameMain() {
     // !ゲームがクリアされたか
     const [isCleared, setIsCleared] = useState(false);
     //!初期データ処理==================================================
-    // データベースから持ってくるデータ
+    // データベースから持ってくるデータ ?この辺の処理がrunnigするのは初回だけ？？
     let images = [
         { id: 1, img: "/images/animal_chara_radio_buta.png" },
         { id: 2, img: "/images/cooking_tousyoumen.png" },
@@ -45,6 +47,7 @@ export default function GameMain() {
 
     // !!①番目の処理 再読み込み時にuseEffectでカードのシャッフルを行う
     useEffect(() => {
+        console.log("カードがシャッフルされました");
         shuffleImages();
     }, []);
     //============================================================ß
@@ -79,10 +82,11 @@ export default function GameMain() {
     useEffect(() => {
         // カードを２つチェックしたらチェックマッチ関数を呼び出す
         if (selectedCards.length === 2) {
-            console.log("チェックが走りました");
+            console.log("2枚選択されました");
             setTimeout(() => {
                 setSelectedCards([]);
-            }, 1000);
+            }, 800);
+            // 手数の計算
             setScore((ele) => ele + 1);
             console.log(score);
             checkMatch();
@@ -92,11 +96,13 @@ export default function GameMain() {
     }, [selectedCards]);
     // !クリア処理
     useEffect(() => {
+        console.log("running クリアEffect");
         if (cards.length === 0) return;
         const gameClear = cards.every((card) => card.isMatched);
         if (gameClear) {
             setTimeout(() => {
                 alert("ゲームクリア");
+                // clearフラグをon
                 setIsCleared(gameClear);
             }, 500);
         }
@@ -105,9 +111,9 @@ export default function GameMain() {
     //今回はCardの部分
     return (
         <div className="game">
-            {/*  リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
+            {/* リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
             {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
-            {/* そのためにはスコアstateをここで持つ必要がある */}
+            <Input isCleared={isCleared} score={score} mode={mode} />
             <div className="container">
                 <div className="cards-container">
                     {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}
