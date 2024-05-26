@@ -4,9 +4,13 @@ export default function Input({ isCleared, score, mode }) {
     const nameInput = useRef();
     const postScore = () => {
         // post処理
-        const postData = { name: nameInput.current.value, score: score };
-        console.log("postData: ", postData.name);
-        if (!postData.name) {
+        const postData = {
+            user: nameInput.current.value,
+            date: new Date().toLocaleString(),
+            score: score,
+        };
+        console.log("postData: ", postData);
+        if (!postData.user) {
             alert("名前を入力してください!");
             return;
         }

@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
 
-function Ranking() {
-    const [history, setHistory] = useState([]);
+function Ranking({ mode }) {
+    const [rank, setRank] = useState([]);
+    // rankingの描画変更用
+    const [table, setTable] = useState([]);
     // useEffect getでサーバーから画像を取得とりあえず仮のデータを置いておく
-    // 日付、名前、スコア
-    const tempScore = [
+    // !sampleData
+    const rankSample = [
         {
             id: 1,
             date: new Date().toISOString().replace("T", " ").split(".")[0],
-            name: "まっちゃん",
+            user: "まっちゃん",
             score: 1000,
         },
-        { id: 2, date: new Date().toString(), name: "まっちゃん", score: 1100 },
-        { id: 3, date: new Date().toString(), name: "まっちゃん", score: 1200 },
-        { id: 4, date: new Date().toString(), name: "まっちゃん", score: 1300 },
+        {
+            id: 2,
+            date: new Date().toLocaleString("ja-JP", {
+                timeZone: "Asia/Tokyo",
+            }),
+            user: "まっちゃん",
+            score: 1100,
+        },
     ];
-    // ソートする必要あるかも(データベースでorderbyでもOK)
-    // TODO temScoreはデータベースから引っ張ってきたデータに置き換える。history
-    const scoreTable = tempScore
-        .sort((a, b) => b.score - a.score)
+    // useStateにしたほうがいいかも？
+    const scoreTable = rank
+        // .sort((a, b) => b.score - a.score)
         .map((obj, idx) => {
             // console.log("idx: ", idx);
             return (
@@ -26,15 +32,23 @@ function Ranking() {
                 <tr key={obj.id}>
                     <th scope="row">{idx + 1}</th>
                     <td>{obj.date}</td>
-                    <td>{obj.name}</td>
+                    <td>{obj.user}</td>
                     <td>{obj.score}</td>
                 </tr>
             );
         });
+    // !初回更新でランキングデータ取得
     useEffect(() => {
-        const data = fetch("/api/score?n=15").then((res) => res.json());
+        const data = fetch(`/api/score/${mode}`)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log("res: ", res);
+                setRank(res);
+                return res;
+            })
+            .catch((err) => console.log(err));
+
         // Json.stringifyするかどうか
-        setHistory(data);
         // スコアが更新されるたびgetするかどうか
     }, []);
     return (
@@ -46,11 +60,11 @@ function Ranking() {
                         <tr>
                             <th scope="col">Ranking</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">User</th>
                             <th scope="col">score</th>
                         </tr>
                     </thead>
-                    <tbody>{scoreTable}</tbody>
+                    <tbody>{table}</tbody>
                 </table>
             </div>
         </>

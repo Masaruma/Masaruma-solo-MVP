@@ -13,7 +13,7 @@ const setupExpressApp = () => {
         "/",
         express.static(path.join(__dirname, "../../../frontend/dist"))
     );
-    app.get("/api/score", controller.get);
+    app.get("/api/score/:mode", controller.get);
 
     app.post("/api/score/:mode", controller.post);
     return app;
