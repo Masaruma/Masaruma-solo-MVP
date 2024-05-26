@@ -5,7 +5,12 @@ function Ranking() {
     // useEffect getでサーバーから画像を取得とりあえず仮のデータを置いておく
     // 日付、名前、スコア
     const tempScore = [
-        { id: 1, date: new Date().toString(), name: "まっちゃん", score: 1000 },
+        {
+            id: 1,
+            date: new Date().toISOString().replace("T", " ").split(".")[0],
+            name: "まっちゃん",
+            score: 1000,
+        },
         { id: 2, date: new Date().toString(), name: "まっちゃん", score: 1100 },
         { id: 3, date: new Date().toString(), name: "まっちゃん", score: 1200 },
         { id: 4, date: new Date().toString(), name: "まっちゃん", score: 1300 },
