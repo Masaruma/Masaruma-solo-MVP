@@ -11,11 +11,13 @@ function Ranking({ mode }) {
             .then((res) => res.json())
 
             .then((rank) => {
+                console.log("rank: ");
+
                 const scoreTable = rank.map((obj, idx) => {
                     return (
                         <tr key={obj.id}>
                             <th scope="row">{idx + 1}</th>
-                            <td>{obj.date}</td>
+                            <td>{new Date(obj.date).toLocaleString()}</td>
                             <td>{obj.user}</td>
                             <td>{obj.score}</td>
                         </tr>
@@ -28,7 +30,7 @@ function Ranking({ mode }) {
     }, [mode]);
     return (
         <>
-            <div className="RankDiv">
+            <div className="rank">
                 <h2>Ranking</h2>
                 <table border="1">
                     <thead>

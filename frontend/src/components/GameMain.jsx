@@ -59,11 +59,6 @@ export default function GameMain({ mode, cell }) {
             const randoms = randomArray();
             let i = 1;
             const loadImages = randoms.map(async (n) => {
-                // const pokeResponse = await fetch(
-                //     `https://pokeapi.co/api/v2/pokemon/${n}`
-                // );
-                // const pokeData = await pokeResponse.json();
-                // const pokemonSprite = pokeData.sprites?.front_default;
                 const pokemonSprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${n}.png`;
                 // 先に読み込ませておく処理
                 const imgElement = new Image();

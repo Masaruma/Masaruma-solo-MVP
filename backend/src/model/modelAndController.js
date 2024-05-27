@@ -1,9 +1,10 @@
 const knex = require("../db/index");
+//
 
 module.exports = {
     async get(req, res) {
-        // 上位15件を取得なのでorder by
-        console.log("getが通ってるよ");
+        // 上位10件を取得なのでorder by
+        // console.log("getが通ってるよ");
         console.log("req: ", req.params.mode);
         const mode = req.params.mode;
 
@@ -24,7 +25,7 @@ module.exports = {
     },
     async post(req, res) {
         console.log("postが通ってるよ");
-        console.log("req: ", req.params.mode);
+        // console.log("req: ", req.params.mode);
         const mode = req.params.mode;
         const { user, date, score } = req.body;
         try {

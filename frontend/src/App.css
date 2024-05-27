@@ -6,7 +6,10 @@
     font-family: "RocknRoll One", sans-serif;
     font-weight: 400;
     font-style: normal;
+    color: #213547;
+    background-color: #ffffff;
 }
+
 .wrapper {
     width: 100vw;
     /* height: 100vh; */
@@ -15,6 +18,43 @@
     justify-content: center;
     align-items: center;
 }
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 3rem;
+    border-bottom: 0.5rem solid black;
+}
+header > * {
+    margin: 10px;
+}
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+/* !ボタンの設定 */
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    /* background-color: #1a1a1a; */
+    background-color: #f0ebeb;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+button:hover {
+    border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+/* !rankとgameを縦並び */
 .game-container {
     display: flex;
     flex-direction: column;
@@ -22,9 +62,14 @@
     justify-content: center;
 }
 
+/* !rankのcss */
+.rank {
+    margin-bottom: 3rem;
+}
+
 /* !gameのcss */
 .game {
-    height: 100vh;
+    /* height: 150vh; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,14 +93,7 @@
 .card {
     height: 160px;
     width: 130px;
-    /* border: solid 0.1rem;
-    background-color: white;
-    border-radius: 10px; */
-    /* background-image: url("/images/illustkun-01477-back-of-cards.png");
-    background-size: cover; 
-    background-repeat: no-repeat;
-    background-position: center; */
-    /* absoluteの元 */
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,8 +107,7 @@
     background-size: 80%, 150%;
     background-repeat: no-repeat;
     background-position: center;
-    /* backクラスの背面を非表示 */
-    /* backface-visibility: hidden; */
+
     height: 100%;
     width: 100%;
     position: absolute;
@@ -84,15 +121,4 @@ img {
     background-color: white;
     border-radius: 10px;
     object-fit: contain;
-    /* background: rgb(214, 207, 152); */
-    /* background: linear-gradient(
-        90deg,
-        rgba(12, 213, 0, 1) 0%,
-        rgba(255, 233, 191, 1) 50%,
-        rgba(12, 213, 0, 1) 100%
-    ); */
 }
-/* !クリックされた後 */
-/* .card.open {
-    transform: rotateY(180deg);
-} */

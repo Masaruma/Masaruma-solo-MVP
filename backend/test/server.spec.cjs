@@ -7,7 +7,8 @@ chai.use(chaiHttp);
 const { setupExpressApp } = require("../src/server/server");
 // knex
 const config = require("../src/db/knexfile");
-const knex = require("knex")(config["development"]);
+const knex = require("knex")(config.development);
+// const knex = require("../src/db/index");
 
 const server = setupExpressApp();
 // idがどんどん増えていってしまう

@@ -5,6 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha --exit",
+        "migrate-status": "npx knex migrate:status --knexfile src/db/knexfile.js",
+        "migrate-rollbackAll": "npx knex migrate:rollback --all --knexfile src/db/knexfile.js",
         "migrate-latest": "npx knex migrate:latest --knexfile src/db/knexfile.js",
         "migrate-down": "npx knex migrate:down --knexfile src/db/knexfile.js",
         "seed-data": "npx knex seed:run --knexfile src/db/knexfile.js",
