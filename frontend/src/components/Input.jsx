@@ -34,9 +34,10 @@ export default function Input({ isCleared, score, mode }) {
             <div className="inputAndPostContainer">
                 <div className="nameInput">
                     <input
+                        className="textbox"
                         ref={nameInput}
                         type="text"
-                        placeholder="your name"
+                        placeholder="名前を入れてね"
                     />
                 </div>
                 <div className="score">
@@ -47,9 +48,9 @@ export default function Input({ isCleared, score, mode }) {
                             スコアを送信する
                         </button>
                     )}
-                    <button className="scorePost" onClick={postScore}>
+                    {/* <button className="scorePost" onClick={postScore}>
                         スコアを送信する
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </>

@@ -26,7 +26,7 @@ function App() {
                         <button className="" onClick={() => setMode("pokemon")}>
                             ポケモン
                         </button>
-                        <div>
+                        <div className="cell">
                             マス目を選択してください
                             <button className="" onClick={() => setCell(6)}>
                                 3✖️4マス

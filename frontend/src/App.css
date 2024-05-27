@@ -1,4 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap");
+:root {
+    --light-green: #a2e29b;
+    --green: #00a2af;
+    --purple: #b473bf;
+    --pink: #ffb2c1;
+    --orange: orange;
+}
 * {
     padding: 0;
     margin: 0;
@@ -24,11 +31,15 @@ header {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-bottom: 3rem;
+    /* margin-bottom: 3rem; */
     border-bottom: 0.5rem solid black;
+    background-color: black;
+    /* color: white; */
 }
-header > * {
+header * {
     margin: 10px;
+    background-color: black;
+    color: white;
 }
 h1 {
     font-size: 3.2em;
@@ -37,13 +48,14 @@ h1 {
 /* !ボタンの設定 */
 button {
     border-radius: 8px;
-    border: 1px solid transparent;
+    border: 1px solid #ccc;
+    color: black;
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
     /* background-color: #1a1a1a; */
-    background-color: #f0ebeb;
+    background-color: #e9e9e9;
     cursor: pointer;
     transition: border-color 0.25s;
 }
@@ -55,16 +67,85 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 /* !rankとgameを縦並び */
+.main-container {
+    width: 100%;
+}
 .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    /* background-image: linear-gradient(var(--light-green), var(--pink)); */
+    background-image: linear-gradient(var(--light-green), var(--green));
+    padding: 7rem 0;
+    -webkit-clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+    clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+    width: 100%;
 }
 
 /* !rankのcss */
 .rank {
     margin-bottom: 3rem;
+    backdrop-filter: blur(20px);
+    padding: 10px;
+    border-radius: 15px;
+    background-color: transparent;
+}
+.rank > h2 {
+    background-color: transparent;
+    text-align: center;
+    font-size: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
+}
+
+table th:first-child {
+    border-radius: 5px 0 0 0;
+}
+
+table th:last-child {
+    border-radius: 0 5px 0 0;
+    border-right: 1px solid #3c6690;
+}
+
+table th {
+    text-align: center;
+    color: white;
+    background: linear-gradient(var(--pink), var(--purple));
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+    width: 25%;
+    padding: 5px 20px;
+}
+
+table td {
+    text-align: center;
+    border-left: 1px solid #a8b7c5;
+    border-bottom: 1px solid #a8b7c5;
+    border-top: none;
+    box-shadow: 0px -3px 5px 1px #eee inset;
+    width: 25%;
+    padding: 10px 0;
+}
+
+table td:last-child {
+    border-right: 1px solid #a8b7c5;
+}
+
+table tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+}
+
+table tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
 }
 
 /* !gameのcss */
@@ -74,20 +155,35 @@ button:focus-visible {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 5px solid;
+    /* border: 5px solid; */
+    backdrop-filter: blur(20px);
+    /* box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25); */
+    padding: 10px;
+    border-radius: 15px;
+    background-color: transparent;
 }
 /* ゲームの主たるcontainer */
 .container {
-    border: 5px solid rgb(0, 19, 128);
+    /* border: 5px solid rgb(0, 19, 128); */
+    border-radius: 15px;
+    background-color: transparent;
+    box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
+
     /* padding: 1rem; */
 }
 .cards-container {
     /* 子要素をgridレイアウトへ */
     display: grid;
+    border-radius: 10px;
+
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 1rem;
-    background-color: rgba(40, 111, 1, 1);
+    background-color: var(--light-green);
+
+    /* background-color: transparent; */
+
+    padding: 50px 80px;
 }
 /* !１つ１つのカード containerの大きさはこれで決まる*/
 .card {
@@ -99,6 +195,7 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
     position: relative;
+    background-color: transparent;
 }
 /* !カードの裏面 */
 .back {
@@ -114,11 +211,43 @@ button:focus-visible {
     cursor: pointer;
 }
 /* !カードの表面 */
+.front {
+    background-color: transparent;
+}
 img {
     height: 158px;
     width: 130px;
     border: solid 0.2rem red;
     background-color: white;
+    /* background-color: transparent; */
+
     border-radius: 10px;
     object-fit: contain;
+}
+
+/* !input要素のcss */
+.inputAndPostContainer {
+    margin-bottom: 2.5rem;
+    background-color: transparent;
+}
+.textbox {
+    width: 180px;
+    padding: 7px 7px;
+    border-radius: 5px;
+    border: 4px solid black;
+    font-size: 1.3rem;
+    background-color: transparent;
+    margin-bottom: 10px;
+}
+.textbox:focus {
+    outline: 0;
+    border: 4px solid #2196f3;
+}
+.scoreDisplay {
+    font-size: 1.8rem;
+}
+.nameInput,
+.score,
+.scoreDisplay {
+    background-color: transparent;
 }
