@@ -15,7 +15,7 @@ const setupExpressApp = () => {
     app.get("/api/score/:mode", controller.get);
 
     app.post("/api/score/:mode", controller.post);
-    require("./passport")(app);
+    // require("./passport")(app);
     // ここ？
 
     return app;
