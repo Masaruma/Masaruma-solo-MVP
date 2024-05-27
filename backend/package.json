@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "mocha test",
+        "test": "mocha --exit",
         "migrate-latest": "npx knex migrate:latest --knexfile src/db/knexfile.js",
         "migrate-down": "npx knex migrate:down --knexfile src/db/knexfile.js",
         "seed-data": "npx knex seed:run --knexfile src/db/knexfile.js",
@@ -24,8 +24,8 @@
         "pg": "^8.11.5"
     },
     "devDependencies": {
-        "chai": "^5.1.1",
-        "chai-http": "^4.4.0",
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
         "mocha": "^10.4.0",
         "nodemon": "^3.1.1"
     }

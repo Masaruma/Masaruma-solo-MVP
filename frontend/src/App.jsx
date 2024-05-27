@@ -8,12 +8,13 @@ import GameMain from "./components/GameMain";
 function App() {
     // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
     const [mode, setMode] = useState("irasutoya");
+    const [cell, setCell] = useState(6);
     return (
         <>
             {/* webページの中心に位置させたいため */}
             <div className="wrapper">
                 <header>
-                    <h1>神経衰弱{mode}</h1>
+                    <h1>神経衰弱:{mode}モード</h1>
                     <div className="mode">
                         モードを選択してください
                         <button
@@ -25,6 +26,15 @@ function App() {
                         <button className="" onClick={() => setMode("pokemon")}>
                             ポケモン
                         </button>
+                        <div>
+                            マス目を選択してください
+                            <button className="" onClick={() => setCell(6)}>
+                                3✖️4マス
+                            </button>
+                            <button className="" onClick={() => setCell(10)}>
+                                4✖️5マス
+                            </button>
+                        </div>
                     </div>
                 </header>
                 {/* asideを追加したときに横並びにしたいため */}
@@ -33,7 +43,7 @@ function App() {
                     <main className="game-container">
                         <Ranking mode={mode}></Ranking>
 
-                        <GameMain mode={mode}></GameMain>
+                        <GameMain mode={mode} cell={cell}></GameMain>
                     </main>
                     <aside></aside>
                 </div>

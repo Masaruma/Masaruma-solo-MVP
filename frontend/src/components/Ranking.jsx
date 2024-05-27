@@ -4,53 +4,28 @@ function Ranking({ mode }) {
     const [rank, setRank] = useState([]);
     // rankingの描画変更用
     const [table, setTable] = useState([]);
-    // useEffect getでサーバーから画像を取得とりあえず仮のデータを置いておく
-    // !sampleData
-    const rankSample = [
-        {
-            id: 1,
-            date: new Date().toISOString().replace("T", " ").split(".")[0],
-            user: "まっちゃん",
-            score: 1000,
-        },
-        {
-            id: 2,
-            date: new Date().toLocaleString("ja-JP", {
-                timeZone: "Asia/Tokyo",
-            }),
-            user: "まっちゃん",
-            score: 1100,
-        },
-    ];
-    // useStateにしたほうがいいかも？
-    const scoreTable = rank
-        // .sort((a, b) => b.score - a.score)
-        .map((obj, idx) => {
-            // console.log("idx: ", idx);
-            return (
-                // eslint-disable-next-line react/jsx-key
-                <tr key={obj.id}>
-                    <th scope="row">{idx + 1}</th>
-                    <td>{obj.date}</td>
-                    <td>{obj.user}</td>
-                    <td>{obj.score}</td>
-                </tr>
-            );
-        });
-    // !初回更新でランキングデータ取得
+
+    // !初回更新でランキングデータ取得 モード変更で描画変更
     useEffect(() => {
         const data = fetch(`/api/score/${mode}`)
             .then((res) => res.json())
-            .then((res) => {
-                console.log("res: ", res);
-                setRank(res);
-                return res;
-            })
-            .catch((err) => console.log(err));
 
-        // Json.stringifyするかどうか
-        // スコアが更新されるたびgetするかどうか
-    }, []);
+            .then((rank) => {
+                const scoreTable = rank.map((obj, idx) => {
+                    return (
+                        <tr key={obj.id}>
+                            <th scope="row">{idx + 1}</th>
+                            <td>{obj.date}</td>
+                            <td>{obj.user}</td>
+                            <td>{obj.score}</td>
+                        </tr>
+                    );
+                });
+                setTable(scoreTable);
+                return table;
+            })
+            .catch((err) => console.error(err));
+    }, [mode]);
     return (
         <>
             <div className="RankDiv">
