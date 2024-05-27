@@ -8,6 +8,7 @@ import GameMain from "./components/GameMain";
 function App() {
     // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
     const [mode, setMode] = useState("irasutoya");
+    // 縦横のstateにする手もあり
     const [cell, setCell] = useState(6);
     return (
         <>
@@ -34,6 +35,11 @@ function App() {
                             <button className="" onClick={() => setCell(10)}>
                                 4✖️5マス
                             </button>
+                        </div>
+                        <div className="tyuu">
+                            ※ゲームリセット,まだうまくいかないのでゲーム途中でのモード変更はうまくいきません
+                            <br />
+                            リロードしてください
                         </div>
                     </div>
                 </header>
