@@ -8,8 +8,9 @@ import GameMain from "./components/GameMain";
 function App() {
     // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
     const [mode, setMode] = useState("irasutoya");
-    // 縦横のstateにする手もあり
-    const [cell, setCell] = useState(6);
+
+    const [RC, setRC] = useState([3, 4]);
+
     return (
         <>
             {/* webページの中心に位置させたいため */}
@@ -29,17 +30,43 @@ function App() {
                         </button>
                         <div className="cell">
                             マス目を選択してください
-                            <button className="" onClick={() => setCell(6)}>
+                            <button
+                                className=""
+                                onClick={() => {
+                                    setRC([3, 4]);
+                                }}
+                            >
                                 3✖️4マス
                             </button>
-                            <button className="" onClick={() => setCell(10)}>
+                            <button
+                                className=""
+                                onClick={() => {
+                                    setRC([4, 5]);
+                                }}
+                            >
                                 4✖️5マス
+                            </button>
+                            <button
+                                className=""
+                                onClick={() => {
+                                    setRC([6, 8]);
+                                }}
+                            >
+                                6✖️8マス
+                            </button>
+                            <button
+                                className=""
+                                onClick={() => {
+                                    setRC([10, 10]);
+                                }}
+                            >
+                                10✖️10マス
                             </button>
                         </div>
                         <div className="tyuu">
                             ※ゲームリセット,まだうまくいかないのでゲーム途中でのモード変更はうまくいきません
                             <br />
-                            リロードしてください
+                            リロードしてください10×10はポケモンのみ。
                         </div>
                     </div>
                 </header>
@@ -49,7 +76,7 @@ function App() {
                     <main className="game-container">
                         <Ranking mode={mode}></Ranking>
 
-                        <GameMain mode={mode} cell={cell}></GameMain>
+                        <GameMain mode={mode} RC={RC}></GameMain>
                     </main>
                     <aside></aside>
                 </div>

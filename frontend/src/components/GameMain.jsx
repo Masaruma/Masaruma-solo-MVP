@@ -3,7 +3,7 @@ import Card from "./Card";
 import Input from "./Input";
 import "../App.css";
 // 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
-export default function GameMain({ mode, cell }) {
+export default function GameMain({ mode, RC }) {
     console.log("初回処理が走りました"); //useEffectがrunするたびに走る
     // !シャッフルされたカードを格納しておく箱
     const [cards, setCards] = useState([]);
@@ -24,9 +24,9 @@ export default function GameMain({ mode, cell }) {
         const randoms = [];
         /** 最小値と最大値 */
         const min = 1,
-            max = 1024;
+            max = 1025;
         /** 生成する乱数の個数 */
-        const count = cell;
+        const count = (RC[0] * RC[1]) / 2;
         /** 重複チェックしながら乱数作成 */
         while (randoms.length < count) {
             const tmp = intRandom(min, max);
@@ -36,7 +36,7 @@ export default function GameMain({ mode, cell }) {
         }
         return randoms;
     };
-    // ?modeによりカードを選択するヘルパー関数
+    // ?modeによりカードを枚数を調整するヘルパー関数
     // グローバル変数でimagesを定義
     let images = [];
     const gameCard = async () => {
@@ -52,9 +52,24 @@ export default function GameMain({ mode, cell }) {
                 { id: 8, img: "/images/fashion_jinbei.png" },
                 { id: 9, img: "/images/opera_singer_man.png" },
                 { id: 10, img: "/images/tsundere_girl.png" },
+                { id: 11, img: "/images/chikyu_inseki_syoutotsu.png" },
+                { id: 12, img: "/images/coldsleep_wakeup_woman.png" },
+                { id: 13, img: "/images/edo_syounin_bad.png" },
+                { id: 14, img: "/images/kaseki_kohaku_bug.png" },
+                { id: 15, img: "/images/penguin12_kinme.png" },
+                { id: 16, img: "/images/penguin16_humboldt.png" },
+                { id: 17, img: "/images/penguin17_magellanic.png" },
+                { id: 18, img: "/images/photo_syugou_school_blazer.png" },
+                { id: 19, img: "/images/photo_syugou_school_gakuran.png" },
+                { id: 20, img: "/images/pose_galpeace_schoolgirl.png" },
+                { id: 21, img: "/images/sotsugyou_school_blazer_woman.png" },
+                { id: 22, img: "/images/sotsugyou_school_sailor_woman.png" },
+                { id: 23, img: "/images/sports_takkyu_men.png" },
+                { id: 24, img: "/images/sports_takkyu_women.png" },
+                { id: 25, img: "../../public/images/youkai_binbougami.png" },
             ]
                 .sort((a, b) => Math.random() - 0.5)
-                .slice(0, cell);
+                .slice(0, (RC[0] * RC[1]) / 2);
         } else if (mode === "pokemon") {
             const randoms = randomArray();
             let i = 1;
@@ -105,7 +120,7 @@ export default function GameMain({ mode, cell }) {
             // シャッフル、事前配列処理
             shuffleImages();
         })();
-    }, [mode, cell]);
+    }, [mode, RC]);
     //============================================================ß
 
     // ??神経衰弱の処理 ヘルパー関数===================
@@ -171,7 +186,13 @@ export default function GameMain({ mode, cell }) {
             {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
             <Input isCleared={isCleared} score={score} mode={mode} />
             <div className="container">
-                <div className="cards-container">
+                <div
+                    className="cards-container"
+                    style={{
+                        gridTemplateRows: `repeat(${RC[0]}, 1fr)`,
+                        gridTemplateColumns: `repeat(${RC[1]}, 1fr)`,
+                    }}
+                >
                     {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}
                     {cards.map((card) => {
                         return (

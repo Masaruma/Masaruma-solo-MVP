@@ -6,8 +6,9 @@ export default function Card({ card, selectedCards, setSelectedCards }) {
     const [isFripped, setIsFripped] = useState(false);
     // !選択したカードのリストが入ってくるヘルパー関数、各カードに仕込んでおく
     const handleClick = () => {
-        // 同じカードが選択されたら、追加されないように、別のカードなら選択stateに
+        // 同じカードが選択されたら、すでにマッチしているカードが追加されないように、別のカードなら選択stateに
         !selectedCards.includes(card) &&
+            !card.isMatched &&
             setSelectedCards([...selectedCards, card]);
     };
     //!選んだカードは表向きのままにしておく処理。つまり仮想DOMの更新

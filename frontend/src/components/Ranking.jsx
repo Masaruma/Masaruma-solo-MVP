@@ -17,7 +17,8 @@ function Ranking({ mode }) {
                     return (
                         <tr key={obj.id}>
                             <th scope="row">{idx + 1}</th>
-                            <td>{new Date(obj.date).toLocaleString()}</td>
+                            {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
+                            <td>{obj.date}</td>
                             <td>{obj.user}</td>
                             <td>{obj.score}</td>
                         </tr>
@@ -31,7 +32,7 @@ function Ranking({ mode }) {
     return (
         <>
             <div className="rank">
-                <h2>Ranking</h2>
+                <h2>👑Ranking👑</h2>
                 <table border="1">
                     <thead>
                         <tr>

@@ -81,7 +81,7 @@ button:focus-visible {
 
     /* background-image: linear-gradient(var(--light-green), var(--pink)); */
     background-image: linear-gradient(var(--light-green), var(--green));
-    padding: 7rem 0;
+    padding: 0rem 0;
     /* -webkit-clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%); */
     /* clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%); */
     width: 100%;
@@ -89,7 +89,7 @@ button:focus-visible {
 
 /* !rankのcss */
 .rank {
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
     backdrop-filter: blur(20px);
     padding: 10px;
     border-radius: 15px;
@@ -179,14 +179,14 @@ table tr:last-child td:last-child {
     display: grid;
     border-radius: 10px;
 
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 1rem;
+    /* grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr); */
+    gap: 0.3rem;
     background-color: var(--light-green);
 
     /* background-color: transparent; */
 
-    padding: 50px 80px;
+    padding: 50px 50px;
 }
 /* !１つ１つのカード containerの大きさはこれで決まる*/
 .card {
@@ -203,7 +203,7 @@ table tr:last-child td:last-child {
 /* !カードの裏面 */
 .back {
     background-image: url("/images/card_back.png"),
-        url("/images/illustkun-01477-back-of-cards.png");
+        url("/images/illustkun-01476-back-of-cards.png");
     background-size: 80%, 150%;
     background-repeat: no-repeat;
     background-position: center;
@@ -221,7 +221,7 @@ table tr:last-child td:last-child {
 img {
     height: 158px;
     width: 130px;
-    border: solid 0.2rem red;
+    border: solid 0.15rem red;
     background-color: white;
     /* background-color: transparent; */
 
@@ -254,4 +254,10 @@ img {
 .score,
 .scoreDisplay {
     background-color: transparent;
+}
+@media (max-width: 600px) {
+    .card {
+        height: 80px;
+        width: 55px;
+    }
 }
