@@ -14,7 +14,7 @@
         "makeSeed": "npx knex seed:make --knexfile src/db/knexfile.js",
         "dev": "nodemon ./src/server/index.js",
         "start": "node ./src/server/index.js",
-        "build": "npm install && npm run migrate-latest && npm run seed-data"
+        "build": "npm install && npm run migrate-latest"
     },
     "keywords": [],
     "author": "",
