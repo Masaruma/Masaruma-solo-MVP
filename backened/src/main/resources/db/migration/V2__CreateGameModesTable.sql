@@ -1,5 +1,5 @@
 CREATE TABLE game_modes
 (
-    id   INT PRIMARY KEY AUTO_INCREMENT,
+    id   SERIAL PRIMARY KEY,
     game_name VARCHAR(255) NOT NULL UNIQUE
 );

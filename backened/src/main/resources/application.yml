@@ -1,6 +1,33 @@
 spring:
   application:
     name: backend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: admin
+    url: jdbc:postgresql://localhost:5440/card_game
+    username: admin
+  jpa:
+    generate-ddl: false
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: validate
+
+    show-sql: false
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
+    enabled: true
+    password: admin
+    user: admin
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  sql:
+    init:
+      encoding: UTF-8
   web:
     resources:
       static-locations: classpath:/static/

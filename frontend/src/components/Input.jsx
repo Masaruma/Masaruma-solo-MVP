@@ -7,8 +7,8 @@ export default function Input({ isCleared, score, mode }) {
         // post処理
         const postData = {
             user: nameInput.current.value,
-            date: new Date().toLocaleString(),
-            score: score,
+            gameMode:mode,
+            gameScore: score,
         };
         console.log("postData: ", postData);
         if (!postData.user) {
@@ -17,15 +17,12 @@ export default function Input({ isCleared, score, mode }) {
         }
         console.log(mode);
         if (confirm("スコアを送信してもよろしいですか？")) {
-            fetch(`/api/score/${mode}`, {
+            fetch(`/api/score`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(postData),
             })
-                .then((res) => res.json())
-                .then((res) => {
-                    alert("送信完了しました");
-                });
+                .then((res) => res.status === 201 && alert("送信完了しました"))
         }
     };
 

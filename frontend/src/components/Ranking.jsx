@@ -10,18 +10,18 @@ function Ranking({ mode }) {
         // todo Repositoryに直す
         const data = fetch(`/api/score/${mode}`)
             .then((res) => res.json())
-
             .then((rank) => {
                 console.log("rank: ");
 
                 const scoreTable = rank.map((obj, idx) => {
+                    console.log(obj);
                     return (
                         <tr key={obj.id}>
                             <th scope="row">{idx + 1}</th>
                             {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
                             <td>{obj.date}</td>
                             <td>{obj.user}</td>
-                            <td>{obj.score}</td>
+                            <td>{obj.gameScore}</td>
                         </tr>
                     );
                 });

@@ -23,7 +23,7 @@ data class Score(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 
-    @Column(nullable = false)
+    @Column(name = "game_score",nullable = false)
     val gameScore: Int,
 
     @CreatedDate

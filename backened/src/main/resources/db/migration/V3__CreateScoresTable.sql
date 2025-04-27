@@ -1,6 +1,6 @@
 CREATE TABLE score
 (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id SERIAL PRIMARY KEY,
     game_score INT NOT NULL,
     user_id INT NOT NULL,
     game_mode_id INT NOT NULL,
