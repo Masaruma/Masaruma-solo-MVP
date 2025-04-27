@@ -1,5 +1,6 @@
 package com.example.backened.controller
 
+import com.example.backened.model.RequestScore
 import com.example.backened.model.ResponseScore
 import com.example.backened.service.GameScoreService
 import org.junit.jupiter.api.Test
@@ -31,24 +32,22 @@ class GameScoreControllerTest {
 
     @Test
     fun getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること() {
-        val now = Instant.now()
         every { gameScoreService.getScore(any()) } returns listOf(
             ResponseScore(
                 id = 1,
-                createdAt = now,
+                createdAt = Instant.now(),
                 gameScore = 200,
                 user = "testUser"
             )
         )
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/score/1")).andExpect(status().isOk)
-//                        .andExpect(content().string("Aa"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/score/irasutoya")).andExpect(status().isOk)
 
-        verify { gameScoreService.getScore(any()) }
+        verify { gameScoreService.getScore("irasutoya") }
     }
 
     @Test
-    fun postModeScoreが呼ばれた時OKを返しserviceのpostScoreを読んでいること() {
+    fun postModeScoreが呼ばれた時Createdを返しserviceのpostScoreを読んでいること() {
         every { gameScoreService.postScore(any()) } returns Unit
 
         mockMvc.perform(
@@ -61,8 +60,8 @@ class GameScoreControllerTest {
                         """.trimIndent(),
             )
         )
-            .andExpect(status().isOk)
+            .andExpect(status().isCreated)
 
-        verify { gameScoreService.postScore(any()) }
+        verify { gameScoreService.postScore(RequestScore(user = "Masaru", gameMode = "irasutoya" ,gameScore = 2)) }
     }
 }

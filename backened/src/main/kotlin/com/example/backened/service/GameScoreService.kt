@@ -15,7 +15,10 @@ interface GameScoreService {
 }
 
 @Service
-class GameScoreServiceImpl(val gameScoreRepository: JPAGameScoreRepository, val gameModeRepository: JPAGameModeRepository) : GameScoreService {
+class GameScoreServiceImpl(
+    val gameScoreRepository: JPAGameScoreRepository,
+    val gameModeRepository: JPAGameModeRepository
+) : GameScoreService {
     override fun getScore(mode: String): List<ResponseScore> {
         var getResult = gameScoreRepository.findByGameModeGameName(mode)
         val scoreToResponseScore =

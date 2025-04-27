@@ -13,6 +13,6 @@ data class GameMode(
     @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 
-    @Column(name = "game_name",nullable = false)
+//    @Column(name = "game_name",nullable = false)
     val gameName: String,
 )

@@ -23,15 +23,15 @@ data class Score(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 
-    @Column(name = "game_score",nullable = false)
+//    @Column(name = "game_score",nullable = false)
     val gameScore: Int,
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
+//    @Column(name = "created_at", nullable = false, updatable = false)
     var createdAt: Instant? = null,       // ← 手動設定不要に
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
+//    @Column(name = "updated_at", nullable = false)
     var updatedAt: Instant? = null   ,     // ← 手動設定不要に
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
