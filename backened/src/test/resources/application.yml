@@ -17,4 +17,4 @@ spring:
       static-locations: classpath:/static/
   sql:
     init:
-      mode: never
+      mode: always

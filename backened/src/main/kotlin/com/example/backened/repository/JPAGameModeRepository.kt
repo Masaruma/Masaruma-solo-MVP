@@ -2,9 +2,9 @@ package com.example.backened.repository
 
 import com.example.backened.model.GameMode
 import com.example.backened.model.Score
+import com.example.backened.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface JPAGameScoreRepository:JpaRepository<Score, Int>{
-    // GameMode の gameName で検索
-    fun findByGameModeGameName(gameName: String): List<Score>
+interface JPAGameModeRepository: JpaRepository<GameMode, Int> {
+
 }

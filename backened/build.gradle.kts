@@ -34,6 +34,7 @@ dependencies {
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("com.h2database:h2:2.2.220")
+	runtimeOnly("org.postgresql:postgresql:42.7.3")
 }
 
 kotlin {

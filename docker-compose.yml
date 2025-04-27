@@ -10,3 +10,4 @@ services:
       POSTGRES_PASSWORD: "admin"
       POSTGRES_DB: "card_game"
     command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
+#todo test用のDBコンテナの作成

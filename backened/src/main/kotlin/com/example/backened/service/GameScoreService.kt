@@ -1,21 +1,21 @@
 package com.example.backened.service
 
-import com.example.backened.model.Score
+import com.example.backened.model.ResponseScore
 import com.example.backened.repository.JPAGameScoreRepository
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.PathVariable
 
 interface GameScoreService {
-    fun getScore(mode:String): List<Score>
+    fun getScore(mode: String): List<ResponseScore>
 }
+
 @Service
-class GameScoreServiceImpl(val gameScoreRepository: JPAGameScoreRepository): GameScoreService {
-    override fun getScore(mode: String): List<Score> {
-//        todo 一旦全部持ってきて後からmodeでソートしたらいいんじゃない？
-//        List<Score>がどんなデータ型になるかわからない。どうやって確認すればいいわからない。
-//        一旦gameNameがgamemodeに一致しているものを返せばいい？f
+class GameScoreServiceImpl(val gameScoreRepository: JPAGameScoreRepository) : GameScoreService {
+    override fun getScore(mode: String): List<ResponseScore> {
+        var getRowResult = gameScoreRepository.findByGameModeGameName(mode)
+        val scoreToResponseScore =
+            getRowResult.map { ResponseScore(it.id, it.createdAt, it.gameScore, it.user.name) }
 
-        return gameScoreRepository.findAll()
-
+        return scoreToResponseScore
     }
+
 }

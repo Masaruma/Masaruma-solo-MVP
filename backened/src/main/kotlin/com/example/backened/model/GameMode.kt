@@ -9,7 +9,7 @@ import jakarta.persistence.Id
 @Entity
 data class GameMode(
     @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
+    val id: Int? = null,
 
     @Column(nullable = false)
     val gameName: String,

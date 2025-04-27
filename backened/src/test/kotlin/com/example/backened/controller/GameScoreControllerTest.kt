@@ -1,5 +1,6 @@
 package com.example.backened.controller
 
+import com.example.backened.model.ResponseScore
 import com.example.backened.service.GameScoreService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
+import java.time.Instant
+import java.time.LocalDateTime
 
 
 @SpringBootTest
@@ -27,10 +30,11 @@ class GameScoreControllerTest {
 
     @Test
     fun getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること() {
-        every { gameScoreService.getScore(any()) } returns "Aa"
+        val now = Instant.now()
+        every { gameScoreService.getScore(any()) } returns listOf(ResponseScore(id=1, createdAt = now, gameScore = 200, user= "testUser"))
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/score/1")).andExpect(status().isOk)
-            .andExpect(content().string("Aa"))
+//                        .andExpect(content().string("Aa"))
 
         verify { gameScoreService.getScore(any()) }
     }

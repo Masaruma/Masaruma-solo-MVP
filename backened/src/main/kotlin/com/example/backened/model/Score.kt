@@ -1,5 +1,6 @@
 package com.example.backened.model
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
@@ -17,10 +18,10 @@ import java.time.Instant
 @Entity
 @EntityListeners(AuditingEntityListener::class)  // ← 追加
 @Table(name = "score")
-class Score(
+data class Score(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
+    val id: Int? = null,
 
     @Column(nullable = false)
     val gameScore: Int,
@@ -33,7 +34,7 @@ class Score(
     @Column(name = "updated_at", nullable = false)
     var updatedAt: Instant? = null   ,     // ← 手動設定不要に
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "user_id")
     val user: User,
 

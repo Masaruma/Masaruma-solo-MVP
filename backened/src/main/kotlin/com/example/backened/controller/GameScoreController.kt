@@ -1,5 +1,6 @@
 package com.example.backened.controller
 
+import com.example.backened.model.ResponseScore
 import com.example.backened.service.GameScoreService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 class GameScoreController (private val gameScoreService: GameScoreService) {
 
     @GetMapping("/score/{mode}")
-    fun getModeScore(@PathVariable mode:String): String{
+    fun getModeScore(@PathVariable mode:String): List<ResponseScore>{
         return gameScoreService.getScore(mode)
     }
+
 }
