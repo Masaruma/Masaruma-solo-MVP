@@ -6,5 +6,5 @@ import com.example.backened.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface JPAGameModeRepository: JpaRepository<GameMode, Int> {
-
+    fun findByGameName(gameName: String): GameMode
 }

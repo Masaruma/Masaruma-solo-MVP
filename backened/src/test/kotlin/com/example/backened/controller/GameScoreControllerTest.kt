@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
+import org.springframework.http.MediaType
 import java.time.Instant
 import java.time.LocalDateTime
 
@@ -31,11 +32,37 @@ class GameScoreControllerTest {
     @Test
     fun getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること() {
         val now = Instant.now()
-        every { gameScoreService.getScore(any()) } returns listOf(ResponseScore(id=1, createdAt = now, gameScore = 200, user= "testUser"))
+        every { gameScoreService.getScore(any()) } returns listOf(
+            ResponseScore(
+                id = 1,
+                createdAt = now,
+                gameScore = 200,
+                user = "testUser"
+            )
+        )
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/score/1")).andExpect(status().isOk)
 //                        .andExpect(content().string("Aa"))
 
         verify { gameScoreService.getScore(any()) }
+    }
+
+    @Test
+    fun postModeScoreが呼ばれた時OKを返しserviceのpostScoreを読んでいること() {
+        every { gameScoreService.postScore(any()) } returns Unit
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/score").contentType(MediaType.APPLICATION_JSON).content(
+                """{
+                                "user": "Masaru",
+                                "gameMode": "irasutoya",
+                                "gameScore": 2
+                            }
+                        """.trimIndent(),
+            )
+        )
+            .andExpect(status().isOk)
+
+        verify { gameScoreService.postScore(any()) }
     }
 }

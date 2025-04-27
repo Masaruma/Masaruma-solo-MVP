@@ -1,6 +1,7 @@
 package com.example.backened.service
 
 import com.example.backened.model.GameMode
+import com.example.backened.model.RequestScore
 import com.example.backened.model.ResponseScore
 import com.example.backened.model.Score
 import com.example.backened.model.User
@@ -34,11 +35,11 @@ class GameScoreServiceTest {
         gameScoreRepository.deleteAll()
         userRepository.deleteAll()
         gameModeRepository.deleteAll()
-        gameScoreService = GameScoreServiceImpl(gameScoreRepository)
+        gameScoreService = GameScoreServiceImpl(gameScoreRepository,gameModeRepository)
     }
 
     @Test
-    fun `getAllを実行するとJPAGameScoreRepositoryを呼びScoreのListで帰ってきたデータを加工している`() {
+    fun `getScoreを実行するとJPAGameScoreRepositoryを呼びScoreのListで帰ってきたデータを加工している`() {
         val modeIrasutoya = gameModeRepository.save(GameMode(gameName = "irasutoya"))
         val modePokemon = gameModeRepository.save(GameMode(gameName = "pokemon"))
 
@@ -62,15 +63,20 @@ class GameScoreServiceTest {
         assertEquals(expected, testResult)
     }
 
+    @Test
+    fun`postScoreを実行するとJPAGameScoreRepositoryを呼びデータが保存される`() {
+        gameModeRepository.save(GameMode(gameName = "irasutoya"))
+        gameModeRepository.save(GameMode(gameName = "pokemon"))
+
+        val saveAndExpectedData= RequestScore(user = "masaru", gameScore = 300, gameMode = "irasutoya")
+
+        gameScoreService.postScore(saveAndExpectedData)
+
+        val actualResult = gameScoreRepository.findAll().first()
+
+        assertEquals(saveAndExpectedData.user, actualResult.user.name)
+        assertEquals(saveAndExpectedData.gameScore, actualResult.gameScore)
+        assertEquals(saveAndExpectedData.gameMode, actualResult.gameMode.gameName)
+    }
+
 }
-
-//とりあえずテストを通したい。
-//サービス層のテストを通したい。
-//ちゃんとしたScoreのsaveするデータをsaveAllしたい.
-//saveAllしたものをこの後getAllで取得したい。
-
-//todoいまつまづいているのはScoreのデータを途中までの
-// 形式はいいんだけどScoreの中のuserとgameModeをどうやって保存したらいいのかがわからない。
-//
-//todo 保存しにいく時にuserはstring型で保存したい。JPAが勝手に判断してそれをuserテーブルに保存しに行って欲しい。
-// しかし今回USER型が求められている。
