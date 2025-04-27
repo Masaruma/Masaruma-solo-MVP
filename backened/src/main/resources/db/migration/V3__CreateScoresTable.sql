@@ -1,9 +1,11 @@
-CREATE TABLE scores
+CREATE TABLE score
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    score INT NOT NULL,
+    game_score INT NOT NULL,
     user_id INT NOT NULL,
     game_mode_id INT NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (game_mode_id) REFERENCES game_modes(id)
 );

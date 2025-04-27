@@ -26,7 +26,7 @@ class GameScoreControllerTest {
     lateinit var gameScoreService: GameScoreService
 
     @Test
-    fun getModeScoreが呼ばれたときOKを返すこと() {
+    fun getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること() {
         every { gameScoreService.getScore(any()) } returns "Aa"
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/score/1")).andExpect(status().isOk)

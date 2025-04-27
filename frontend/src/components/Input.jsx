@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 export default function Input({ isCleared, score, mode }) {
     const nameInput = useRef();
+    // todo Repositoryに直す
     const postScore = () => {
         // post処理
         const postData = {

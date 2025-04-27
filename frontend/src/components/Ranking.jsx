@@ -7,6 +7,7 @@ function Ranking({ mode }) {
 
     // !初回更新でランキングデータ取得 モード変更で描画変更
     useEffect(() => {
+        // todo Repositoryに直す
         const data = fetch(`/api/score/${mode}`)
             .then((res) => res.json())
 
