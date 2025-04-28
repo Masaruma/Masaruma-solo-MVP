@@ -7,7 +7,6 @@ interface InputProps {
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
-
   score: number;
 }
 
