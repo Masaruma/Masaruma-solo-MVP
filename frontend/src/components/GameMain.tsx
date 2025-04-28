@@ -3,14 +3,28 @@ import { useEffect, useState } from "react";
 import "../pages/NervousbreakdownPage.css";
 import { Card } from "@/components/Card.tsx";
 import { Input } from "@/components/Input.tsx";
+import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+
+interface GameMainProps {
+  gameMode: GameModeType;
+  RC: [number, number];
+}
+
+export type CardImageType = {
+  id: number, img: string
+}
+export type CardsWithMatchKeyType = CardImageType & {
+  idx: number;
+  isMatched: boolean;
+}
 
 // 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
-export const GameMain = ({ mode, RC }) => {
+export const GameMain = ({ gameMode, RC }:GameMainProps) => {
   console.log("初回処理が走りました"); //useEffectがrunするたびに走る
   // !シャッフルされたカードを格納しておく箱
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState<CardsWithMatchKeyType[]>([]);
   // !カードの選択に利用する子要素で追加、useEffectで2枚選択で初期化
-  const [selectedCards, setSelectedCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>([]);
   // !手数計算
   const [score, setScore] = useState(0);
   // !ゲームがクリアされたか
@@ -19,11 +33,11 @@ export const GameMain = ({ mode, RC }) => {
   // ?randomな重複なしな数値をもった配列を生成するヘルパー関数 pokemon用
   const randomArray = () => {
     /** min以上max以下の整数値の乱数を返す */
-    const intRandom = (min, max) => {
+    const intRandom = (min:number, max:number) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
     /** 重複チェック用配列 */
-    const randoms = [];
+    const randoms:number[] = [];
     /** 最小値と最大値 */
     const min = 1,
       max = 1025;
@@ -40,11 +54,10 @@ export const GameMain = ({ mode, RC }) => {
   };
   // ?modeによりカードを枚数を調整するヘルパー関数
   // グローバル変数でimagesを定義
-  let images = [];
+  let images:CardImageType[] = [];
 
-  // const [images, setImages] = useState([])
   const gameCard = async () => {
-    if (mode === "irasutoya") {
+    if (gameMode === "irasutoya") {
       images = [
         { id: 1, img: "/images/animal_chara_radio_buta.png" },
         { id: 2, img: "/images/cooking_tousyoumen.png" },
@@ -74,7 +87,7 @@ export const GameMain = ({ mode, RC }) => {
       ]
         .sort(() => Math.random() - 0.5)
         .slice(0, (RC[0] * RC[1]) / 2);
-    } else if (mode === "pokemon") {
+    } else if (gameMode === "pokemon") {
       const randoms = randomArray();
       let i = 1;
       const loadImages = randoms.map(async (n) => {
@@ -82,7 +95,7 @@ export const GameMain = ({ mode, RC }) => {
         // 先に読み込ませておく処理
         const imgElement = new Image();
         imgElement.src = pokemonSprite;
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
           imgElement.onload = () => {
             images.push({ id: i, img: imgElement.src });
             i++;
@@ -125,7 +138,7 @@ export const GameMain = ({ mode, RC }) => {
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 無限ループするため
-  }, [mode, RC]);
+  }, [gameMode, RC]);
   //============================================================ß
 
   // ??神経衰弱の処理 ヘルパー関数===================
@@ -192,7 +205,7 @@ export const GameMain = ({ mode, RC }) => {
     <div className={"game"}>
       {/* リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
             {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
-      <Input isCleared={isCleared} mode={mode} score={score} />
+      <Input gameMode={gameMode} isCleared={isCleared} score={score} />
       <div className={"container"}>
         <div
           className={"cards-container"}

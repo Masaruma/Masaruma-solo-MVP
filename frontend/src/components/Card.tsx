@@ -1,7 +1,15 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
 import "../pages/NervousbreakdownPage.css";
-//Props
-export const Card = ({ card, selectedCards, setSelectedCards }) => {
+import { CardsWithMatchKeyType } from "@/components/GameMain.tsx";
+
+interface CardProps {
+  card: CardsWithMatchKeyType;
+  selectedCards: CardsWithMatchKeyType[];
+  setSelectedCards: Dispatch<SetStateAction<CardsWithMatchKeyType[]>>;
+}
+
+export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
   // !めくれた状態の管理 初期値false trueになったら表側という意味
   const [isFripped, setIsFripped] = useState(false);
   // !選択したカードのリストが入ってくるヘルパー関数、各カードに仕込んでおく

@@ -1,13 +1,21 @@
 import { useRef } from "react";
 
-export const Input = ({ isCleared, score, mode }) => {
-  const nameInput = useRef();
+import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+
+interface InputProps {
+  gameMode: GameModeType;
+  isCleared: boolean;
+  score: number;
+}
+
+export const Input = ({ isCleared, score, gameMode }: InputProps) => {
+  const nameInput = useRef<HTMLInputElement>(null);
   // todo Repositoryに直す
   const postScore = () => {
-    // post処理
+
     const postData = {
-      user: nameInput.current.value,
-      gameMode: mode,
+      user: nameInput.current?.value,
+      gameMode: gameMode,
       gameScore: score,
     };
     console.log("postData: ", postData);
@@ -15,7 +23,6 @@ export const Input = ({ isCleared, score, mode }) => {
       alert("名前を入力してください!");
       return;
     }
-    console.log(mode);
     if (confirm("スコアを送信してもよろしいですか？")) {
       void fetch(`/api/score`, {
         method: "POST",
@@ -25,7 +32,6 @@ export const Input = ({ isCleared, score, mode }) => {
     }
   };
 
-  // console.log(isCleared);
   return (
     <>
       <div className={"inputAndPostContainer"}>
@@ -45,9 +51,6 @@ export const Input = ({ isCleared, score, mode }) => {
               スコアを送信する
             </button>
           )}
-          {/* <button className="scorePost" onClick={postScore}>
-                        スコアを送信する
-                    </button> */}
         </div>
       </div>
     </>

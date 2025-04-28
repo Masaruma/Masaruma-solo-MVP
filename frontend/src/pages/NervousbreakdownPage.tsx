@@ -6,12 +6,17 @@ import { Ranking } from "@/components/Ranking.tsx";
 
 import "@/pages/NervousbreakdownPage.css";
 
+export type GameModeType = "irasutoya" | "pokemon";
+
 export const NervousbreakdownPage = () => {
   // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
-  const [mode, setMode] = useState<"irasutoya" | "pokemon">("irasutoya");
+  const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
 
-  const [gameLevel, setGameLevel] = useState([3, 4]);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [
+    numberOfVerticalAndHorizontalCards,
+    setNumberOfVerticalAndHorizontalCards,
+  ] = useState<[number, number]>([3, 4]);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   return (
     <>
@@ -19,13 +24,13 @@ export const NervousbreakdownPage = () => {
       {isSuccess ? (
         <div className={"wrapper"}>
           <header>
-            <h1>神経衰弱:{mode}モード</h1>
+            <h1>神経衰弱:{gameMode}モード</h1>
             <div className={"mode"}>
               モードを選択してください
-              <button className={""} onClick={() => setMode("irasutoya")}>
+              <button className={""} onClick={() => setGameMode("irasutoya")}>
                 イラスト屋
               </button>
-              <button className={""} onClick={() => setMode("pokemon")}>
+              <button className={""} onClick={() => setGameMode("pokemon")}>
                 ポケモン
               </button>
               <div className={"cell"}>
@@ -33,7 +38,7 @@ export const NervousbreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setGameLevel([3, 4]);
+                    setNumberOfVerticalAndHorizontalCards([3, 4]);
                   }}
                 >
                   3✖️4マス
@@ -41,7 +46,7 @@ export const NervousbreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setGameLevel([4, 5]);
+                    setNumberOfVerticalAndHorizontalCards([4, 5]);
                   }}
                 >
                   4✖️5マス
@@ -49,7 +54,7 @@ export const NervousbreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setGameLevel([6, 8]);
+                    setNumberOfVerticalAndHorizontalCards([6, 8]);
                   }}
                 >
                   6✖️8マス
@@ -57,7 +62,7 @@ export const NervousbreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setGameLevel([10, 10]);
+                    setNumberOfVerticalAndHorizontalCards([10, 10]);
                   }}
                 >
                   10✖️10マス
@@ -74,9 +79,9 @@ export const NervousbreakdownPage = () => {
           <div className={"main-container"}>
             {/* ゲーム画面とランキングの縦並びの位置を調整したいため */}
             <main className={"game-container"}>
-              <Ranking mode={mode} />
+              <Ranking gameMode={gameMode} />
 
-              <GameMain RC={gameLevel} mode={mode} />
+              <GameMain RC={numberOfVerticalAndHorizontalCards} gameMode={gameMode} />
             </main>
             <aside />
           </div>

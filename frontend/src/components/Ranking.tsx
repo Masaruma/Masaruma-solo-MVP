@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 
-export const Ranking = ({ mode }) => {
+import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+
+interface RankingProps {
+  gameMode: GameModeType;
+}
+
+export const Ranking = ({ gameMode }: RankingProps) => {
   const [table, setTable] = useState([]);
+
+  useEffect(() => {
+    console.log(table);
+    console.log(typeof table[0]);
+  }, [table]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
   useEffect(() => {
     // todo Repositoryに直す
-    fetch(`/api/score/${mode}`)
+    fetch(`/api/score/${gameMode}`)
       .then((res) => res.json())
       .then((rank) => {
-        const scoreTable = rank.map((obj, idx) => {
+        const scoreTable = rank.map((obj:{createdAt:string, gameScore: number; id:number, user: string,}, tableIndex:number) => {
           return (
             <tr key={obj.id}>
-              <th scope={"row"}>{idx + 1}</th>
-              {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
-              <td>{obj.date}</td>
+              <th scope={"row"}>{tableIndex + 1}</th>
+              <td>{new Date(obj.createdAt).toLocaleString()}</td>
               <td>{obj.user}</td>
               <td>{obj.gameScore}</td>
             </tr>
@@ -24,12 +34,12 @@ export const Ranking = ({ mode }) => {
         return scoreTable;
       })
       .catch((err) => console.error(err));
-  }, [mode]);
+  }, [gameMode]);
   return (
     <>
       <div className={"rank"}>
         <h2>👑Ranking👑</h2>
-        <table border={"1"}>
+        <table border={1}>
           <thead>
             <tr>
               <th scope={"col"}>Ranking</th>
