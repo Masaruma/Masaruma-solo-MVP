@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 export default function Input({ isCleared, score, mode }) {
     const nameInput = useRef();
@@ -29,20 +29,20 @@ export default function Input({ isCleared, score, mode }) {
     // console.log(isCleared);
     return (
         <>
-            <div className="inputAndPostContainer">
-                <div className="nameInput">
+            <div className={"inputAndPostContainer"}>
+                <div className={"nameInput"}>
                     <input
-                        className="textbox"
+                        className={"textbox"}
+                        placeholder={"名前を入れてね"}
                         ref={nameInput}
-                        type="text"
-                        placeholder="名前を入れてね"
+                        type={"text"}
                     />
                 </div>
-                <div className="score">
-                    <div className="scoreDisplay">現在の手数:{score}</div>
+                <div className={"score"}>
+                    <div className={"scoreDisplay"}>現在の手数:{score}</div>
 
                     {isCleared && (
-                        <button className="scorePost" onClick={postScore}>
+                        <button className={"scorePost"} onClick={postScore}>
                             スコアを送信する
                         </button>
                     )}

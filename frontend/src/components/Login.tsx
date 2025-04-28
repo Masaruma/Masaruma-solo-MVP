@@ -1,10 +1,9 @@
-import React from "react";
 
 const Login = ({ setSuccess }) => {
     return (
-        <div className="loginDiv">
+        <div className={"loginDiv"}>
             <form
-                className="form"
+                className={"form"}
                 onSubmit={async (e) => {
                     // e.preventDefault();
                     // console.log("e: ", e.target);
@@ -29,20 +28,20 @@ const Login = ({ setSuccess }) => {
                 }}
             >
                 {/* <form className="form" action="/login" method="post"> */}
-                <div className="inputDiv">
+                <div className={"inputDiv"}>
                     <label>ユーザーID </label>
-                    <input className="textbox" type="text" name="username" />
+                    <input className={"textbox"} name={"username"} type={"text"} />
                 </div>
-                <div className="inputDiv">
+                <div className={"inputDiv"}>
                     <label>パスワード </label>
                     <input
-                        className="textbox"
-                        type="password"
-                        name="password"
+                        className={"textbox"}
+                        name={"password"}
+                        type={"password"}
                     />
                 </div>
                 <div>
-                    <input type="submit" value="ログイン" />
+                    <input type={"submit"} value={"ログイン"} />
                 </div>
             </form>
         </div>

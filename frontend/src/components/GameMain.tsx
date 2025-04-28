@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import Card from "./Card";
 import Input from "./Input";
 import "../App.css";
@@ -183,13 +184,13 @@ export default function GameMain({ mode, RC }) {
     //!useStateのstateの変更がかかるたびに変更箇所の描画が変更される（Reactの仕様）
     //今回はCardの部分
     return (
-        <div className="game">
+        <div className={"game"}>
             {/* リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
             {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
-            <Input isCleared={isCleared} score={score} mode={mode} />
-            <div className="container">
+            <Input isCleared={isCleared} mode={mode} score={score} />
+            <div className={"container"}>
                 <div
-                    className="cards-container"
+                    className={"cards-container"}
                     style={{
                         gridTemplateRows: `repeat(${RC[0]}, 1fr)`,
                         gridTemplateColumns: `repeat(${RC[1]}, 1fr)`,
@@ -199,11 +200,11 @@ export default function GameMain({ mode, RC }) {
                     {cards.map((card) => {
                         return (
                             <Card
-                                key={card.idx}
                                 card={card}
+                                key={card.idx}
                                 selectedCards={selectedCards}
                                 setSelectedCards={setSelectedCards}
-                            ></Card>
+                             />
                         );
                     })}
                 </div>

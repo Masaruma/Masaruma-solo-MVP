@@ -1,10 +1,12 @@
 import { useState } from "react";
-import "./App.css";
-import Login from "./components/Login";
-import Ranking from "./components/Ranking";
-import GameMain from "./components/GameMain";
 
-function App() {
+import "./App.css";
+import Ranking from "@/components/Ranking.tsx";
+import GameMain from "@/components/GameMain.tsx";
+import Login from "@/components/Login.tsx";
+
+
+const App = () => {
     // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
     const [mode, setMode] = useState("irasutoya");
 
@@ -15,27 +17,27 @@ function App() {
         <>
             {/* webページの中心に位置させたいため */}
             {success ? (
-                <div className="wrapper">
+                <div className={"wrapper"}>
                     <header>
                         <h1>神経衰弱:{mode}モード</h1>
-                        <div className="mode">
+                        <div className={"mode"}>
                             モードを選択してください
                             <button
-                                className=""
+                                className={""}
                                 onClick={() => setMode("irasutoya")}
                             >
                                 イラスト屋
                             </button>
                             <button
-                                className=""
+                                className={""}
                                 onClick={() => setMode("pokemon")}
                             >
                                 ポケモン
                             </button>
-                            <div className="cell">
+                            <div className={"cell"}>
                                 マス目を選択してください
                                 <button
-                                    className=""
+                                    className={""}
                                     onClick={() => {
                                         setRC([3, 4]);
                                     }}
@@ -43,7 +45,7 @@ function App() {
                                     3✖️4マス
                                 </button>
                                 <button
-                                    className=""
+                                    className={""}
                                     onClick={() => {
                                         setRC([4, 5]);
                                     }}
@@ -51,7 +53,7 @@ function App() {
                                     4✖️5マス
                                 </button>
                                 <button
-                                    className=""
+                                    className={""}
                                     onClick={() => {
                                         setRC([6, 8]);
                                     }}
@@ -59,7 +61,7 @@ function App() {
                                     6✖️8マス
                                 </button>
                                 <button
-                                    className=""
+                                    className={""}
                                     onClick={() => {
                                         setRC([10, 10]);
                                     }}
@@ -67,7 +69,7 @@ function App() {
                                     10✖️10マス
                                 </button>
                             </div>
-                            <div className="tyuu">
+                            <div className={"tyuu"}>
                                 ※ゲームリセット,まだうまくいかないのでゲーム途中でのモード変更はうまくいきません
                                 <br />
                                 リロードしてください10×10はポケモンのみ。
@@ -75,18 +77,18 @@ function App() {
                         </div>
                     </header>
                     {/* asideを追加したときに横並びにしたいため */}
-                    <div className="main-container">
+                    <div className={"main-container"}>
                         {/* ゲーム画面とランキングの縦並びの位置を調整したいため */}
-                        <main className="game-container">
-                            <Ranking mode={mode}></Ranking>
+                        <main className={"game-container"}>
+                            <Ranking mode={mode} />
 
-                            <GameMain mode={mode} RC={RC}></GameMain>
+                            <GameMain RC={RC} mode={mode} />
                         </main>
-                        <aside></aside>
+                        <aside />
                     </div>
                 </div>
             ) : (
-                <Login setSuccess={setSuccess}></Login>
+                <Login setSuccess={setSuccess} />
             )}
         </>
     );

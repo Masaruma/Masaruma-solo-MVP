@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 //Props
 export default function Card({ card, selectedCards, setSelectedCards }) {
@@ -37,13 +37,13 @@ export default function Card({ card, selectedCards, setSelectedCards }) {
         // !各カード要素にhandleClickを設定する
         // handleClickはクリックしたcardをselectedCardsに追加する
 
-        <div className="card" onClick={handleClick}>
+        <div className={"card"} onClick={handleClick}>
             {isFripped ? (
-                <div className="front">
-                    <img src={card.img} alt="" />
+                <div className={"front"}>
+                    <img alt={""} src={card.img} />
                 </div>
             ) : (
-                <div className="back"></div>
+                <div className={"back"} />
             )}
         </div>
 

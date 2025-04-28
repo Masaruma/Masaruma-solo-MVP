@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-function Ranking({ mode }) {
+const Ranking = ({ mode }) => {
     const [rank, setRank] = useState([]);
     // rankingの描画変更用
     const [table, setTable] = useState([]);
@@ -17,7 +17,7 @@ function Ranking({ mode }) {
                     console.log(obj);
                     return (
                         <tr key={obj.id}>
-                            <th scope="row">{idx + 1}</th>
+                            <th scope={"row"}>{idx + 1}</th>
                             {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
                             <td>{obj.date}</td>
                             <td>{obj.user}</td>
@@ -32,15 +32,15 @@ function Ranking({ mode }) {
     }, [mode]);
     return (
         <>
-            <div className="rank">
+            <div className={"rank"}>
                 <h2>👑Ranking👑</h2>
-                <table border="1">
+                <table border={"1"}>
                     <thead>
                         <tr>
-                            <th scope="col">Ranking</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">User</th>
-                            <th scope="col">score</th>
+                            <th scope={"col"}>Ranking</th>
+                            <th scope={"col"}>Date</th>
+                            <th scope={"col"}>User</th>
+                            <th scope={"col"}>score</th>
                         </tr>
                     </thead>
                     <tbody>{table}</tbody>
