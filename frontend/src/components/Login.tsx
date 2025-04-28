@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 
 interface LoginProps {
-  setSuccess:Dispatch<SetStateAction<boolean>>
+  setSuccess: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Login = ({ setSuccess }:LoginProps) => {
+export const Login = ({ setSuccess }: LoginProps) => {
   return (
     <div className={"loginDiv"}>
       <form className={"form"} onSubmit={() => setSuccess(true)}>

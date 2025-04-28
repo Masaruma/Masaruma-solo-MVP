@@ -1,39 +1,21 @@
 import { useEffect, useState } from "react";
 
 import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
-
+import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
+import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
 interface RankingProps {
   gameMode: GameModeType;
 }
 
 export const Ranking = ({ gameMode }: RankingProps) => {
-  const [table, setTable] = useState([]);
-
-  useEffect(() => {
-    console.log(table);
-    console.log(typeof table[0]);
-  }, [table]);
+  const [getResult, setGetResult] = useState<GetGameScoreType[]>([]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
   useEffect(() => {
-    // todo Repositoryに直す
-    fetch(`/api/score/${gameMode}`)
-      .then((res) => res.json())
-      .then((rank) => {
-        const scoreTable = rank.map((obj:{createdAt:string, gameScore: number; id:number, user: string,}, tableIndex:number) => {
-          return (
-            <tr key={obj.id}>
-              <th scope={"row"}>{tableIndex + 1}</th>
-              <td>{new Date(obj.createdAt).toLocaleString()}</td>
-              <td>{obj.user}</td>
-              <td>{obj.gameScore}</td>
-            </tr>
-          );
-        });
-        setTable(scoreTable);
-        return scoreTable;
-      })
-      .catch((err) => console.error(err));
+    void (async () => {
+      const getScoreResult = await GameScoreRepository.getGameScores(gameMode);
+      setGetResult(getScoreResult);
+    })();
   }, [gameMode]);
   return (
     <>
@@ -48,7 +30,18 @@ export const Ranking = ({ gameMode }: RankingProps) => {
               <th scope={"col"}>score</th>
             </tr>
           </thead>
-          <tbody>{table}</tbody>
+          <tbody>
+            {getResult.map((obj, tableIndex) => {
+              return (
+                <tr key={obj.id}>
+                  <th scope={"row"}>{tableIndex + 1}</th>
+                  <td>{new Date(obj.createdAt).toLocaleString()}</td>
+                  <td>{obj.user}</td>
+                  <td>{obj.gameScore}</td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </>

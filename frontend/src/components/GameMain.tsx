@@ -11,20 +11,23 @@ interface GameMainProps {
 }
 
 export type CardImageType = {
-  id: number, img: string
-}
+  id: number;
+  img: string;
+};
 export type CardsWithMatchKeyType = CardImageType & {
   idx: number;
   isMatched: boolean;
-}
+};
 
 // 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
-export const GameMain = ({ gameMode, RC }:GameMainProps) => {
+export const GameMain = ({ gameMode, RC }: GameMainProps) => {
   console.log("初回処理が走りました"); //useEffectがrunするたびに走る
   // !シャッフルされたカードを格納しておく箱
   const [cards, setCards] = useState<CardsWithMatchKeyType[]>([]);
   // !カードの選択に利用する子要素で追加、useEffectで2枚選択で初期化
-  const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>([]);
+  const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
+    []
+  );
   // !手数計算
   const [score, setScore] = useState(0);
   // !ゲームがクリアされたか
@@ -33,11 +36,11 @@ export const GameMain = ({ gameMode, RC }:GameMainProps) => {
   // ?randomな重複なしな数値をもった配列を生成するヘルパー関数 pokemon用
   const randomArray = () => {
     /** min以上max以下の整数値の乱数を返す */
-    const intRandom = (min:number, max:number) => {
+    const intRandom = (min: number, max: number) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
     /** 重複チェック用配列 */
-    const randoms:number[] = [];
+    const randoms: number[] = [];
     /** 最小値と最大値 */
     const min = 1,
       max = 1025;
@@ -54,7 +57,7 @@ export const GameMain = ({ gameMode, RC }:GameMainProps) => {
   };
   // ?modeによりカードを枚数を調整するヘルパー関数
   // グローバル変数でimagesを定義
-  let images:CardImageType[] = [];
+  let images: CardImageType[] = [];
 
   const gameCard = async () => {
     if (gameMode === "irasutoya") {

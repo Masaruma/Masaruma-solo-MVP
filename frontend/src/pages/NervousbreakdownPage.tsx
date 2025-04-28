@@ -81,7 +81,10 @@ export const NervousbreakdownPage = () => {
             <main className={"game-container"}>
               <Ranking gameMode={gameMode} />
 
-              <GameMain RC={numberOfVerticalAndHorizontalCards} gameMode={gameMode} />
+              <GameMain
+                RC={numberOfVerticalAndHorizontalCards}
+                gameMode={gameMode}
+              />
             </main>
             <aside />
           </div>

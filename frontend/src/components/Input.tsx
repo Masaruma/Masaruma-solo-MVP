@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 interface InputProps {
   gameMode: GameModeType;
@@ -11,24 +12,22 @@ interface InputProps {
 export const Input = ({ isCleared, score, gameMode }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   // todo Repositoryに直す
-  const postScore = () => {
-
+  const postScore = async () => {
     const postData = {
-      user: nameInput.current?.value,
+      user: nameInput.current?.value ?? "",
       gameMode: gameMode,
       gameScore: score,
     };
-    console.log("postData: ", postData);
+
     if (!postData.user) {
       alert("名前を入力してください!");
       return;
     }
     if (confirm("スコアを送信してもよろしいですか？")) {
-      void fetch(`/api/score`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      }).then((res) => res.status === 201 && alert("送信完了しました"));
+      const responseStatus = await GameScoreRepository.postGameScore(postData);
+      responseStatus === 201
+        ? alert("送信完了しました")
+        : alert("送信に失敗しました");
     }
   };
 
