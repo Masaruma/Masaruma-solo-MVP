@@ -1,56 +1,55 @@
 import { useRef } from "react";
 
-export default function Input({ isCleared, score, mode }) {
-    const nameInput = useRef();
-    // todo Repositoryに直す
-    const postScore = () => {
-        // post処理
-        const postData = {
-            user: nameInput.current.value,
-            gameMode:mode,
-            gameScore: score,
-        };
-        console.log("postData: ", postData);
-        if (!postData.user) {
-            alert("名前を入力してください!");
-            return;
-        }
-        console.log(mode);
-        if (confirm("スコアを送信してもよろしいですか？")) {
-            fetch(`/api/score`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(postData),
-            })
-                .then((res) => res.status === 201 && alert("送信完了しました"))
-        }
+export const Input = ({ isCleared, score, mode }) => {
+  const nameInput = useRef();
+  // todo Repositoryに直す
+  const postScore = () => {
+    // post処理
+    const postData = {
+      user: nameInput.current.value,
+      gameMode: mode,
+      gameScore: score,
     };
+    console.log("postData: ", postData);
+    if (!postData.user) {
+      alert("名前を入力してください!");
+      return;
+    }
+    console.log(mode);
+    if (confirm("スコアを送信してもよろしいですか？")) {
+      fetch(`/api/score`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
+      }).then((res) => res.status === 201 && alert("送信完了しました"));
+    }
+  };
 
-    // console.log(isCleared);
-    return (
-        <>
-            <div className={"inputAndPostContainer"}>
-                <div className={"nameInput"}>
-                    <input
-                        className={"textbox"}
-                        placeholder={"名前を入れてね"}
-                        ref={nameInput}
-                        type={"text"}
-                    />
-                </div>
-                <div className={"score"}>
-                    <div className={"scoreDisplay"}>現在の手数:{score}</div>
+  // console.log(isCleared);
+  return (
+    <>
+      <div className={"inputAndPostContainer"}>
+        <div className={"nameInput"}>
+          <input
+            className={"textbox"}
+            placeholder={"名前を入れてね"}
+            ref={nameInput}
+            type={"text"}
+          />
+        </div>
+        <div className={"score"}>
+          <div className={"scoreDisplay"}>現在の手数:{score}</div>
 
-                    {isCleared && (
-                        <button className={"scorePost"} onClick={postScore}>
-                            スコアを送信する
-                        </button>
-                    )}
-                    {/* <button className="scorePost" onClick={postScore}>
+          {isCleared && (
+            <button className={"scorePost"} onClick={postScore}>
+              スコアを送信する
+            </button>
+          )}
+          {/* <button className="scorePost" onClick={postScore}>
                         スコアを送信する
                     </button> */}
-                </div>
-            </div>
-        </>
-    );
-}
+        </div>
+      </div>
+    </>
+  );
+};

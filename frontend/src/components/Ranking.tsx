@@ -1,53 +1,51 @@
 import { useEffect, useState } from "react";
 
-const Ranking = ({ mode }) => {
-    const [rank, setRank] = useState([]);
-    // rankingの描画変更用
-    const [table, setTable] = useState([]);
+export const Ranking = ({ mode }) => {
+  const [rank, setRank] = useState([]);
+  // rankingの描画変更用
+  const [table, setTable] = useState([]);
 
-    // !初回更新でランキングデータ取得 モード変更で描画変更
-    useEffect(() => {
-        // todo Repositoryに直す
-        const data = fetch(`/api/score/${mode}`)
-            .then((res) => res.json())
-            .then((rank) => {
-                console.log("rank: ");
+  // !初回更新でランキングデータ取得 モード変更で描画変更
+  useEffect(() => {
+    // todo Repositoryに直す
+    const data = fetch(`/api/score/${mode}`)
+      .then((res) => res.json())
+      .then((rank) => {
+        console.log("rank: ");
 
-                const scoreTable = rank.map((obj, idx) => {
-                    console.log(obj);
-                    return (
-                        <tr key={obj.id}>
-                            <th scope={"row"}>{idx + 1}</th>
-                            {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
-                            <td>{obj.date}</td>
-                            <td>{obj.user}</td>
-                            <td>{obj.gameScore}</td>
-                        </tr>
-                    );
-                });
-                setTable(scoreTable);
-                return table;
-            })
-            .catch((err) => console.error(err));
-    }, [mode]);
-    return (
-        <>
-            <div className={"rank"}>
-                <h2>👑Ranking👑</h2>
-                <table border={"1"}>
-                    <thead>
-                        <tr>
-                            <th scope={"col"}>Ranking</th>
-                            <th scope={"col"}>Date</th>
-                            <th scope={"col"}>User</th>
-                            <th scope={"col"}>score</th>
-                        </tr>
-                    </thead>
-                    <tbody>{table}</tbody>
-                </table>
-            </div>
-        </>
-    );
-}
-
-export default Ranking;
+        const scoreTable = rank.map((obj, idx) => {
+          console.log(obj);
+          return (
+            <tr key={obj.id}>
+              <th scope={"row"}>{idx + 1}</th>
+              {/* <td>{new Date(obj.date).toLocaleString()}</td> */}
+              <td>{obj.date}</td>
+              <td>{obj.user}</td>
+              <td>{obj.gameScore}</td>
+            </tr>
+          );
+        });
+        setTable(scoreTable);
+        return table;
+      })
+      .catch((err) => console.error(err));
+  }, [mode]);
+  return (
+    <>
+      <div className={"rank"}>
+        <h2>👑Ranking👑</h2>
+        <table border={"1"}>
+          <thead>
+            <tr>
+              <th scope={"col"}>Ranking</th>
+              <th scope={"col"}>Date</th>
+              <th scope={"col"}>User</th>
+              <th scope={"col"}>score</th>
+            </tr>
+          </thead>
+          <tbody>{table}</tbody>
+        </table>
+      </div>
+    </>
+  );
+};
