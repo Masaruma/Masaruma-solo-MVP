@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-import "../App.css";
+import "../pages/NervousbreakdownPage.css";
 import { Card } from "@/components/Card.tsx";
 import { Input } from "@/components/Input.tsx";
+
 // 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
 export const GameMain = ({ mode, RC }) => {
   console.log("初回処理が走りました"); //useEffectがrunするたびに走る

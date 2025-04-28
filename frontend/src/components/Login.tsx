@@ -2,7 +2,6 @@ export const Login = ({ setSuccess }) => {
   return (
     <div className={"loginDiv"}>
       <form className={"form"} onSubmit={setSuccess(true)}>
-        {/* <form className="form" action="/login" method="post"> */}
         <div className={"inputDiv"}>
           <label htmlFor={"username"}>ユーザーID </label>
           <input className={"textbox"} name={"username"} type={"text"} />

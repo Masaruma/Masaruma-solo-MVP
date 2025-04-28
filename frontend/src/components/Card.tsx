@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../App.css";
+import "../pages/NervousbreakdownPage.css";
 //Props
 export const Card = ({ card, selectedCards, setSelectedCards }) => {
   // !めくれた状態の管理 初期値false trueになったら表側という意味
@@ -47,12 +47,5 @@ export const Card = ({ card, selectedCards, setSelectedCards }) => {
         <div className={"back"} />
       )}
     </div>
-
-    // <div className={isFripped ? "card open" : "card"} onClick={handleClick}>
-    //     <div className="front">
-    //         <img src={card.img} alt="" />
-    //     </div>
-    //     <div className="back"></div>
-    // </div>
   );
 };
