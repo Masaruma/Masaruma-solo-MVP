@@ -71,7 +71,7 @@ export const GameMain = ({ mode, RC }) => {
         { id: 24, img: "/images/sports_takkyu_women.png" },
         { id: 25, img: "../../public/images/youkai_binbougami.png" },
       ]
-        .sort((a, b) => Math.random() - 0.5)
+        .sort(() => Math.random() - 0.5)
         .slice(0, (RC[0] * RC[1]) / 2);
     } else if (mode === "pokemon") {
       const randoms = randomArray();
@@ -108,21 +108,22 @@ export const GameMain = ({ mode, RC }) => {
           isMatched: false,
         };
       })
-      .sort((a, b) => Math.random() - 0.5);
+      .sort(() => Math.random() - 0.5);
     // console.log("shuffled: ", shuffled);
     setCards(shuffled);
   };
 
   // !!①番目の処理 再読み込み時にuseEffectでカードのシャッフルを行う
   useEffect(() => {
-    (async () => {
+    void (async () => {
       console.log("カードがシャッフルされました");
       // ゲームカードの選択
       await gameCard();
-      console.log("images: ", images);
       // シャッフル、事前配列処理
       shuffleImages();
     })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 無限ループするため
   }, [mode, RC]);
   //============================================================ß
 
@@ -167,17 +168,20 @@ export const GameMain = ({ mode, RC }) => {
     }
     console.log(cards);
     console.log(selectedCards);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 手数がバグるため
   }, [selectedCards]);
+
   // !クリア処理
   useEffect(() => {
     console.log("running クリアEffect");
     if (cards.length === 0) return;
-    const gameClear = cards.every((card) => card.isMatched);
-    if (gameClear) {
+    const isGameClear = cards.every((card) => card.isMatched);
+    if (isGameClear) {
       setTimeout(() => {
         alert("ゲームクリア");
         // clearフラグをon
-        setIsCleared(gameClear);
+        setIsCleared(isGameClear);
       }, 500);
     }
   }, [cards]);

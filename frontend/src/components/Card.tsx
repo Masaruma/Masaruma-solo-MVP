@@ -37,7 +37,8 @@ export const Card = ({ card, selectedCards, setSelectedCards }) => {
     // !各カード要素にhandleClickを設定する
     // handleClickはクリックしたcardをselectedCardsに追加する
 
-    <div className={"card"} onClick={handleClick}>
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- enterで押さないため
+    <div className={"card"} onClick={handleClick} role={"button"} tabIndex={0}>
       {isFripped ? (
         <div className={"front"}>
           <img alt={""} src={card.img} />

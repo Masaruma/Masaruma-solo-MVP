@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 
 export const Ranking = ({ mode }) => {
-  const [rank, setRank] = useState([]);
-  // rankingの描画変更用
   const [table, setTable] = useState([]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
   useEffect(() => {
     // todo Repositoryに直す
-    const data = fetch(`/api/score/${mode}`)
+    fetch(`/api/score/${mode}`)
       .then((res) => res.json())
       .then((rank) => {
-        console.log("rank: ");
-
         const scoreTable = rank.map((obj, idx) => {
-          console.log(obj);
           return (
             <tr key={obj.id}>
               <th scope={"row"}>{idx + 1}</th>
@@ -26,7 +21,7 @@ export const Ranking = ({ mode }) => {
           );
         });
         setTable(scoreTable);
-        return table;
+        return scoreTable;
       })
       .catch((err) => console.error(err));
   }, [mode]);
