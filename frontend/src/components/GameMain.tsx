@@ -19,7 +19,6 @@ export type CardsWithMatchKeyType = CardImageType & {
   isMatched: boolean;
 };
 
-// 注意！stateを変更するときはそのまま変更はかけない！シャローコピー行って変更関数を使う
 export const GameMain = ({ gameMode, RC }: GameMainProps) => {
   console.log("初回処理が走りました"); //useEffectがrunするたびに走る
   // !シャッフルされたカードを格納しておく箱
@@ -55,6 +54,7 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
     }
     return randoms;
   };
+
   // ?modeによりカードを枚数を調整するヘルパー関数
   // グローバル変数でimagesを定義
   let images: CardImageType[] = [];
@@ -130,19 +130,22 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
     setCards(shuffled);
   };
 
-  // !!①番目の処理 再読み込み時にuseEffectでカードのシャッフルを行う
-  useEffect(() => {
-    void (async () => {
-      console.log("カードがシャッフルされました");
-      // ゲームカードの選択
-      await gameCard();
-      // シャッフル、事前配列処理
-      shuffleImages();
-    })();
+  const gameReset = () => {
+    setIsCleared(false);
+    setScore(0);
+  };
 
+  // !!①番目の処理 再読み込み時にuseEffectでカードのシャッフルを行う
+  const initializeGame = async () => {
+    console.log("ゲームが初期化されました");
+    await gameCard();
+    shuffleImages();
+    gameReset();
+  };
+  useEffect(() => {
+    void initializeGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 無限ループするため
   }, [gameMode, RC]);
-  //============================================================ß
 
   // ??神経衰弱の処理 ヘルパー関数===================
   // 何をアップデートしている？
@@ -208,7 +211,12 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
     <div className={"game"}>
       {/* リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
             {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
-      <Input gameMode={gameMode} isCleared={isCleared} score={score} />
+      <Input
+        gameMode={gameMode}
+        initializeGame={initializeGame}
+        isCleared={isCleared}
+        score={score}
+      />
       <div className={"container"}>
         <div
           className={"cards-container"}

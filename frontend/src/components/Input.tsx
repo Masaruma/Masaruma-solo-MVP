@@ -5,11 +5,18 @@ import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 interface InputProps {
   gameMode: GameModeType;
+  initializeGame: () => Promise<void>;
   isCleared: boolean;
+
   score: number;
 }
 
-export const Input = ({ isCleared, score, gameMode }: InputProps) => {
+export const Input = ({
+  isCleared,
+  score,
+  gameMode,
+  initializeGame,
+}: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   // todo Repositoryに直す
   const postScore = async () => {
@@ -25,9 +32,12 @@ export const Input = ({ isCleared, score, gameMode }: InputProps) => {
     }
     if (confirm("スコアを送信してもよろしいですか？")) {
       const responseStatus = await GameScoreRepository.postGameScore(postData);
-      responseStatus === 201
-        ? alert("送信完了しました")
-        : alert("送信に失敗しました");
+      if (responseStatus === 201) {
+        alert("送信完了しました");
+        void initializeGame();
+      } else {
+        alert("送信に失敗しました");
+      }
     }
   };
 

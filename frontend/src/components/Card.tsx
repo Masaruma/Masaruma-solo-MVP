@@ -1,7 +1,7 @@
+import "../pages/NervousbreakdownPage.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import "../pages/NervousbreakdownPage.css";
-import { CardsWithMatchKeyType } from "@/components/GameMain.tsx";
+import { CardsWithMatchKeyType } from "./GameMain";
 
 interface CardProps {
   card: CardsWithMatchKeyType;
