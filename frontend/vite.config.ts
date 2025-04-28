@@ -1,0 +1,26 @@
+import {defineConfig, UserConfig} from "vite";
+import react from "@vitejs/plugin-react";
+import * as path from "node:path";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+    plugins: [react()],
+    root: "./",
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "src"),
+        },
+    },
+    test: {
+        // include: ['src/**/*.test.tsx'],
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/setupTest.ts',
+        mockReset: true,
+    },
+    server: {
+        proxy: {
+            '/api': 'http://localhost:8080',
+        }
+    }
+} as UserConfig)

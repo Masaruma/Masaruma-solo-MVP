@@ -227,17 +227,17 @@ Table pokemon_score {
 │ └── vite.svg
 ├── src
 │ ├── App.css
-│ ├── App.jsx
+│ ├── App.tsx
 │ ├── assets
 │ │ └── react.svg
 │ ├── components
-│ │ ├── Card.jsx
-│ │ ├── GameMain.jsx
-│ │ ├── Input.jsx
-│ │ └── Ranking.jsx
+│ │ ├── Card.tsx
+│ │ ├── GameMain.tsx
+│ │ ├── Input.tsx
+│ │ └── Ranking.tsx
 │ ├── index.css
-│ └── main.jsx
-└── vite.config.js
+│ └── main.tsx
+└── vite.config.ts
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 

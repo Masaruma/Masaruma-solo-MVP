@@ -39,6 +39,8 @@ export default function GameMain({ mode, RC }) {
     // ?modeによりカードを枚数を調整するヘルパー関数
     // グローバル変数でimagesを定義
     let images = [];
+
+    // const [images, setImages] = useState([])
     const gameCard = async () => {
         if (mode === "irasutoya") {
             images = [
@@ -177,7 +179,7 @@ export default function GameMain({ mode, RC }) {
                 setIsCleared(gameClear);
             }, 500);
         }
-    }, cards);
+    }, [cards]);
     //!useStateのstateの変更がかかるたびに変更箇所の描画が変更される（Reactの仕様）
     //今回はCardの部分
     return (
