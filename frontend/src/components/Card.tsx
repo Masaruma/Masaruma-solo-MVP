@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { CardsWithMatchKeyType } from "@/components/GameMain.tsx";
 
-
 interface CardProps {
   card: CardsWithMatchKeyType;
   selectedCards: CardsWithMatchKeyType[];

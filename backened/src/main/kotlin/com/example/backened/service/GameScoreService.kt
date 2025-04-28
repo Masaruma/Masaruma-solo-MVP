@@ -20,11 +20,13 @@ class GameScoreServiceImpl(
     val gameModeRepository: JPAGameModeRepository
 ) : GameScoreService {
     override fun getScore(mode: String): List<ResponseScore> {
-        var getResult = gameScoreRepository.findByGameModeGameName(mode)
-        val scoreToResponseScore =
-            getResult.map { ResponseScore(it.id, it.createdAt, it.gameScore, it.user.name) }
+        val getResult = gameScoreRepository.findByGameModeGameName(mode)
+        val scoreEntityToResponseScore =
+            getResult.map { ResponseScore(it.id, it.createdAt, it.gameScore, it.user.name) }.sortedBy { it.gameScore }
+                .take(10)
 
-        return scoreToResponseScore
+
+        return scoreEntityToResponseScore
     }
 
     override fun postScore(requestData: RequestScore) {
