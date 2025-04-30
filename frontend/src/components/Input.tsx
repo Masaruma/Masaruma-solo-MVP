@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 interface InputProps {
@@ -17,7 +17,6 @@ export const Input = ({
   initializeGame,
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
-  // todo Repositoryに直す
   const postScore = async () => {
     const postData = {
       user: nameInput.current?.value ?? "",

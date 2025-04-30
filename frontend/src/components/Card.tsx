@@ -1,4 +1,4 @@
-import "../pages/NervousbreakdownPage.css";
+import "../pages/NervousBreakdownPage.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { CardsWithMatchKeyType } from "@/components/GameMain.tsx";
@@ -10,7 +10,6 @@ interface CardProps {
 }
 
 export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
-  // !めくれた状態の管理 初期値false trueになったら表側という意味
   const [isFripped, setIsFripped] = useState(false);
   // !選択したカードのリストが入ってくるヘルパー関数、各カードに仕込んでおく
   const handleClick = () => {
@@ -40,7 +39,7 @@ export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
     }
     // カードを選ぶたびにselectedCardsに更新がかかるので =実行がされる。
   }, [selectedCards, card]);
-  // 以下grid表示領域、子要素＝カード
+
   return (
     // !各カード要素にhandleClickを設定する
     // handleClickはクリックしたcardをselectedCardsに追加する

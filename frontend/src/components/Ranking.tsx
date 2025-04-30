@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
 interface RankingProps {

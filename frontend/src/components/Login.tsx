@@ -17,7 +17,7 @@ export const Login = ({ setSuccess }: LoginProps) => {
           <input className={"textbox"} name={"password"} type={"password"} />
         </div>
         <div>
-          <input type={"submit"} value={"ログイン"} />
+          <button value={"ログイン"}>ログイン</button>
         </div>
       </form>
     </div>

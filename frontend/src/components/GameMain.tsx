@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import "../pages/NervousbreakdownPage.css";
+import "../pages/NervousBreakdownPage.css";
 import { Card } from "@/components/Card.tsx";
 import { Input } from "@/components/Input.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
-import { GameModeType } from "@/pages/NervousbreakdownPage.tsx";
+import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
 
 interface GameMainProps {
   gameMode: GameModeType;
@@ -21,13 +21,10 @@ export type CardsWithMatchKeyType = CardImageType & {
 };
 
 export const GameMain = ({ gameMode, RC }: GameMainProps) => {
-  // !カードの選択に利用する子要素で追加、useEffectで2枚選択で初期化
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
   );
-  // !手数計算
   const [score, setScore] = useState(0);
-  // !ゲームがクリアされたか
   const [isCleared, setIsCleared] = useState(false);
   //!初期データ処理==================================================
   const { cards, initializeGame, setCards } = useInitializeGame(gameMode, RC);
@@ -35,19 +32,14 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
     void initializeGame();
     setIsCleared(false);
     setScore(0);
-    //   todo clearedとscoreの初期化
   }, [initializeGame]);
 
   // ??神経衰弱の処理 ヘルパー関数===================
-  // 何をアップデートしている？
   const checkMatch = () => {
     // １枚目のカードと2枚目のカードが選択後走る
     // cardsのisMatchをtrueに変更する
     // mapで一時的にコピー配列を作り
-    if (
-      selectedCards[0].id === selectedCards[1].id
-      // && selectedCards[0].idx !== selectedCards[1].idx
-    ) {
+    if (selectedCards[0].id === selectedCards[1].id) {
       console.log("マッチしました");
       let updatedCards = cards.map((card) => {
         //２回目のクリックで 0 と1のisMatchdをtrueに
@@ -57,12 +49,10 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
         // そうじゃないものはそのまま。
         return card;
       });
-      // stateの変更をかける
       setCards(updatedCards);
     } else {
       console.log("ミスマッチ");
     }
-    // setSelectedCards([]);
   };
   // !!カードが選択されるたびに走る
   useEffect(() => {
@@ -76,11 +66,9 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
       setScore((ele) => ele + 1);
       checkMatch();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 手数がバグるため
   }, [selectedCards]);
 
-  // !クリア処理
   useEffect(() => {
     console.log("running クリアEffect");
     if (cards.length === 0) return;
@@ -88,17 +76,13 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
     if (isGameClear) {
       setTimeout(() => {
         alert("ゲームクリア");
-        // clearフラグをon
         setIsCleared(isGameClear);
       }, 500);
     }
   }, [cards]);
-  //!useStateのstateの変更がかかるたびに変更箇所の描画が変更される（Reactの仕様）
-  //今回はCardの部分
+
   return (
     <div className={"game"}>
-      {/* リロードボタンと 名前入力欄 +スコア表示欄+ スコア送信欄(iscleared scoreをわたす)/}
-            {/* スコアの計算方法はよう考察 時間と手数 とりあえず手数*/}
       <Input
         gameMode={gameMode}
         initializeGame={initializeGame}

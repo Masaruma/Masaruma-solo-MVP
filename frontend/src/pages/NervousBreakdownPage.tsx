@@ -4,11 +4,11 @@ import { GameMain } from "@/components/GameMain.tsx";
 import { Login } from "@/components/Login.tsx";
 import { Ranking } from "@/components/Ranking.tsx";
 
-import "@/pages/NervousbreakdownPage.css";
+import "@/pages/NervousBreakdownPage.css";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
-export const NervousbreakdownPage = () => {
+export const NervousBreakdownPage = () => {
   // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
 
