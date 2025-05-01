@@ -20,7 +20,9 @@ export const NervousBreakdownPage = () => {
       {isSuccess ? (
         <div className={"wrapper"}>
           <header>
-            <h1>神経衰弱:{gameMode}モード</h1>
+            <h1>
+              神経衰弱:{gameMode} {cardRowsCols[0]}❌{cardRowsCols[1]}
+            </h1>
             <div className={"mode"}>
               モードを選択してください
               <button className={""} onClick={() => setGameMode("irasutoya")}>
@@ -31,6 +33,7 @@ export const NervousBreakdownPage = () => {
               </button>
               <div className={"cell"}>
                 マス目を選択してください
+                <h6>10×10はポケモンのみ。</h6>
                 <button
                   className={""}
                   onClick={() => {
@@ -57,17 +60,13 @@ export const NervousBreakdownPage = () => {
                 </button>
                 <button
                   className={""}
+                  disabled={gameMode === "irasutoya"}
                   onClick={() => {
                     setCardRowsCols([10, 10]);
                   }}
                 >
                   10✖️10マス
                 </button>
-              </div>
-              <div className={"tyuu"}>
-                ※ゲームリセット,まだうまくいかないのでゲーム途中でのモード変更はうまくいきません
-                <br />
-                リロードしてください10×10はポケモンのみ。
               </div>
             </div>
           </header>
