@@ -7,8 +7,8 @@ import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
 
 interface GameMainProps {
+  cardRowsCols: [number, number];
   gameMode: GameModeType;
-  RC: [number, number];
 }
 
 export type CardImageType = {
@@ -20,14 +20,17 @@ export type CardsWithMatchKeyType = CardImageType & {
   isMatched: boolean;
 };
 
-export const GameMain = ({ gameMode, RC }: GameMainProps) => {
+export const GameMain = ({ gameMode, cardRowsCols }: GameMainProps) => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
   );
   const [score, setScore] = useState(0);
   const [isCleared, setIsCleared] = useState(false);
   //!初期データ処理==================================================
-  const { cards, initializeGame, setCards } = useInitializeGame(gameMode, RC);
+  const { cards, initializeGame, setCards } = useInitializeGame(
+    gameMode,
+    cardRowsCols
+  );
   useEffect(() => {
     void initializeGame();
     setIsCleared(false);
@@ -84,6 +87,7 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
   return (
     <div className={"game"}>
       <Input
+        cardRowsCols={cardRowsCols}
         gameMode={gameMode}
         initializeGame={initializeGame}
         isCleared={isCleared}
@@ -93,8 +97,8 @@ export const GameMain = ({ gameMode, RC }: GameMainProps) => {
         <div
           className={"cards-container"}
           style={{
-            gridTemplateRows: `repeat(${RC[0]}, 1fr)`,
-            gridTemplateColumns: `repeat(${RC[1]}, 1fr)`,
+            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
           }}
         >
           {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}

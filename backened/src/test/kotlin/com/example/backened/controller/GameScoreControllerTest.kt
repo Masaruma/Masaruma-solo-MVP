@@ -32,18 +32,22 @@ class GameScoreControllerTest {
 
     @Test
     fun getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること() {
-        every { gameScoreService.getScore(any()) } returns listOf(
+        every { gameScoreService.getScore(any(), any()) } returns listOf(
             ResponseScore(
                 id = 1,
                 createdAt = Instant.now(),
                 gameScore = 200,
+                gameLevel = 12,
                 user = "testUser"
             )
         )
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/score/irasutoya")).andExpect(status().isOk)
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/score").param("gameMode", "irasutoya")   // ?gameMode=irasutoya
+                .param("gameLevel", "12")
+        ).andExpect(status().isOk)
 
-        verify { gameScoreService.getScore("irasutoya") }
+        verify { gameScoreService.getScore("irasutoya", 12) }
     }
 
     @Test
@@ -55,6 +59,7 @@ class GameScoreControllerTest {
                 """{
                                 "user": "Masaru",
                                 "gameMode": "irasutoya",
+                                "gameLevel": "12",
                                 "gameScore": 2
                             }
                         """.trimIndent(),
@@ -62,6 +67,6 @@ class GameScoreControllerTest {
         )
             .andExpect(status().isCreated)
 
-        verify { gameScoreService.postScore(RequestScore(user = "Masaru", gameMode = "irasutoya" ,gameScore = 2)) }
+        verify { gameScoreService.postScore(RequestScore(user = "Masaru", gameMode = "irasutoya", gameScore = 2, gameLevel = "12")) }
     }
 }

@@ -6,7 +6,11 @@ import {
 } from "@/components/GameMain.tsx";
 import { irasutoyaImages } from "@/utils/irasutoyaImageArray.ts";
 
-export const useInitializeGame = (gameMode: string, RC: [number, number]) => {
+// todo ここのテスト作成
+export const useInitializeGame = (
+  gameMode: string,
+  cardRowsCols: [number, number]
+) => {
   const [cards, setCards] = useState<CardsWithMatchKeyType[]>([]);
   // ?randomな重複なしな数値をもった配列を生成するヘルパー関数 pokemon用
   const randomArray = useCallback(() => {
@@ -15,20 +19,20 @@ export const useInitializeGame = (gameMode: string, RC: [number, number]) => {
     const randoms: number[] = [];
     const min = 1,
       max = 1025;
-    const count = (RC[0] * RC[1]) / 2;
+    const count = (cardRowsCols[0] * cardRowsCols[1]) / 2;
     while (randoms.length < count) {
       const tmp = intRandom(min, max);
       if (!randoms.includes(tmp)) randoms.push(tmp);
     }
     return randoms;
-  }, [RC]);
+  }, [cardRowsCols]);
 
   const initializeNervousBreakdownCards = useCallback(async () => {
     let images: CardImageType[] = [];
     if (gameMode === "irasutoya") {
       images = irasutoyaImages
         .sort(() => Math.random() - 0.5)
-        .slice(0, (RC[0] * RC[1]) / 2);
+        .slice(0, (cardRowsCols[0] * cardRowsCols[1]) / 2);
     } else if (gameMode === "pokemon") {
       const randoms = randomArray();
       let i = 1;
@@ -58,7 +62,7 @@ export const useInitializeGame = (gameMode: string, RC: [number, number]) => {
       .sort(() => Math.random() - 0.5);
 
     setCards(shuffled);
-  }, [gameMode, RC, randomArray]);
+  }, [gameMode, cardRowsCols, randomArray]);
 
   const initializeGame = useCallback(async () => {
     await initializeNervousBreakdownCards();

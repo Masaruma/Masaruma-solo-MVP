@@ -1,4 +1,5 @@
-import {defineConfig, UserConfig} from "vite";
+
+import {defineConfig, UserConfig} from "vitest/config";
 import react from "@vitejs/plugin-react";
 import * as path from "node:path";
 
@@ -23,4 +24,4 @@ export default defineConfig({
             '/api': 'http://localhost:8080',
         }
     }
-} as UserConfig)
+})

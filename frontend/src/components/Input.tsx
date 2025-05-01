@@ -2,8 +2,10 @@ import { useRef } from "react";
 
 import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
+import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 
 interface InputProps {
+  cardRowsCols: [number, number];
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
@@ -15,6 +17,7 @@ export const Input = ({
   score,
   gameMode,
   initializeGame,
+  cardRowsCols,
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   const postScore = async () => {
@@ -22,6 +25,7 @@ export const Input = ({
       user: nameInput.current?.value ?? "",
       gameMode: gameMode,
       gameScore: score,
+      gameLevel: culcurateGameLevel(cardRowsCols),
     };
 
     if (!postData.user) {

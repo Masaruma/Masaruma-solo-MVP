@@ -12,10 +12,7 @@ export const NervousBreakdownPage = () => {
   // モード選択 ヘッダーにクリックで変更されるように mode選択で取ってくるデータとランキングのget、postを変更させる
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
 
-  const [
-    numberOfVerticalAndHorizontalCards,
-    setNumberOfVerticalAndHorizontalCards,
-  ] = useState<[number, number]>([3, 4]);
+  const [cardRowsCols, setCardRowsCols] = useState<[number, number]>([3, 4]);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   return (
@@ -38,7 +35,7 @@ export const NervousBreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setNumberOfVerticalAndHorizontalCards([3, 4]);
+                    setCardRowsCols([3, 4]);
                   }}
                 >
                   3✖️4マス
@@ -46,7 +43,7 @@ export const NervousBreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setNumberOfVerticalAndHorizontalCards([4, 5]);
+                    setCardRowsCols([4, 5]);
                   }}
                 >
                   4✖️5マス
@@ -54,7 +51,7 @@ export const NervousBreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setNumberOfVerticalAndHorizontalCards([6, 8]);
+                    setCardRowsCols([6, 8]);
                   }}
                 >
                   6✖️8マス
@@ -62,7 +59,7 @@ export const NervousBreakdownPage = () => {
                 <button
                   className={""}
                   onClick={() => {
-                    setNumberOfVerticalAndHorizontalCards([10, 10]);
+                    setCardRowsCols([10, 10]);
                   }}
                 >
                   10✖️10マス
@@ -79,12 +76,9 @@ export const NervousBreakdownPage = () => {
           <div className={"main-container"}>
             {/* ゲーム画面とランキングの縦並びの位置を調整したいため */}
             <main className={"game-container"}>
-              <Ranking gameMode={gameMode} />
+              <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
 
-              <GameMain
-                RC={numberOfVerticalAndHorizontalCards}
-                gameMode={gameMode}
-              />
+              <GameMain cardRowsCols={cardRowsCols} gameMode={gameMode} />
             </main>
             <aside />
           </div>

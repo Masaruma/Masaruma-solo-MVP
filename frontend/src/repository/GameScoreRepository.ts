@@ -1,22 +1,32 @@
 import axios from "axios";
 
+import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
+
 export type GetGameScoreType = {
   createdAt: string;
+  gameLevel: number;
   gameScore: number;
   id: number;
   user: string;
 };
 
 export type PostGameScoreType = {
+  gameLevel: number;
   gameMode: string;
   gameScore: number;
   user: string;
 };
 
 export const getGameScores = async (
-  gameMode: string
+  gameMode: string,
+  cardRowsCols: [number, number]
 ): Promise<GetGameScoreType[]> => {
-  const response = await axios.get(`/api/score/${gameMode}`);
+  const response = await axios.get(`/api/score`, {
+    params: {
+      gameMode: gameMode,
+      gameLevel: culcurateGameLevel(cardRowsCols),
+    },
+  });
   return response.data;
 };
 

@@ -41,4 +41,8 @@ data class Score(
     @ManyToOne
     @JoinColumn(name = "game_mode_id")
     val gameMode: GameMode,
+
+    @ManyToOne
+    @JoinColumn(name = "game_level_id")
+    val gameLevel: GameLevel,
 )
