@@ -95,6 +95,7 @@ export const GameMain = ({ gameMode, cardRowsCols }: GameMainProps) => {
       />
       <div className={"container"}>
         <div
+          aria-label={"神経衰弱のカードエリア"}
           className={"cards-container"}
           style={{
             gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,

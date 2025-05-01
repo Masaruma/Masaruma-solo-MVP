@@ -229,9 +229,9 @@ table tr:last-child td:last-child {
 /* !カードの裏面 */
 .back {
   background-image:
-    url("/images/card_back.png"),
+    /*url("/images/card_back.png"),*/
     url("/images/illustkun-01476-back-of-cards.png");
-  background-size: 80%, 150%;
+  background-size: 150%;
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.1);
