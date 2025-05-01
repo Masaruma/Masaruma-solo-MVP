@@ -1,4 +1,4 @@
-package com.example.backened.model
+package com.example.backend.model
 
 import java.time.Instant
 

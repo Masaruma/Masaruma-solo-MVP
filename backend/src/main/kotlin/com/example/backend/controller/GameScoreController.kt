@@ -1,8 +1,8 @@
-package com.example.backened.controller
+package com.example.backend.controller
 
-import com.example.backened.model.RequestScore
-import com.example.backened.model.ResponseScore
-import com.example.backened.service.GameScoreService
+import com.example.backend.model.RequestScore
+import com.example.backend.model.ResponseScore
+import com.example.backend.service.GameScoreService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

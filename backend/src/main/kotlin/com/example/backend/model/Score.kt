@@ -1,7 +1,6 @@
-package com.example.backened.model
+package com.example.backend.model
 
 import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.GeneratedValue

@@ -1,6 +1,4 @@
-package com.example.backened.model
-
-import java.time.Instant
+package com.example.backend.model
 
 data class RequestScore(
     val id: Int?= null,

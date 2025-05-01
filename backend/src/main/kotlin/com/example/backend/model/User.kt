@@ -1,4 +1,4 @@
-package com.example.backened.model
+package com.example.backend.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -8,11 +8,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "game_modes")    // ← 複数形に変える
-data class GameMode(
+@Table(name = "users")    // ← 複数形に変える
+data class User(
     @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 
-//    @Column(name = "game_name",nullable = false)
-    val gameName: String,
+    @Column(nullable = false)
+    val name: String,
 )

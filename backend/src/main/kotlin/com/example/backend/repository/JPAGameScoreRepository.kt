@@ -1,8 +1,6 @@
-package com.example.backened.repository
+package com.example.backend.repository
 
-import com.example.backened.model.GameLevel
-import com.example.backened.model.GameMode
-import com.example.backened.model.Score
+import com.example.backend.model.Score
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface JPAGameScoreRepository:JpaRepository<Score, Int>{

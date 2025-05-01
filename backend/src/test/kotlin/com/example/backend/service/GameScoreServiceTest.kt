@@ -1,15 +1,15 @@
-package com.example.backened.service
+package com.example.backend.service
 
-import com.example.backened.model.GameLevel
-import com.example.backened.model.GameMode
-import com.example.backened.model.RequestScore
-import com.example.backened.model.ResponseScore
-import com.example.backened.model.Score
-import com.example.backened.model.User
-import com.example.backened.repository.JPAGameLevelRepository
-import com.example.backened.repository.JPAGameModeRepository
-import com.example.backened.repository.JPAGameScoreRepository
-import com.example.backened.repository.JPAUserRepository
+import com.example.backend.model.GameLevel
+import com.example.backend.model.GameMode
+import com.example.backend.model.RequestScore
+import com.example.backend.model.ResponseScore
+import com.example.backend.model.Score
+import com.example.backend.model.User
+import com.example.backend.repository.JPAGameLevelRepository
+import com.example.backend.repository.JPAGameModeRepository
+import com.example.backend.repository.JPAGameScoreRepository
+import com.example.backend.repository.JPAUserRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
