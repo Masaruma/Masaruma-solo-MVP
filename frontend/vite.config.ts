@@ -23,5 +23,9 @@ export default defineConfig({
         proxy: {
             '/api': 'http://localhost:8080',
         }
+    },
+    build: {
+        outDir: path.resolve(__dirname, '../backend/src/main/resources/static'),
+        emptyOutDir: true,
     }
 })
