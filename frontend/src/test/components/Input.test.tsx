@@ -1,0 +1,36 @@
+import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
+import { beforeEach, expect, MockInstance } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { Input } from "@/components/Input.tsx";
+import { userEvent } from "@testing-library/user-event";
+
+vi.mock("@/repository/GameScoreRepository.ts");
+
+describe("Input", () => {
+  let alertSpy : MockInstance<(message?: any) => void>
+  beforeEach(() => {
+    vi.spyOn(GameScoreRepository, "postGameScore").mockResolvedValue(201);
+    alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
+  });
+  it("送信ボタンを押した時Repositoryのpostが呼ばれる。成功時のメッセージが表示される", async () => {
+    render(
+      <Input
+        cardRowsCols={[3, 4]}
+        gameMode={"irasutoya"}
+        initializeGame={async () => {}}
+        isCleared={true}
+        score={20}
+      />
+    );
+
+    const inputBox = screen.getByPlaceholderText("名前を入れてね");
+    await userEvent.type(inputBox, "Masaru");
+
+    const postButton = screen.getByRole("button", { name: "スコアを送信する" });
+    await userEvent.click(postButton);
+
+    expect(GameScoreRepository.postGameScore).toHaveBeenCalledTimes(1);
+
+    expect(alertSpy).toHaveBeenCalledWith("送信完了しました")
+  });
+});

@@ -32,7 +32,7 @@ export const Input = ({
       alert("名前を入力してください!");
       return;
     }
-    if (confirm("スコアを送信してもよろしいですか？")) {
+    // if (confirm("スコアを送信してもよろしいですか？")) {
       const responseStatus = await GameScoreRepository.postGameScore(postData);
       if (responseStatus === 201) {
         alert("送信完了しました");
@@ -40,7 +40,7 @@ export const Input = ({
       } else {
         alert("送信に失敗しました");
       }
-    }
+    // }
   };
 
   return (
