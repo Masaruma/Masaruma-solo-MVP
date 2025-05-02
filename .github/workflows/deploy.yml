@@ -1,0 +1,39 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - main   # main ブランチへのプッシュでトリガー
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. コードをチェックアウト
+      - uses: actions/checkout@v3
+
+      # 2. Node.js をセットアップ & フロントエンドをビルド
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install and build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 3. バックエンドの static 配下に成果物が吐かれていることを確認
+      #    （vite.config.ts で outDir が backend/src/main/resources/static を指している想定）
+      - name: List static assets
+        run: ls -R backend/src/main/resources/static
+
+      # 4. Heroku へデプロイ
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name:  ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email:     ${{ secrets.HEROKU_EMAIL }}
+          # buildpack を指定すると、Heroku 上で自動的に gradle build → jar 実行を行います
+          build pack: heroku/java
