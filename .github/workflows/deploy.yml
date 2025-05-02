@@ -27,7 +27,9 @@ jobs:
       #    （vite.config.ts で outDir が backend/src/main/resources/static を指している想定）
       - name: List static assets
         run: ls -R backend/src/main/resources/static
-
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
       # 4. Heroku へデプロイ
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.14.15
