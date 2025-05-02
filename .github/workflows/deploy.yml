@@ -36,4 +36,4 @@ jobs:
           heroku_app_name:  ${{ secrets.HEROKU_APP_NAME }}
           heroku_email:     ${{ secrets.HEROKU_EMAIL }}
           # buildpack を指定すると、Heroku 上で自動的に gradle build → jar 実行を行います
-          build pack: heroku/java
+          buildpack: heroku/java
