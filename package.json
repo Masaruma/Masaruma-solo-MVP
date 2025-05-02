@@ -1,0 +1,17 @@
+{
+  "name": "masaruma-solo-mvp",
+  "version": "1.0.0",
+  "description": "heroku multi build package json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-prebuild": "cd frontend && npm ci",
+    "heroku-postbuild": "cd frontend && npm run build"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Masaruma/Masaruma-solo-MVP.git"
+  },
+  "private": true
+}
