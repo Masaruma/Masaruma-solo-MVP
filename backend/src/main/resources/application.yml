@@ -4,9 +4,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # Use the Heroku-provided JDBC URL via SPRING_DATASOURCE_URL
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USERNAME:${LOCAL_DATABASE_USERNAME}}
-    password: ${DB_PASSWORD:${LOCAL_DATABASE_PASSWORD}}
+    url: ${SPRING_DATASOURCE_URL:${LOCAL_DATABASE_URL}}
+    username: ${SPRING_DATASOURCE_USERNAME:${LOCAL_DATABASE_USERNAME}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${LOCAL_DATABASE_PASSWORD}}
   jpa:
     generate-ddl: false
     hibernate:
