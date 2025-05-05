@@ -40,24 +40,35 @@ solo-MVP-ソロ神経衰弱
 
 <!-- シールド一覧 -->
 <!-- 該当するプロジェクトの中から任意のものを選ぶ-->
-<p style="display: inline">
-  <!-- フロントエンドのフレームワーク一覧 -->
-<img src="https://img.shields.io/badge/-Html5-E34F26.svg?logo=html5&style=plastic">
-<img src="https://img.shields.io/badge/-Css3-1572B6.svg?logo=css3&style=plastic">
-<img src="https://img.shields.io/badge/-Javascript-F7DF1E.svg?logo=javascript&style=plastic">
-<img src="https://img.shields.io/badge/-React-61DAFB.svg?logo=react&style=plastic">
-  <!-- バックエンドのフレームワーク一覧 -->
-  <!-- バックエンドの言語一覧 -->
-  <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=plastic">
-  <img src="https://img.shields.io/badge/-Postgresql-336791.svg?logo=postgresql&style=plastic">
+
+[//]: # (<p style="display: inline">)
+
+[//]: # (  <!-- フロントエンドのフレームワーク一覧 -->)
+
+[//]: # (<img src="https://img.shields.io/badge/-Html5-E34F26.svg?logo=html5&style=plastic">)
+
+[//]: # (<img src="https://img.shields.io/badge/-Css3-1572B6.svg?logo=css3&style=plastic">)
+
+[//]: # (<img src="https://img.shields.io/badge/-Javascript-F7DF1E.svg?logo=javascript&style=plastic">)
+
+[//]: # (<img src="https://img.shields.io/badge/-React-61DAFB.svg?logo=react&style=plastic">)
+
+[//]: # (  <!-- バックエンドのフレームワーク一覧 -->)
+
+[//]: # (  <!-- バックエンドの言語一覧 -->)
+
+[//]: # (  <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=plastic">)
+
+[//]: # (  <img src="https://img.shields.io/badge/-Postgresql-336791.svg?logo=postgresql&style=plastic">)
 
 | 言語・フレームワーク | バージョン |
-| -------------------- | ---------- |
-| PostgreSQL           | 14.12      |
-| Node.js              | 20.12.1    |
-| React                | 18.3.1     |
+|------------|-------|
+| PostgreSQL | 15.x  |
+| Node.js    | 22.x  |
+| React      | 19.x  |
+| SpringBoot | 3.4.4  |
 
-フロントエンドは React を利用、バックエンドサーバーは node.js の express、knex を利用しています。
+フロントエンドは React を利用、バックエンドサーバーは springboot:kotlin:gradle
 データベースは PostgreSQL です
 
 その他のパッケージのバージョンは package.json を参照してください
@@ -68,52 +79,25 @@ solo-MVP-ソロ神経衰弱
 
 <!-- コンテナの作成方法、パッケージのインストール方法など、開発環境構築に必要な情報を記載 -->
 
-ダウンロードしたファイル群の frontend ディレクトリと backend ディレクトリで下記コマンドを実行して必要モジュールをインストールしてください！
+
+## コンテナの起動
+DBを作成するためにコンテナを起動します
 
 ```
-npm i
+docker compose up -d
 ```
 
-## .env ファイルの作成
 
-backend ディレクトリ直下に.env ファイルを作成してください！
+## バックエンドの起動
+backend ディレクトリ直下の.envSampleをコピーし.envを作成
 ├── backend
 │ ├── .env
 
-.env には下記をコピーし貼り付けてください。
-POSTGRES_USER と POSTGRES_PASSWORD は自身のものに置き換えをお願いします。
-
+ backendディレクトリ で
 ```
-POSTGRES_USER=user
-POSTGRES_PASSWORD=
-POSTGRES_DB=card_game
-POSTGRES_PORT=5432
-POSTGRES_HOST=127.0.0.1
+./gradlew bootrun
 ```
 
-## データベースの作成
-
-次に backend ディレクトリでデータベースの作成を行います。カレントディレクトリが backend であることを確認してからコマンドを実行してください！
-
-```
-echo "CREATE DATABASE card_game;" | psql
-```
-
-psql で card_game スキーマが作成されていれば成功です！
-
-## マイグレーションファイルの実行
-
-カレントディレクトリが backend であることを確認してマイグレーションファイルを実行します。その後シードファイルの実行も行なってください。
-
-```
-npm run migrate-latest
-```
-
-```
-npm run seed-data
-```
-
-psql の card_game スキーマにて\dt コマンドでテーブルが挿入されていれば成功です！
 
 ## 動作確認
 
@@ -122,21 +106,12 @@ psql の card_game スキーマにて\dt コマンドでテーブルが挿入さ
 カレントディレクトリが frontend なのを確認後下記のコマンドを実行し react サーバーを立ち上げてください
 
 ```
+npm i
 npm run dev
 ```
 
 http://localhost:5173/ にアクセスし、神経衰弱ゲームが表示されていれば成功です。
-この時点ではサーバーと繋がっていないためランキングは表示されません。ブラウザは http://localhost:5173/ にアクセスしたままにしておいてください。
 
-### バックエンドアプリの動作確認
-
-次にカレントディレクトリが backend なのを確認後下記のコマンドを実行し express サーバーを立ち上げてください
-
-```
-npm run dev
-```
-
-その状態で http://localhost:5173/ のリロードをかけるとランキングが表示されます。
 
 # テーブル一覧
 
@@ -145,99 +120,39 @@ npm run dev
 `ref: <` = One to many
 `ref: -` = One to one
 
-## users Table
 
 ```
 Table users {
   id id [pk]
-  user varchar(32) [not null]
+  name varchar(32) [not null]
 }
 ```
 
-## irasutoya score Table
-
 ```
-Table irasutoya_score {
+Table score {
   id id [pk]
+  created_at date
+  updated_at date
+  game_score INT
   user_id id [ref: - users.id, not null]
-  date date
-  score decimal(32,2)
+  game_mode_id [ref: > game_modes.id, not null]
+  game_level_id [ref: > game_level.id, not null]
 }
 ```
 
-## irasutoya score Table
 
 ```
-Table pokemon_score {
+Table game_modes {
   id id [pk]
-  user_id id [ref: - users.id, not null]
-  date date
-  score decimal(32,2)
+  game_name varchar(32)
 }
 ```
-
-# ディレクトリ構成
-
-<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
-
-❯ tree -I "node_modules|dist"
-.
-├── README.md
-├── backend
-│ ├── docs
-│ ├── package-lock.json
-│ ├── package.json
-│ ├── src
-│ │ ├── db
-│ │ │ ├── data
-│ │ │ │ ├── migrations
-│ │ │ │ │ ├── 20240525183529_create_user_table.js
-│ │ │ │ │ └── 20240526093744_create_irasutoyaScore_table.js
-│ │ │ │ └── seeds
-│ │ │ │ ├── 001-sample_users.js
-│ │ │ │ └── 002-sample_irasutoya.js
-│ │ │ ├── index.js
-│ │ │ └── knexfile.js
-│ │ ├── model
-│ │ │ └── modelAndController.js
-│ │ └── server
-│ │ ├── index.js
-│ │ └── server.js
-│ └── test
-│ └── server.spec.cjs
-└── frontend
-├── README.md
-├── index.html
-├── package-lock.json
-├── package.json
-├── public
-│ ├── images
-│ │ ├── animal_chara_radio_buta.png
-│ │ ├── animal_yukata_dog.png
-│ │ ├── card_back.png
-│ │ ├── cooking_tousyoumen.png
-│ │ ├── fashion_jinbei.png
-│ │ ├── fashion_jinbei_woman.png
-│ │ ├── illustkun-01477-back-of-cards.png
-│ │ ├── job_chocolatier_man.png
-│ │ ├── komebukuro_apron_woman.png
-│ │ ├── ofuro_sauna_neppashi_woman.png
-│ │ ├── opera_singer_man.png
-│ │ └── tsundere_girl.png
-│ └── vite.svg
-├── src
-│ ├── App.css
-│ ├── App.tsx
-│ ├── assets
-│ │ └── react.svg
-│ ├── components
-│ │ ├── Card.tsx
-│ │ ├── GameMain.tsx
-│ │ ├── Input.tsx
-│ │ └── Ranking.tsx
-│ ├── index.css
-│ └── main.tsx
-└── vite.config.ts
+```
+Table game_level {
+  id id [pk]
+  level INT
+}
+```
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -249,12 +164,15 @@ Table pokemon_score {
     3. WEBSOCKET の実施による 2 人対戦、複数人対戦
     4. ログイン機能の実装
 2. リファクタリング
-    1. ゲーム切り替えボタンでのゲームのリセット
+    1. ~~ゲーム切り替えボタンでのゲームのリセット~~
     2. コードを分散し手入れしやすくする
     3. React の単一責任に準拠させる
-    4. TypeScript での実装
+    4. ~~TypeScript での実装~~
+   5. CASSでの実装もしくはshadn cn
+   6. 
 3. 実装
 
     1. Swift で書き直し ios で使えるようにする
-
+   2. Herokuへのデプロイと独自ドメインの取得
+   3. AWSへのデプロイ
 <p align="right">(<a href="#top">トップへ</a>)</p>

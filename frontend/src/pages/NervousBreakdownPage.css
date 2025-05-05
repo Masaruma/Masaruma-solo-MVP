@@ -6,6 +6,7 @@
   --pink: #ffb2c1;
   --orange: orange;
 }
+
 * {
   padding: 0;
   margin: 0;
@@ -15,6 +16,10 @@
   font-style: normal;
   color: #213547;
   background-color: #ffffff;
+}
+html, body {
+  width: 100%;
+  height: 100%;
 }
 /* !login設定 */
 .loginDiv {
@@ -47,7 +52,8 @@ div > label {
 
 .wrapper {
   width: 100vw;
-  /* height: 100vh; */
+  min-height: 100vh;    /* ビューポートの高さ分確保 */
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,9 +79,7 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-.tyuu {
-  font-size: 0.8rem;
-}
+
 /* !ボタンの設定 */
 button,
 div > input {
@@ -247,6 +251,7 @@ table tr:last-child td:last-child {
 img {
   height: 158px;
   width: 130px;
+
   border: solid 0.15rem red;
   background-color: white;
   /* background-color: transparent; */
@@ -283,7 +288,11 @@ img {
 }
 @media (max-width: 600px) {
   .card {
-    height: 80px;
+    height: 70px;
+    width: 55px;
+  }
+  img {
+    height: 70px;
     width: 55px;
   }
 }
