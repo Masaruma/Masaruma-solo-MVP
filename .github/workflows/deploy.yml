@@ -7,6 +7,45 @@ on:
   workflow_dispatch:
 
 jobs:
+  set-config:
+    runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          echo "$HOME/.local/share/heroku/bin" >> $GITHUB_PATH
+
+      - name: Log in to Heroku
+        run: |
+          echo "$HEROKU_API_KEY" | heroku auth:token > /dev/null
+
+      - name: Get and parse DATABASE_URL
+        shell: bash
+        run: |
+          DATABASE_URL=$(heroku config:get DATABASE_URL --app "HEROKU_APP_NAME")
+
+          echo "DATABASE_URL=$DATABASE_URL"
+
+          USER="$(echo $DATABASE_URL | sed -E 's|.+://([^:]+):.*|\1|')"
+          PASS="$(echo $DATABASE_URL | sed -E 's|.+://[^:]+:([^@]+)@.*|\1|')"
+          HOST="$(echo $DATABASE_URL | sed -E 's|.+@([^:/]+):.*|\1|')"
+          PORT="$(echo $DATABASE_URL | sed -E 's|.+:([0-9]+)/.*|\1|')"
+          DBNAME="$(echo $DATABASE_URL | sed -E 's|.*/([^?]+)$|\1|')"
+
+          JDBC_URL="jdbc:postgresql://$HOST:$PORT/$DBNAME"
+
+          echo "Setting config vars on Heroku..."
+          heroku config:set \
+            SPRING_DATASOURCE_URL="$JDBC_URL" \
+            SPRING_DATASOURCE_USERNAME="$USER" \
+            SPRING_DATASOURCE_PASSWORD="$PASS" \
+            --app "$HEROKU_APP_NAME"
   build_and_deploy:
     runs-on: ubuntu-latest
     env:
