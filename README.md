@@ -2,7 +2,7 @@
 
 <div id="top"></div>
 
-</p>
+
 
 # 目次
 
@@ -175,4 +175,5 @@ Table game_level {
     1. Swift で書き直し ios で使えるようにする
    2. Herokuへのデプロイと独自ドメインの取得
    3. AWSへのデプロイ
+   4. Unityを埋め込んだページ
 <p align="right">(<a href="#top">トップへ</a>)</p>
