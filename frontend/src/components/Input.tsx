@@ -33,13 +33,13 @@ export const Input = ({
       return;
     }
     // if (confirm("スコアを送信してもよろしいですか？")) {
-      const responseStatus = await GameScoreRepository.postGameScore(postData);
-      if (responseStatus === 201) {
-        alert("送信完了しました");
-        void initializeGame();
-      } else {
-        alert("送信に失敗しました");
-      }
+    const responseStatus = await GameScoreRepository.postGameScore(postData);
+    if (responseStatus === 201) {
+      alert("送信完了しました");
+      void initializeGame();
+    } else {
+      alert("送信に失敗しました");
+    }
     // }
   };
 

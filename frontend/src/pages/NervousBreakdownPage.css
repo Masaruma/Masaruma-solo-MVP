@@ -17,7 +17,8 @@
   color: #213547;
   background-color: #ffffff;
 }
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
 }
@@ -52,7 +53,7 @@ div > label {
 
 .wrapper {
   width: 100vw;
-  min-height: 100vh;    /* ビューポートの高さ分確保 */
+  min-height: 100vh; /* ビューポートの高さ分確保 */
 
   display: flex;
   flex-direction: column;

@@ -1,13 +1,14 @@
-import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
-import { beforeEach, expect, MockInstance } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Input } from "@/components/Input.tsx";
 import { userEvent } from "@testing-library/user-event";
+import { beforeEach, expect, MockInstance } from "vitest";
+
+import { Input } from "@/components/Input.tsx";
+import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 vi.mock("@/repository/GameScoreRepository.ts");
 
 describe("Input", () => {
-  let alertSpy : MockInstance<(message?: any) => void>
+  let alertSpy: MockInstance<(message?: any) => void>;
   beforeEach(() => {
     vi.spyOn(GameScoreRepository, "postGameScore").mockResolvedValue(201);
     alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
@@ -31,6 +32,6 @@ describe("Input", () => {
 
     expect(GameScoreRepository.postGameScore).toHaveBeenCalledTimes(1);
 
-    expect(alertSpy).toHaveBeenCalledWith("送信完了しました")
+    expect(alertSpy).toHaveBeenCalledWith("送信完了しました");
   });
 });

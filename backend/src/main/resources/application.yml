@@ -3,9 +3,9 @@ spring:
     name: backend
   datasource:
     driver-class-name: org.postgresql.Driver
-    url:      ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url:      ${SPRING_DATASOURCE_URL:${LOCAL_DATABASE_URL}}
+    username: ${SPRING_DATASOURCE_USERNAME:${LOCAL_DATABASE_USERNAME}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${LOCAL_DATABASE_PASSWORD}}
   jpa:
     generate-ddl: false
     hibernate:
@@ -17,8 +17,6 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     enabled: true
-#    password: admin
-#    user: admin
   servlet:
     multipart:
       max-file-size: 10MB
