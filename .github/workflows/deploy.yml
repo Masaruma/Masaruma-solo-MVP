@@ -14,16 +14,26 @@ jobs:
       HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
 
     steps:
-      # 1. コードチェックアウト
+      # 1. コードをチェックアウト
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Heroku Container Registry へログイン
+      # 2. Heroku CLI をインストール
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
+      # 3. Heroku スタックを container に設定
+      - name: Set Heroku stack to container
+        run: |
+          heroku stack:set container --app $HEROKU_APP_NAME
+
+      # 4. Heroku Container Registry へログイン
       - name: Login to Heroku Container Registry
         run: |
           echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
 
-      # 3. Docker イメージを linux/amd64 でビルド
+      # 5. Docker イメージを linux/amd64 でビルド
       - name: Build Docker image
         run: |
           docker build \
@@ -31,17 +41,12 @@ jobs:
             --tag registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web \
             .
 
-      # 4. Docker イメージをプッシュ
+      # 6. Docker イメージをプッシュ
       - name: Push Docker image
         run: |
           docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
 
-      # 5. Heroku CLI をインストール
-      - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-
-      # 6. リリースをトリガー
+      # 7. リリースをトリガー
       - name: Release to Heroku
         run: |
           heroku container:release web --app $HEROKU_APP_NAME
