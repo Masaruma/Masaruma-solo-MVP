@@ -25,7 +25,7 @@ WORKDIR /home/gradle/project/backend
 RUN ./gradlew clean bootJar --no-daemon
 
 # --- Stage 3: runtime image --------------------------
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=backend-builder \
      /home/gradle/project/backend/build/libs/*.jar \
