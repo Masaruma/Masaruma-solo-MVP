@@ -28,7 +28,7 @@ jobs:
       - name: Get and parse DATABASE_URL
         shell: bash
         run: |
-          DATABASE_URL=$(heroku config:get DATABASE_URL --app "HEROKU_APP_NAME")
+          DATABASE_URL=$(heroku config:get DATABASE_URL --app "$HEROKU_APP_NAME")
 
           echo "DATABASE_URL=$DATABASE_URL"
 
