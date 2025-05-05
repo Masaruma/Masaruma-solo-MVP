@@ -3,7 +3,7 @@ spring:
     name: backend
   datasource:
     driver-class-name: org.postgresql.Driver
-    url:      ${SPRING_DATASOURCE_URL:${LOCAL_DATABASE_URL}}
+    url:      jdbc:${DATASOURCE_URL:${LOCAL_DATABASE_URL}}
     username: ${SPRING_DATASOURCE_USERNAME:${LOCAL_DATABASE_USERNAME}}
     password: ${SPRING_DATASOURCE_PASSWORD:${LOCAL_DATABASE_PASSWORD}}
   jpa:
