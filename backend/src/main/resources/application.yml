@@ -17,8 +17,8 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     enabled: true
-    password: admin
-    user: admin
+#    password: admin
+#    user: admin
   servlet:
     multipart:
       max-file-size: 10MB
