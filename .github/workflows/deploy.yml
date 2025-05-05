@@ -1,4 +1,4 @@
-name: Build & Publish Docker Image
+name: Build & Deploy Docker to Heroku
 
 on:
   push:
@@ -7,39 +7,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+
     steps:
-      # 1. リポジトリチェックアウト
+      # 1. コードチェックアウト
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Buildx (マルチアーキ) をセットアップ
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # 3. Heroku Container Registry にログイン
-      - name: Log in to Heroku Container Registry
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      # 2. Heroku Container Registry へログイン
+      - name: Login to Heroku Container Registry
         run: |
           echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
 
-      # 4. Docker イメージを linux/amd64 でビルド＆プッシュ
-      - name: Build and push image
+      # 3. Docker イメージを linux/amd64 でビルド
+      - name: Build Docker image
         run: |
-          docker buildx build \
+          docker build \
             --platform linux/amd64 \
-            --tag registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web \
-            --push .
+            --tag registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web \
+            .
 
-      # 5. Heroku リリースプロセスをトリガー（オプション）
-      - name: Release to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      # 4. Docker イメージをプッシュ
+      - name: Push Docker image
         run: |
-          heroku container:release web \
-            --app ${{ secrets.HEROKU_APP_NAME }}
+          docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+
+      # 5. Heroku CLI をインストール
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
+      # 6. リリースをトリガー
+      - name: Release to Heroku
+        run: |
+          heroku container:release web --app $HEROKU_APP_NAME
