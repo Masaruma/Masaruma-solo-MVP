@@ -31,3 +31,7 @@ spring:
       static-locations: classpath:/static/
 server:
   port: ${PORT:8080}
+logging:
+  level:
+    org:
+      springframework=DEBUG:
