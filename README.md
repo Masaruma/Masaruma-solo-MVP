@@ -10,16 +10,13 @@
 2. [環境](#環境)
 3. [環境構築](#環境構築)
 4. [テーブル一覧](#テーブル一覧)
-5. [ディレクトリ構成](#ディレクトリ構成)
-6. [今後の展望](#今後の展望)
+5. [今後の展望](#今後の展望)
 
-<!-- プロジェクト名を記載 -->
+
 
 # プロジェクト名
 
 solo-MVP-ソロ神経衰弱
-
-<!-- プロジェクトについて -->
 
 # プロジェクトについて
 
@@ -61,11 +58,13 @@ solo-MVP-ソロ神経衰弱
 
 [//]: # (  <img src="https://img.shields.io/badge/-Postgresql-336791.svg?logo=postgresql&style=plastic">)
 
-| 言語・フレームワーク | バージョン |
-|------------|-------|
-| PostgreSQL | 15.x  |
-| Node.js    | 22.x  |
-| React      | 19.x  |
+| 言語・フレームワーク | バージョン  |
+|------------|--------|
+| PostgreSQL | 15.x   |
+| Node.js    | 22.x   |
+| React      | 19.x   |
+| JVM        | 1.9.25 |
+| Java       | 21     |
 | SpringBoot | 3.4.4  |
 
 フロントエンドは React を利用、バックエンドサーバーは springboot:kotlin:gradle
@@ -77,34 +76,22 @@ solo-MVP-ソロ神経衰弱
 
 # 環境構築
 
-<!-- コンテナの作成方法、パッケージのインストール方法など、開発環境構築に必要な情報を記載 -->
-
-
-## コンテナの起動
+## 方法1 
+#### コンテナの起動
 DBを作成するためにコンテナを起動します
 
 ```
 docker compose up -d
 ```
 
-
-## バックエンドの起動
-backend ディレクトリ直下の.envSampleをコピーし.envを作成
-├── backend
-│ ├── .env
-
- backendディレクトリ で
+#### バックエンドの起動
+backend ディレクトリ直下の.envSampleをコピーし.envを作成 。backendディレクトリ で
 ```
 ./gradlew bootrun
 ```
 
-
-## 動作確認
-
-### フロントエンドアプリの動作確認
-
+#### フロントエンドアプリの動作確認
 カレントディレクトリが frontend なのを確認後下記のコマンドを実行し react サーバーを立ち上げてください
-
 ```
 npm i
 npm run dev
@@ -112,6 +99,14 @@ npm run dev
 
 http://localhost:5173/ にアクセスし、神経衰弱ゲームが表示されていれば成功です。
 
+## 方法2 Dockerイメージによる起動
+上記の手順ができない場合
+ルートディレクトリで下記コマンドを実行
+```
+docker compose up -d
+make docker-build
+make docker-local-run
+```
 
 # テーブル一覧
 
@@ -173,7 +168,7 @@ Table game_level {
 3. 実装
 
     1. Swift で書き直し ios で使えるようにする
-   2. Herokuへのデプロイと独自ドメインの取得
+   2.  ~~Herokuへのデプロイと独自ドメインの取得~~
    3. AWSへのデプロイ
    4. Unityを埋め込んだページ
 <p align="right">(<a href="#top">トップへ</a>)</p>

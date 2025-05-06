@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  set-config:
+  set-heroku-DBconfig:
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
