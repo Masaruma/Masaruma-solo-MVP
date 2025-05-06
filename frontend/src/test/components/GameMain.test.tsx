@@ -47,7 +47,7 @@ describe(`${GameMain.name}`, () => {
     const firstCardComponet = cardArea.children[0];
     expect(firstCardComponet.children[0]).toHaveClass("back");
   });
-  it("失敗した場合カードは裏から表になる。", async () => {
+  it("2枚表にし、失敗した場合カードは表から裏になる。", async () => {
     render(<GameMain cardRowsCols={[3, 4]} gameMode={"irasutoya"} />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
@@ -66,23 +66,63 @@ describe(`${GameMain.name}`, () => {
     expect(secondCardComponet.children[0]).toHaveClass("back");
   });
 
-  it("成功した場合カードは表のままになる。", async () => {
+  it("2枚表にし、成功した場合カードは表のままになる。", async () => {
     render(<GameMain cardRowsCols={[3, 4]} gameMode={"irasutoya"} />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
-    const firstCardComponet = cardArea.children[0];
-    const thirdCardComponet = cardArea.children[2];
+    const firstCardComponent = cardArea.children[0];
+    const thirdCardComponent = cardArea.children[2];
 
-    await userEvent.click(firstCardComponet);
-    await userEvent.click(thirdCardComponet);
+    await userEvent.click(firstCardComponent);
+    await userEvent.click(thirdCardComponent);
 
     act(() => {
       vi.advanceTimersByTime(800);
     });
 
-    expect(firstCardComponet.children[0]).toHaveClass("front");
-    expect(thirdCardComponet.children[0]).toHaveClass("front");
+    expect(firstCardComponent.children[0]).toHaveClass("front");
+    expect(thirdCardComponent.children[0]).toHaveClass("front");
   });
+  describe("バグ挙動予防", () => {
+    it("クリックして表になっているカードをクリックしても何も起きない", async () => {
+      render(<GameMain cardRowsCols={[3, 4]} gameMode={"irasutoya"} />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const firstCardComponent = cardArea.children[0];
+      const thirdCardComponent = cardArea.children[2];
+
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(firstCardComponent);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      // アンチパターン 1枚目クリック1枚目クリック すると1枚目も3枚目も表に
+      // 良いパターン 1枚目クリック1枚目クリック すると1枚目だけ表
+      expect(firstCardComponent.children[0]).toHaveClass("front");
+      expect(thirdCardComponent.children[0]).toHaveClass("back");
+    });
+
+    it("マッチして表になっているカードをクリックしても何も起きない", async () => {
+      render(<GameMain cardRowsCols={[3, 4]} gameMode={"irasutoya"} />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const firstCardComponent = cardArea.children[0];
+      const secondCardComponent = cardArea.children[1];
+      const thirdCardComponent = cardArea.children[2];
+
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(thirdCardComponent);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(secondCardComponent);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      expect(secondCardComponent.children[0]).toHaveClass("front");
+    });
+  });
+
   it("全て表にするとゲームクリアになる", async () => {
     const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
     render(<GameMain cardRowsCols={[3, 4]} gameMode={"irasutoya"} />);
