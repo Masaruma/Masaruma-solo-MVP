@@ -8,11 +8,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "users")    // ← 複数形に変える
+@Table(name = "users") // ← 複数形に変える
 data class User(
-    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
-
-    @Column(nullable = false)
-    val name: String,
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Int? = null,
+  @Column(nullable = false)
+  val name: String,
 )

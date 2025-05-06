@@ -1,8 +1,5 @@
 # Masaruma-solo-MVP
 
-<div id="top"></div>
-
-
 
 # 目次
 
@@ -27,7 +24,6 @@ solo-MVP-ソロ神経衰弱
 
 ルールはクリアまでにかかった手数のスコアが少ない人が勝ちです。
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
 
 # 環境
 
@@ -72,7 +68,6 @@ solo-MVP-ソロ神経衰弱
 
 その他のパッケージのバージョンは package.json を参照してください
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
 
 # 環境構築
 
@@ -149,7 +144,7 @@ Table game_level {
 }
 ```
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
+
 
 # 今後の展望
 
@@ -171,4 +166,4 @@ Table game_level {
    2.  ~~Herokuへのデプロイと独自ドメインの取得~~
    3. AWSへのデプロイ
    4. Unityを埋め込んだページ
-<p align="right">(<a href="#top">トップへ</a>)</p>
+

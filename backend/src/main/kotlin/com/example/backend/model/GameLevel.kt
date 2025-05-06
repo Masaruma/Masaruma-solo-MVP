@@ -7,11 +7,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "game_level")    // ← 複数形に変える
+@Table(name = "game_level") // ← 複数形に変える
 data class GameLevel(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
-
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Int? = null,
 //    @Column(name = "game_name",nullable = false)
-    val level: Int,
+  val level: Int,
 )

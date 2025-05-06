@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
-class GameScoreController (private val gameScoreService: GameScoreService) {
+class GameScoreController(private val gameScoreService: GameScoreService) {
+  @GetMapping("/score")
+  fun getModeScore(
+    @RequestParam gameMode: String,
+    @RequestParam gameLevel: Int,
+  ): List<ResponseScore> {
+    return gameScoreService.getScore(gameMode, gameLevel)
+  }
 
-    @GetMapping("/score")
-    fun getModeScore(@RequestParam gameMode:String, @RequestParam gameLevel: Int): List<ResponseScore>{
-        return gameScoreService.getScore(gameMode, gameLevel)
-    }
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/score")
-    fun postScore(@RequestBody requestData: RequestScore){
-        gameScoreService.postScore(requestData)
-    }
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping("/score")
+  fun postScore(
+    @RequestBody requestData: RequestScore,
+  ) {
+    gameScoreService.postScore(requestData)
+  }
 }
