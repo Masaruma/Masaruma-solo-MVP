@@ -17,6 +17,7 @@ import unusedImportsPlugin from 'eslint-plugin-unused-imports';
 import jestDomPlugin from 'eslint-plugin-jest-dom';
 import vitestPlugin from '@vitest/eslint-plugin';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import sortDestructureKeysPlugin from 'eslint-plugin-sort-destructure-keys';
 
 const flatCompat = new FlatCompat();
 
@@ -209,7 +210,20 @@ export default [
       "perfectionist/sort-object-types": "warn", // Object 型のプロパティの並び順をアルファベット順に統一
     },
   },
-
+  {
+    plugins: {
+      "sort-destructure-keys": sortDestructureKeysPlugin,//object分割代入時のにアルファベット順に統一
+    },
+    rules: {
+      // 他のルールのあとに…
+      "sort-destructure-keys/sort-destructure-keys": ["error", {
+        caseSensitive: false,     // 大文字小文字を区別しない
+        // ignoreCase: true,         // 小文字→大文字での順序を無視
+        // order: "asc",             // 昇順
+        // ignoreExport: false,      // export 文の分割代入にも適用
+      }],
+    },
+  },
   // その他ルール
   {
     rules: {

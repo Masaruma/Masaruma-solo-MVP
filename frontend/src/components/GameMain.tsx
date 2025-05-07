@@ -20,7 +20,7 @@ export type CardsWithMatchKeyType = CardImageType & {
   isMatched: boolean;
 };
 
-export const GameMain = ({ gameMode, cardRowsCols }: GameMainProps) => {
+export const GameMain = ({ cardRowsCols, gameMode }: GameMainProps) => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
   );

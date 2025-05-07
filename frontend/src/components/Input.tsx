@@ -13,11 +13,11 @@ interface InputProps {
 }
 
 export const Input = ({
-  isCleared,
-  score,
+  cardRowsCols,
   gameMode,
   initializeGame,
-  cardRowsCols,
+  isCleared,
+  score,
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   const postScore = async () => {

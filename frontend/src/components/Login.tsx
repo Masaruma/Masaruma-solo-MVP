@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
+import { Link } from "react-router-dom";
+
 interface LoginProps {
   setSuccess: Dispatch<SetStateAction<boolean>>;
 }
@@ -17,6 +19,7 @@ export const Login = ({ setSuccess }: LoginProps) => {
           <input className={"textbox"} name={"password"} type={"password"} />
         </div>
         <div>
+          <Link to={"/test"}>test</Link>
           <button value={"ログイン"}>ログイン</button>
         </div>
       </form>

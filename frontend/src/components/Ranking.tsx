@@ -9,7 +9,7 @@ interface RankingProps {
   gameMode: GameModeType;
 }
 
-export const Ranking = ({ gameMode, cardRowsCols }: RankingProps) => {
+export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
   const [getResult, setGetResult] = useState<GetGameScoreType[]>([]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
