@@ -5,6 +5,7 @@ import { Card } from "@/components/Card.tsx";
 import { Input } from "@/components/Input.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
+import { GameTimer } from "@/components/GameTimer.tsx";
 
 interface GameMainProps {
   cardRowsCols: [number, number];
@@ -93,6 +94,7 @@ export const GameMain = ({ cardRowsCols, gameMode }: GameMainProps) => {
         isCleared={isCleared}
         score={score}
       />
+      <GameTimer />
       <div className={"container"}>
         <div
           aria-label={"神経衰弱のカードエリア"}
