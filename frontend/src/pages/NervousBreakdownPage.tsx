@@ -12,12 +12,11 @@ export const NervousBreakdownPage = () => {
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
 
   const [cardRowsCols, setCardRowsCols] = useState<[number, number]>([3, 4]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
 
   return (
     <>
-      {/* webページの中心に位置させたいため */}
-      {isSuccess ? (
+
         <div className={"wrapper"}>
           <header>
             <h1>
@@ -70,9 +69,7 @@ export const NervousBreakdownPage = () => {
               </div>
             </div>
           </header>
-          {/* asideを追加したときに横並びにしたいため */}
           <div className={"main-container"}>
-            {/* ゲーム画面とランキングの縦並びの位置を調整したいため */}
             <main className={"game-container"}>
               <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
 
@@ -81,9 +78,7 @@ export const NervousBreakdownPage = () => {
             <aside />
           </div>
         </div>
-      ) : (
-        <Login setSuccess={setIsSuccess} />
-      )}
+
     </>
   );
 };
