@@ -20,12 +20,27 @@ export const StartPage = () => {
 
   const gameModeArray: GameModeType[] = ["irasutoya", "pokemon"];
 
+  // カードの枚数が偶数、4〜100枚まで許容するサイズリスト（例）
   const sizes: [number, number][] = [
     [2, 2],
-    [3, 2],
-    [3, 4],
-    [4, 5],
-    [6, 8],
+    [2, 3],
+    [2, 4],
+    [2, 5],
+    [2, 6],
+    [2, 7],
+    [2, 8],
+    [2, 9],
+    [2, 10],
+    [4, 6],
+    [4, 7],
+    [4, 8],
+    [4, 9],
+    [4, 10],
+    [5, 10],
+    [6, 10],
+    [7, 10],
+    [8, 10],
+    [9, 10],
     [10, 10],
   ];
   const gameSettingList = sizes.map((cols) => ({
