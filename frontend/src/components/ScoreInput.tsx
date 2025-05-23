@@ -1,10 +1,10 @@
 import { useRef } from "react";
 
 import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
-import { Input } from "@/components/ui/input.tsx";
 
 interface InputProps {
   cardRowsCols: [number, number];
@@ -50,10 +50,10 @@ export const ScoreInput = ({
       <div className={"inputAndPostContainer"}>
         <div className={"nameInput"}>
           <Input
+            className={"border-4 border-gray-300 bg-amber-50"}
             placeholder={"名前を入れてね"}
             ref={nameInput}
             type={"text"}
-            className={"bg-amber-50 border-gray-300 border-4"}
           />
         </div>
         <div className={"score"}>

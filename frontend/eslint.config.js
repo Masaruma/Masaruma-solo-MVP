@@ -18,6 +18,7 @@ import jestDomPlugin from 'eslint-plugin-jest-dom';
 import vitestPlugin from '@vitest/eslint-plugin';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import sortDestructureKeysPlugin from 'eslint-plugin-sort-destructure-keys';
+import readableTwLint from 'eslint-plugin-readable-tailwind';
 
 const flatCompat = new FlatCompat();
 
@@ -224,6 +225,14 @@ export default [
       }],
     },
   },
+  {
+    plugins: { 'readable-tailwind': readableTwLint },
+    rules: {
+      // 推奨ルールを警告扱い
+      ...readableTwLint.configs.warning.rules,
+    },
+  },
+
   // その他ルール
   {
     rules: {

@@ -50,56 +50,62 @@ export const StartPage = () => {
   }));
 
   return (
-    <header>
-      <h1>神経衰弱:{gameMode}</h1>
-      <div className={"mode"}>
+    <div
+      className={"flex h-lvh w-full flex-col items-center justify-center"}
+    >
+      <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
+      <div className={"m-2.5 w-1/2"}>
         モードを選択してください
-        {gameModeArray.map((mode) => (
-          <Button
-            className={""}
-            key={mode}
-            onClick={() => {
-              setGameMode(mode);
-              setGameStart({
-                IsOkModeSelect: true,
-                isOkNumberSelect: false,
-              });
-            }}
-            size={"default"}
-            variant={gameMode === mode ? "default" : "secondary"}
-          >
-            {mode}
-          </Button>
-        ))}
+        <div className={"m-2.5 grid grid-cols-2 gap-2"}>
+          {gameModeArray.map((mode) => (
+            <Button
+              className={""}
+              key={mode}
+              onClick={() => {
+                setGameMode(mode);
+                setGameStart({
+                  IsOkModeSelect: true,
+                  isOkNumberSelect: false,
+                });
+              }}
+              size={"default"}
+              variant={gameMode === mode ? "default" : "secondary"}
+            >
+              {mode}
+            </Button>
+          ))}
+        </div>
         {gameStart.IsOkModeSelect && (
-          <div aria-label={"カードの枚数を選択"} className={"cell"}>
+          <div aria-label={"カードの枚数を選択"} className={"w-full"}>
             マス目を選択してください
             <h6>10×10はポケモンのみ。</h6>
-            {gameSettingList.map((gameSetting) => (
-              <Button
-                key={gameSetting.numberOfCards}
-                onClick={() => {
-                  setCardRowsCols(gameSetting.cardRowsCols);
-                  setGameStart({
-                    IsOkModeSelect: true,
-                    isOkNumberSelect: true,
-                  });
-                }}
-                size={"default"}
-                variant={
-                  culcurateGameLevel(cardRowsCols) ===
-                  culcurateGameLevel(gameSetting.cardRowsCols)
-                    ? "default"
-                    : "secondary"
-                }
-              >
-                {gameSetting.numberOfCards}枚
-              </Button>
-            ))}
+            <div className={"m-2.5 grid grid-cols-10 grid-rows-3 gap-2"}>
+              {gameSettingList.map((gameSetting) => (
+                <Button
+                  key={gameSetting.numberOfCards}
+                  onClick={() => {
+                    setCardRowsCols(gameSetting.cardRowsCols);
+                    setGameStart({
+                      IsOkModeSelect: true,
+                      isOkNumberSelect: true,
+                    });
+                  }}
+                  size={"default"}
+                  variant={
+                    culcurateGameLevel(cardRowsCols) ===
+                    culcurateGameLevel(gameSetting.cardRowsCols)
+                      ? "default"
+                      : "secondary"
+                  }
+                >
+                  {gameSetting.numberOfCards}枚
+                </Button>
+              ))}
+            </div>
           </div>
         )}
         {gameStart.isOkNumberSelect && (
-          <div>
+          <>
             <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
             <Button
               onClick={() => {
@@ -112,9 +118,9 @@ export const StartPage = () => {
             >
               ゲームスタート
             </Button>
-          </div>
+          </>
         )}
       </div>
-    </header>
+    </div>
   );
 };
