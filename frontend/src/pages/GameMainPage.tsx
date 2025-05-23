@@ -8,6 +8,7 @@ import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
+import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -47,6 +48,7 @@ export const GameMainPage = () => {
         bg-transparent
       `}
     >
+      <BreadcrumbWithCustomSeparator />
       <ScoreInput
         cardRowsCols={cardRowsCols}
         gameMode={gameMode}
