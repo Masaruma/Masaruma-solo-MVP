@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import "@/pages/StartPage.css";
-import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 import { Button } from "@/components/ui/button.tsx";
+import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -55,7 +55,7 @@ export const StartPage = () => {
       <div className={"mode"}>
         モードを選択してください
         {gameModeArray.map((mode) => (
-          <button
+          <Button
             className={""}
             key={mode}
             onClick={() => {
@@ -65,40 +65,53 @@ export const StartPage = () => {
                 isOkNumberSelect: false,
               });
             }}
+            size={"default"}
+            variant={gameMode === mode ? "default" : "secondary"}
           >
             {mode}
-          </button>
+          </Button>
         ))}
         {gameStart.IsOkModeSelect && (
           <div aria-label={"カードの枚数を選択"} className={"cell"}>
             マス目を選択してください
             <h6>10×10はポケモンのみ。</h6>
             {gameSettingList.map((gameSetting) => (
-              <Button key={gameSetting.numberOfCards} onClick={() => {
-                setCardRowsCols(gameSetting.cardRowsCols);
-                setGameStart({
-                  IsOkModeSelect: true,
-                  isOkNumberSelect: true,
-                });
-              }}
-
-              variant={"secondary"}>{gameSetting.numberOfCards}枚</Button>
+              <Button
+                key={gameSetting.numberOfCards}
+                onClick={() => {
+                  setCardRowsCols(gameSetting.cardRowsCols);
+                  setGameStart({
+                    IsOkModeSelect: true,
+                    isOkNumberSelect: true,
+                  });
+                }}
+                size={"default"}
+                variant={
+                  culcurateGameLevel(cardRowsCols) ===
+                  culcurateGameLevel(gameSetting.cardRowsCols)
+                    ? "default"
+                    : "secondary"
+                }
+              >
+                {gameSetting.numberOfCards}枚
+              </Button>
             ))}
           </div>
         )}
         {gameStart.isOkNumberSelect && (
           <div>
             <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
-            <button
-              className={""}
+            <Button
               onClick={() => {
                 void navigate("/nervousbreakdown", {
                   state: { gameMode, cardRowsCols },
                 });
               }}
+              size={"lg"}
+              variant={"outline"}
             >
               ゲームスタート
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 
+import { Button } from "@/components/ui/button.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
@@ -58,9 +59,14 @@ export const Input = ({
           <div className={"scoreDisplay"}>現在の手数:{score}</div>
 
           {isCleared && (
-            <button className={"scorePost"} onClick={postScore}>
+            <Button
+              className={"scorePost"}
+              onClick={postScore}
+              size={"default"}
+              variant={"outline"}
+            >
               スコアを送信する
-            </button>
+            </Button>
           )}
         </div>
       </div>
