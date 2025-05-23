@@ -28,6 +28,7 @@ class GameScoreController(private val gameScoreService: GameScoreService) {
   fun postScore(
     @RequestBody requestData: RequestScore,
   ) {
+    println(requestData)
     gameScoreService.postScore(requestData)
   }
 }

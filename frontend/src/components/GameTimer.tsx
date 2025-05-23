@@ -1,7 +1,6 @@
-import React from "react";
 import { useTimer } from "react-timer-hook";
 
- export const GameTimer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
+export const GameTimer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const {
     days,
     hours,
@@ -41,4 +40,4 @@ import { useTimer } from "react-timer-hook";
       </button>
     </div>
   );
-}
+};

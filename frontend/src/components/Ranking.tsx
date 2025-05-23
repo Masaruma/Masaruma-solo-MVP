@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
+import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
 interface RankingProps {
@@ -24,7 +24,7 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
   }, [cardRowsCols, gameMode]);
   return (
     <>
-      <div className={"rank"}>
+      <div aria-label={"ランキング"} className={"rank"}>
         <h2>👑Ranking👑</h2>
         <table border={1}>
           <thead>

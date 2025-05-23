@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 
 import "../pages/NervousBreakdownPage.css";
 import { Card } from "@/components/Card.tsx";
+import { GameTimer } from "@/components/GameTimer.tsx";
 import { Input } from "@/components/Input.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
-import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
-import { GameTimer } from "@/components/GameTimer.tsx";
+import { GameModeType } from "@/pages/StartPage.tsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Ranking } from "@/components/Ranking.tsx";
 
-interface GameMainProps {
+export interface GameMainProps {
   cardRowsCols: [number, number];
   gameMode: GameModeType;
 }
@@ -21,12 +23,16 @@ export type CardsWithMatchKeyType = CardImageType & {
   isMatched: boolean;
 };
 
-export const GameMain = ({ cardRowsCols, gameMode }: GameMainProps) => {
+export const GameMain = () => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
   );
   const [score, setScore] = useState(0);
   const [isCleared, setIsCleared] = useState(false);
+
+  const { state } = useLocation();
+
+  const { cardRowsCols, gameMode } = (state as GameMainProps) || {};
   //!初期データ処理==================================================
   const { cards, initializeGame, setCards } = useInitializeGame(
     gameMode,
@@ -86,37 +92,41 @@ export const GameMain = ({ cardRowsCols, gameMode }: GameMainProps) => {
   }, [cards]);
 
   return (
-    <div className={"game"}>
-      <Input
-        cardRowsCols={cardRowsCols}
-        gameMode={gameMode}
-        initializeGame={initializeGame}
-        isCleared={isCleared}
-        score={score}
-      />
-      <GameTimer />
-      <div className={"container"}>
-        <div
-          aria-label={"神経衰弱のカードエリア"}
-          className={"cards-container"}
-          style={{
-            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
-            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
-          }}
-        >
-          {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}
-          {cards.map((card) => {
-            return (
-              <Card
-                card={card}
-                key={card.idx}
-                selectedCards={selectedCards}
-                setSelectedCards={setSelectedCards}
-              />
-            );
-          })}
+    <div className={"main-container"}>
+      <main className={"game-container"}>
+        <div className={"game"}>
+          <Input
+            cardRowsCols={cardRowsCols}
+            gameMode={gameMode}
+            initializeGame={initializeGame}
+            isCleared={isCleared}
+            score={score}
+          />
+          <GameTimer />
+          <div className={"container"}>
+            <div
+              aria-label={"神経衰弱のカードエリア"}
+              className={"cards-container"}
+              style={{
+                gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+                gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
+              }}
+            >
+              {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}
+              {cards.map((card) => {
+                return (
+                  <Card
+                    card={card}
+                    key={card.idx}
+                    selectedCards={selectedCards}
+                    setSelectedCards={setSelectedCards}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -227,7 +227,7 @@ export default [
   // その他ルール
   {
     rules: {
-      "require-await": "error",
+      // "require-await": "error",
       "no-console": ["error", { allow: ["error", "info"] }],
       "no-void": "off",
       "func-names": "off",
