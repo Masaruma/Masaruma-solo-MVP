@@ -38,7 +38,7 @@ export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
       tabIndex={0}
     >
       {isFlipped ? (
-        <div className={"bg-transparent"}>
+        <div className={"bg-transparent"} aria-label={"表のカード"}>
           <img
             alt={""}
             className={`
@@ -50,7 +50,7 @@ export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
           />
         </div>
       ) : (
-        <div
+        <div aria-label={"裏のカード"}
           className={`
             absolute h-full w-full cursor-pointer
             bg-[url('/images/illustkun-01476-back-of-cards.png')] bg-center

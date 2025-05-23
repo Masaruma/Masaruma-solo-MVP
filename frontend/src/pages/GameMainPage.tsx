@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Card } from "@/components/Card.tsx";
+import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
-import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -57,6 +57,7 @@ export const GameMainPage = () => {
         score={score}
       />
       <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
+      <div className={"text-center text-2xl"}>現在の手数:{score}</div>
       <div
         className={`
           flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
@@ -67,7 +68,7 @@ export const GameMainPage = () => {
           aria-label={"神経衰弱のカードエリア"}
           className={`w-fit gap-1`}
           style={{
-            display:"grid",
+            display: "grid",
             gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
             gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
           }}

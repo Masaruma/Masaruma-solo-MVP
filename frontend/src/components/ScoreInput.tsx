@@ -23,18 +23,17 @@ export const ScoreInput = ({
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   const postScore = async () => {
-    const postData = {
-      user: nameInput.current?.value ?? "",
-      gameMode: gameMode,
-      gameScore: score,
-      gameLevel: culcurateGameLevel(cardRowsCols),
-    };
-
-    if (!postData.user) {
+    const user = nameInput.current?.value ?? "";
+    if (!user) {
       alert("名前を入力してください!");
       return;
     }
-    const responseStatus = await GameScoreRepository.postGameScore(postData);
+    const responseStatus = await GameScoreRepository.postGameScore({
+      user,
+      gameMode: gameMode,
+      gameScore: score,
+      gameLevel: culcurateGameLevel(cardRowsCols),
+    });
     if (responseStatus === 201) {
       alert("送信完了しました");
       void initializeGame();
@@ -46,29 +45,24 @@ export const ScoreInput = ({
   return (
     <>
       <div className={"m-4"}>
-        <div className={"nameInput"}>
-          <Input
-            className={"border-4 border-gray-300 bg-amber-50"}
-            placeholder={"名前を入れてね"}
-            ref={nameInput}
-            type={"text"}
-          />
-        </div>
-        <div className={"text-center"}>
-          <div className={"text-2xl"}>現在の手数:{score}</div>
-
-          {isCleared && (
-            <Button
-              className={"scorePost"}
-              onClick={postScore}
-              size={"default"}
-              variant={"outline"}
-            >
-              スコアを送信する
-            </Button>
-          )}
-        </div>
+        <Input
+          className={"border-4 border-gray-300 bg-amber-50"}
+          placeholder={"名前を入れてね"}
+          ref={nameInput}
+          type={"text"}
+        />
       </div>
+
+      {isCleared && (
+        <Button
+          className={"scorePost"}
+          onClick={postScore}
+          size={"default"}
+          variant={"outline"}
+        >
+          スコアを送信する
+        </Button>
+      )}
     </>
   );
 };

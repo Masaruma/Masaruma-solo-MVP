@@ -19,9 +19,7 @@ export const GameTimer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <h1>react-timer-hook </h1>
-      <p>Timer Demo</p>
-      <div style={{ fontSize: "100px" }}>
+      <div className={"text-2l"}>
         <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
         <span>{seconds}</span>:<span>{milliseconds}</span>
       </div>

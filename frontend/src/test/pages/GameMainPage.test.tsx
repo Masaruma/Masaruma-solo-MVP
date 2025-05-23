@@ -66,14 +66,14 @@ describe(`${GameMainPage.name}`, () => {
 
     await userEvent.click(cardArea.children[0]);
 
-    expect(firstCardComponet.children[0]).toHaveClass("front");
+    expect(firstCardComponet.children[0]).toHaveAttribute("aria-label", "表のカード");
   });
   it("カードが裏になると裏のクラスを持つ", () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
     const firstCardComponet = cardArea.children[0];
-    expect(firstCardComponet.children[0]).toHaveClass("back");
+    expect(firstCardComponet.children[0]).toHaveAttribute("aria-label","裏のカード");
   });
   it("2枚表にし、失敗した場合カードは表から裏になる。", async () => {
     render(<GameMain__test />);
@@ -83,15 +83,15 @@ describe(`${GameMainPage.name}`, () => {
     const secondCardComponet = cardArea.children[1];
     await userEvent.click(firstCardComponet);
     await userEvent.click(secondCardComponet);
-    expect(firstCardComponet.children[0]).toHaveClass("front");
-    expect(secondCardComponet.children[0]).toHaveClass("front");
+    expect(firstCardComponet.children[0]).toHaveAttribute("aria-label", "表のカード");
+    expect(secondCardComponet.children[0]).toHaveAttribute("aria-label", "表のカード");
 
     act(() => {
       vi.advanceTimersByTime(800);
     });
 
-    expect(firstCardComponet.children[0]).toHaveClass("back");
-    expect(secondCardComponet.children[0]).toHaveClass("back");
+    expect(firstCardComponet.children[0]).toHaveAttribute("aria-label","裏のカード");
+    expect(secondCardComponet.children[0]).toHaveAttribute("aria-label","裏のカード");
   });
 
   it("2枚表にし、成功した場合カードは表のままになる。", async () => {
@@ -108,8 +108,8 @@ describe(`${GameMainPage.name}`, () => {
       vi.advanceTimersByTime(800);
     });
 
-    expect(firstCardComponent.children[0]).toHaveClass("front");
-    expect(thirdCardComponent.children[0]).toHaveClass("front");
+    expect(firstCardComponent.children[0]).toHaveAttribute("aria-label", "表のカード");
+    expect(thirdCardComponent.children[0]).toHaveAttribute("aria-label", "表のカード");
   });
   describe("バグ挙動予防", () => {
     it("クリックして表になっているカードをクリックしても何も起きない", async () => {
@@ -125,8 +125,8 @@ describe(`${GameMainPage.name}`, () => {
       });
       // アンチパターン 1枚目クリック1枚目クリック すると1枚目も3枚目も表に
       // 良いパターン 1枚目クリック1枚目クリック すると1枚目だけ表
-      expect(firstCardComponent.children[0]).toHaveClass("front");
-      expect(thirdCardComponent.children[0]).toHaveClass("back");
+      expect(firstCardComponent.children[0]).toHaveAttribute("aria-label", "表のカード");
+      expect(thirdCardComponent.children[0]).toHaveAttribute("aria-label","裏のカード");
     });
 
     it("マッチして表になっているカードをクリックしても何も起きない", async () => {
@@ -147,7 +147,7 @@ describe(`${GameMainPage.name}`, () => {
       act(() => {
         vi.advanceTimersByTime(800);
       });
-      expect(secondCardComponent.children[0]).toHaveClass("front");
+      expect(secondCardComponent.children[0]).toHaveAttribute("aria-label", "表のカード");
     });
   });
 
