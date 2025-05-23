@@ -32,7 +32,7 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
           shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)] backdrop-blur-xl
         `}
       >
-        <h1 className={"mb-2 text-center text-3xl"}>👑Ranking👑</h1>
+        √<h1 className={"mb-2 text-center text-3xl"}>👑Ranking👑</h1>
         <table border={1} className={"w-full table-fixed border-spacing-0"}>
           <thead>
             <tr>

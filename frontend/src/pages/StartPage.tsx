@@ -50,9 +50,7 @@ export const StartPage = () => {
   }));
 
   return (
-    <div
-      className={"flex h-lvh w-full flex-col items-center justify-center"}
-    >
+    <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
       <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
       <div className={"m-2.5 w-1/2"}>
         モードを選択してください

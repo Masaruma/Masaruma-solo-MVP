@@ -41,7 +41,12 @@ export const GameMainPage = () => {
   }, [initializeGame]);
 
   return (
-    <div className={"game"}>
+    <div
+      className={`
+        flex min-h-0 w-full flex-col items-center justify-center overflow-auto
+        bg-transparent
+      `}
+    >
       <ScoreInput
         cardRowsCols={cardRowsCols}
         gameMode={gameMode}
@@ -50,14 +55,20 @@ export const GameMainPage = () => {
         score={score}
       />
       <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
-      <div className={"container"}>
+      <div
+        className={`
+          flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
+          shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)]
+        `}
+      >
         <div
           aria-label={"神経衰弱のカードエリア"}
-          className={"cards-container"}
-          style={{
-            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
-            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
-          }}
+          className={`
+            grid w-fit
+            grid-cols-${cardRowsCols[1]}
+            grid-rows-${cardRowsCols[0]}
+            gap-1
+          `}
         >
           {cards.map((card) => (
             <Card

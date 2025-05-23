@@ -34,7 +34,6 @@ export const ScoreInput = ({
       alert("名前を入力してください!");
       return;
     }
-    // if (confirm("スコアを送信してもよろしいですか？")) {
     const responseStatus = await GameScoreRepository.postGameScore(postData);
     if (responseStatus === 201) {
       alert("送信完了しました");
@@ -42,12 +41,11 @@ export const ScoreInput = ({
     } else {
       alert("送信に失敗しました");
     }
-    // }
   };
 
   return (
     <>
-      <div className={"inputAndPostContainer"}>
+      <div className={"m-4"}>
         <div className={"nameInput"}>
           <Input
             className={"border-4 border-gray-300 bg-amber-50"}
@@ -56,8 +54,8 @@ export const ScoreInput = ({
             type={"text"}
           />
         </div>
-        <div className={"score"}>
-          <div className={"scoreDisplay"}>現在の手数:{score}</div>
+        <div className={"text-center"}>
+          <div className={"text-2xl"}>現在の手数:{score}</div>
 
           {isCleared && (
             <Button
