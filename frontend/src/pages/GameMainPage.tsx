@@ -63,12 +63,12 @@ export const GameMainPage = () => {
       >
         <div
           aria-label={"神経衰弱のカードエリア"}
-          className={`
-            grid w-fit
-            grid-cols-${cardRowsCols[1]}
-            grid-rows-${cardRowsCols[0]}
-            gap-1
-          `}
+          className={`w-fit gap-1`}
+          style={{
+            display:"grid",
+            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
+            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+          }}
         >
           {cards.map((card) => (
             <Card
