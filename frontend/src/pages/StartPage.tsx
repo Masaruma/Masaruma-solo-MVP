@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
-import "@/pages/StartPage.css";
 import { Button } from "@/components/ui/button.tsx";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 

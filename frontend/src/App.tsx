@@ -4,7 +4,7 @@ import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage } from "@/pages/GameMainPage.tsx";
 import { StartPage } from "@/pages/StartPage.tsx";
 import { Test } from "@/pages/Test.tsx";
-
+import "@/App.css";
 export const App = () => {
   return (
     <BrowserRouter>
