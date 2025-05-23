@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { beforeEach, expect, MockInstance } from "vitest";
 
-import { Input } from "@/components/Input.tsx";
+import { ScoreInput } from "@/components/ScoreInput.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 vi.mock("@/repository/GameScoreRepository.ts");
@@ -15,7 +15,7 @@ describe("Input", () => {
   });
   it("送信ボタンを押した時Repositoryのpostが呼ばれる。成功時のメッセージが表示される", async () => {
     render(
-      <Input
+      <ScoreInput
         cardRowsCols={[3, 4]}
         gameMode={"irasutoya"}
         initializeGame={async () => {}}

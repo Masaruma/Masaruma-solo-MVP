@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
+import { Input } from "@/components/ui/input.tsx";
 
 interface InputProps {
   cardRowsCols: [number, number];
@@ -13,7 +14,7 @@ interface InputProps {
   score: number;
 }
 
-export const Input = ({
+export const ScoreInput = ({
   cardRowsCols,
   gameMode,
   initializeGame,
@@ -48,11 +49,11 @@ export const Input = ({
     <>
       <div className={"inputAndPostContainer"}>
         <div className={"nameInput"}>
-          <input
-            className={"textbox"}
+          <Input
             placeholder={"名前を入れてね"}
             ref={nameInput}
             type={"text"}
+            className={"bg-amber-50 border-gray-300 border-4"}
           />
         </div>
         <div className={"score"}>

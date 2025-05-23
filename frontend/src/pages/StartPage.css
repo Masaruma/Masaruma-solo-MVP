@@ -38,6 +38,7 @@ h1 {
   line-height: 1.1;
 }
 
+
 .rank {
   margin-bottom: 1rem;
   backdrop-filter: blur(20px);
@@ -87,16 +88,18 @@ h1 {
 
 .container {
   border-radius: 15px;
-  background-color: transparent;
+  display: flex;
+  background-color: var(--light-green);
+  justify-content: center;
+  padding: 50px 50px;
+  width: fit-content;
   box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
 }
 .cards-container {
   /* 子要素をgridレイアウトへ */
   display: grid;
-  border-radius: 10px;
   gap: 0.3rem;
-  background-color: var(--light-green);
-  padding: 50px 50px;
+  width: fit-content;
 }
 
 .card {

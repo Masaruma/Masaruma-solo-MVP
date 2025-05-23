@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { Card } from "@/components/Card.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
-import { Input } from "@/components/Input.tsx";
+import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
@@ -42,7 +42,7 @@ export const GameMainPage = () => {
 
   return (
     <div className={"game"}>
-      <Input
+      <ScoreInput
         cardRowsCols={cardRowsCols}
         gameMode={gameMode}
         initializeGame={initializeGame}
