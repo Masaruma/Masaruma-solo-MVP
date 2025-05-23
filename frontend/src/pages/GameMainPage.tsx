@@ -8,6 +8,7 @@ import { Input } from "@/components/Input.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -49,6 +50,7 @@ export const GameMainPage = () => {
         isCleared={isCleared}
         score={score}
       />
+      <Button>aa</Button>
       <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
       <div className={"container"}>
         <div

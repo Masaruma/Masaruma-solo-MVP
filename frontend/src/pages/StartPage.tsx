@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Ranking } from "@/components/Ranking.tsx";
 import "@/pages/StartPage.css";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
+import { Button } from "@/components/ui/button.tsx";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -73,19 +74,15 @@ export const StartPage = () => {
             マス目を選択してください
             <h6>10×10はポケモンのみ。</h6>
             {gameSettingList.map((gameSetting) => (
-              <button
-                className={""}
-                key={gameSetting.numberOfCards}
-                onClick={() => {
-                  setCardRowsCols(gameSetting.cardRowsCols);
-                  setGameStart({
-                    IsOkModeSelect: true,
-                    isOkNumberSelect: true,
-                  });
-                }}
-              >
-                {gameSetting.numberOfCards}枚
-              </button>
+              <Button key={gameSetting.numberOfCards} onClick={() => {
+                setCardRowsCols(gameSetting.cardRowsCols);
+                setGameStart({
+                  IsOkModeSelect: true,
+                  isOkNumberSelect: true,
+                });
+              }}
+
+              variant={"secondary"}>{gameSetting.numberOfCards}枚</Button>
             ))}
           </div>
         )}

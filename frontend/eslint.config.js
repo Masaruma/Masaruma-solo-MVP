@@ -24,7 +24,7 @@ const flatCompat = new FlatCompat();
 export default [
   js.configs.recommended,
   {
-    ignores: ["dist", ".eslintrc.cjs", "node_modules"],
+    ignores: ["dist", ".eslintrc.cjs", "node_modules","src/components/ui/**/*",  "src/lib/**/*"],
   },
   {
     files: ["src/**/*.{ts,tsx}"],
