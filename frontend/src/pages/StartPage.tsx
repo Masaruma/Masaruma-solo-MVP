@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
-import "@/pages/NervousBreakdownPage.css";
+import "@/pages/StartPage.css";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
@@ -34,66 +34,62 @@ export const StartPage = () => {
   }));
 
   return (
-    <>
-      <div className={"wrapper"}>
-        <header>
-          <h1>神経衰弱:{gameMode}</h1>
-          <div className={"mode"}>
-            モードを選択してください
-            {gameModeArray.map((mode) => (
+    <header>
+      <h1>神経衰弱:{gameMode}</h1>
+      <div className={"mode"}>
+        モードを選択してください
+        {gameModeArray.map((mode) => (
+          <button
+            className={""}
+            key={mode}
+            onClick={() => {
+              setGameMode(mode);
+              setGameStart({
+                IsOkModeSelect: true,
+                isOkNumberSelect: false,
+              });
+            }}
+          >
+            {mode}
+          </button>
+        ))}
+        {gameStart.IsOkModeSelect && (
+          <div aria-label={"カードの枚数を選択"} className={"cell"}>
+            マス目を選択してください
+            <h6>10×10はポケモンのみ。</h6>
+            {gameSettingList.map((gameSetting) => (
               <button
                 className={""}
-                key={mode}
+                key={gameSetting.numberOfCards}
                 onClick={() => {
-                  setGameMode(mode);
+                  setCardRowsCols(gameSetting.cardRowsCols);
                   setGameStart({
                     IsOkModeSelect: true,
-                    isOkNumberSelect: false,
+                    isOkNumberSelect: true,
                   });
                 }}
               >
-                {mode}
+                {gameSetting.numberOfCards}枚
               </button>
             ))}
-            {gameStart.IsOkModeSelect && (
-              <div aria-label={"カードの枚数を選択"} className={"cell"}>
-                マス目を選択してください
-                <h6>10×10はポケモンのみ。</h6>
-                {gameSettingList.map((gameSetting) => (
-                  <button
-                    className={""}
-                    key={gameSetting.numberOfCards}
-                    onClick={() => {
-                      setCardRowsCols(gameSetting.cardRowsCols);
-                      setGameStart({
-                        IsOkModeSelect: true,
-                        isOkNumberSelect: true,
-                      });
-                    }}
-                  >
-                    {gameSetting.numberOfCards}枚
-                  </button>
-                ))}
-              </div>
-            )}
-            {gameStart.isOkNumberSelect && (
-              <>
-                <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
-                <button
-                  className={""}
-                  onClick={() => {
-                    void navigate("/nervousbreakdown", {
-                      state: { gameMode, cardRowsCols },
-                    });
-                  }}
-                >
-                  ゲームスタート
-                </button>
-              </>
-            )}
           </div>
-        </header>
+        )}
+        {gameStart.isOkNumberSelect && (
+          <div>
+            <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
+            <button
+              className={""}
+              onClick={() => {
+                void navigate("/nervousbreakdown", {
+                  state: { gameMode, cardRowsCols },
+                });
+              }}
+            >
+              ゲームスタート
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </header>
   );
 };

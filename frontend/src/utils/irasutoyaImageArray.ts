@@ -1,4 +1,4 @@
-import { CardImageType } from "@/components/GameMain.tsx";
+import { CardImageType } from "@/pages/GameMainPage.tsx";
 
 export const irasutoyaImages: CardImageType[] = [
   { id: 1, img: "/images/animal_chara_radio_buta.png" },

@@ -23,7 +23,7 @@ export type CardsWithMatchKeyType = CardImageType & {
   isMatched: boolean;
 };
 
-export const GameMain = () => {
+export const GameMainPage = () => {
   const { state } = useLocation();
   const { cardRowsCols, gameMode } = (state as GameMainProps) || {};
 
@@ -41,38 +41,34 @@ export const GameMain = () => {
   }, [initializeGame]);
 
   return (
-    <div className={"main-container"}>
-      <main className={"game-container"}>
-        <div className={"game"}>
-          <Input
-            cardRowsCols={cardRowsCols}
-            gameMode={gameMode}
-            initializeGame={initializeGame}
-            isCleared={isCleared}
-            score={score}
-          />
-          <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
-          <div className={"container"}>
-            <div
-              aria-label={"神経衰弱のカードエリア"}
-              className={"cards-container"}
-              style={{
-                gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
-                gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
-              }}
-            >
-              {cards.map((card) => (
-                <Card
-                  card={card}
-                  key={card.idx}
-                  selectedCards={selectedCards}
-                  setSelectedCards={setSelectedCards}
-                />
-              ))}
-            </div>
-          </div>
+    <div className={"game"}>
+      <Input
+        cardRowsCols={cardRowsCols}
+        gameMode={gameMode}
+        initializeGame={initializeGame}
+        isCleared={isCleared}
+        score={score}
+      />
+      <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
+      <div className={"container"}>
+        <div
+          aria-label={"神経衰弱のカードエリア"}
+          className={"cards-container"}
+          style={{
+            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
+          }}
+        >
+          {cards.map((card) => (
+            <Card
+              card={card}
+              key={card.idx}
+              selectedCards={selectedCards}
+              setSelectedCards={setSelectedCards}
+            />
+          ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 };

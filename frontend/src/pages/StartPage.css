@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap");
+:root {
+  --light-green: #a2e29b;
+  --green: #00a2af;
+  --purple: #b473bf;
+  --pink: #ffb2c1;
+  --orange: orange;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "RocknRoll One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+html,
+body {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: beige;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: beige;
+}
+header * {
+  margin: 10px;
+}
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* !ボタンの設定 */
+button,
+div > input {
+  border-radius: 8px;
+  border: 4px solid #e9e9e9;
+  color: black;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #e9e9e9;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border: 4px solid #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 8px auto -webkit-focus-ring-color;
+}
+
+.rank {
+  margin-bottom: 1rem;
+  backdrop-filter: blur(20px);
+  padding: 10px;
+  border-radius: 15px;
+  background-color: transparent;
+  width: 100%;
+  box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
+}
+.rank > h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.7em;
+}
+
+.rank table {
+  width: auto;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.rank th,
+.rank td {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.rank th {
+  background: linear-gradient(var(--pink), var(--purple));
+}
+
+.rank tr {
+  border-bottom: 1px solid #b473bf;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  min-height: 0;
+  width: 100%;
+  overflow: auto; /* 中身がはみ出たらスクロール */
+}
+
+.container {
+  border-radius: 15px;
+  background-color: transparent;
+  box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
+}
+.cards-container {
+  /* 子要素をgridレイアウトへ */
+  display: grid;
+  border-radius: 10px;
+  gap: 0.3rem;
+  background-color: var(--light-green);
+  padding: 50px 50px;
+}
+
+.card {
+  height: 160px;
+  width: 130px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: transparent;
+}
+
+.back {
+  background-image:
+    /*url("/images/card_back.png"),*/ url("/images/illustkun-01476-back-of-cards.png");
+  background-size: 150%;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.1);
+
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+
+.front {
+  background-color: transparent;
+}
+img {
+  height: 158px;
+  width: 130px;
+
+  border: solid 0.15rem red;
+  background-color: white;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+/* !input要素のcss */
+.inputAndPostContainer {
+  margin-bottom: 2.5rem;
+}
+.textbox {
+  width: 180px;
+  padding: 7px 7px;
+  border-radius: 5px;
+  border: 4px solid black;
+  font-size: 1.3rem;
+  background-color: transparent;
+  margin-bottom: 10px;
+}
+.textbox:focus {
+  outline: 0;
+  border: 4px solid #2196f3;
+}
+.scoreDisplay {
+  font-size: 1.8rem;
+}
+
+@media (max-width: 600px) {
+  .card {
+    height: 70px;
+    width: 55px;
+  }
+  img {
+    height: 70px;
+    width: 55px;
+  }
+}

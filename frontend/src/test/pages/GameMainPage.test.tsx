@@ -5,8 +5,8 @@ import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect } from "vitest";
 
-import { GameMain, GameMainProps } from "@/components/GameMain.tsx";
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
+import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
 
 vi.mock("@/hooks/useInitializeGame", () => {
   return {
@@ -31,12 +31,12 @@ const GameMain__test = ({
 }) => {
   return (
     <MemoryRouter initialEntries={[{ pathname: "/nervousbreakdown", state }]}>
-      <GameMain />
+      <GameMainPage />
     </MemoryRouter>
   );
 };
 
-describe(`${GameMain.name}`, () => {
+describe(`${GameMainPage.name}`, () => {
   beforeEach(() => {
     vi.useFakeTimers({
       shouldAdvanceTime: true,
@@ -49,7 +49,7 @@ describe(`${GameMain.name}`, () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: "/nervousbreakdown" }]}>
         <ProtectedRoute>
-          <GameMain />
+          <GameMainPage />
         </ProtectedRoute>
       </MemoryRouter>
     );

@@ -1,9 +1,6 @@
 import { useState, useCallback } from "react";
 
-import {
-  CardImageType,
-  CardsWithMatchKeyType,
-} from "@/components/GameMain.tsx";
+import { CardImageType, CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 import { irasutoyaImages } from "@/utils/irasutoyaImageArray.ts";
 
 // todo ここのテスト作成

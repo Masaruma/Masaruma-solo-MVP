@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import { CardsWithMatchKeyType } from "@/components/GameMain.tsx";
+import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 
 interface CardProps {
   card: CardsWithMatchKeyType;
