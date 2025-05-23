@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { beforeEach, expect } from "vitest";
 
 import { StartPage } from "@/pages/StartPage.tsx";
@@ -14,7 +15,11 @@ vi.mock("@/components/Ranking.tsx", () => {
 describe("NervousBreakdownのテスト", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(<StartPage />);
+      render(
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <StartPage />
+        </MemoryRouter>
+      );
     });
   });
   it("vitestが動いてるかテスト", () => {

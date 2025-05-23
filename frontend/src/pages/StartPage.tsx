@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-import { GameMain } from "@/components/GameMain.tsx";
-import { Ranking } from "@/components/Ranking.tsx";
+import { useNavigate } from "react-router-dom";
 
+import { Ranking } from "@/components/Ranking.tsx";
 import "@/pages/NervousBreakdownPage.css";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
-import { useNavigate } from "react-router-dom";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -94,12 +93,6 @@ export const StartPage = () => {
             )}
           </div>
         </header>
-        <div className={"main-container"}>
-          <main className={"game-container"}>
-            a{/*<GameMain cardRowsCols={cardRowsCols} gameMode={gameMode} />*/}
-          </main>
-          <aside />
-        </div>
       </div>
     </>
   );

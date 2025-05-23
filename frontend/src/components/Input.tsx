@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { GameModeType } from "@/pages/NervousBreakdownPage.tsx";
+import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
 

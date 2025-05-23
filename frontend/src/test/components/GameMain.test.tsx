@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { act, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect } from "vitest";
 
 import { GameMain, GameMainProps } from "@/components/GameMain.tsx";
-import { MemoryRouter } from "react-router-dom";
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 
 vi.mock("@/hooks/useInitializeGame", () => {

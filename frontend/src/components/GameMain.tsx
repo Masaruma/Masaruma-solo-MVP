@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import "../pages/NervousBreakdownPage.css";
+import { useLocation } from "react-router-dom";
+
 import { Card } from "@/components/Card.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { Input } from "@/components/Input.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
+import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Ranking } from "@/components/Ranking.tsx";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -24,72 +24,21 @@ export type CardsWithMatchKeyType = CardImageType & {
 };
 
 export const GameMain = () => {
-  const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
-    []
-  );
-  const [score, setScore] = useState(0);
-  const [isCleared, setIsCleared] = useState(false);
-
   const { state } = useLocation();
-
   const { cardRowsCols, gameMode } = (state as GameMainProps) || {};
-  //!初期データ処理==================================================
+
   const { cards, initializeGame, setCards } = useInitializeGame(
     gameMode,
     cardRowsCols
   );
+
+  const { isCleared, score, selectedCards, setSelectedCards } =
+    useNervousBreakdownLogic(cards, setCards);
+
   useEffect(() => {
     void initializeGame();
-    setIsCleared(false);
-    setScore(0);
+    // 初期化時スコアやクリア状態もリセット（useNervousBreakdownLogic内に初期化用メソッド持たせてもOK）
   }, [initializeGame]);
-
-  // ??神経衰弱の処理 ヘルパー関数===================
-  const checkMatch = () => {
-    // １枚目のカードと2枚目のカードが選択後走る
-    // cardsのisMatchをtrueに変更する
-    // mapで一時的にコピー配列を作り
-    if (selectedCards[0].id === selectedCards[1].id) {
-      console.log("マッチしました");
-      let updatedCards = cards.map((card) => {
-        //２回目のクリックで 0 と1のisMatchdをtrueに
-        if (card.id === selectedCards[0].id) {
-          return { ...card, isMatched: true };
-        }
-        // そうじゃないものはそのまま。
-        return card;
-      });
-      setCards(updatedCards);
-    } else {
-      console.log("ミスマッチ");
-    }
-  };
-  // !!カードが選択されるたびに走る
-  useEffect(() => {
-    // カードを２つチェックしたらチェックマッチ関数を呼び出す
-    if (selectedCards.length === 2) {
-      console.log("2枚選択されました");
-      setTimeout(() => {
-        setSelectedCards([]);
-      }, 800);
-      // 手数の計算
-      setScore((ele) => ele + 1);
-      checkMatch();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- 手数がバグるため
-  }, [selectedCards]);
-
-  useEffect(() => {
-    console.log("running クリアEffect");
-    if (cards.length === 0) return;
-    const isGameClear = cards.every((card) => card.isMatched);
-    if (isGameClear) {
-      setTimeout(() => {
-        alert("ゲームクリア");
-        setIsCleared(isGameClear);
-      }, 500);
-    }
-  }, [cards]);
 
   return (
     <div className={"main-container"}>
@@ -102,7 +51,7 @@ export const GameMain = () => {
             isCleared={isCleared}
             score={score}
           />
-          <GameTimer />
+          <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
           <div className={"container"}>
             <div
               aria-label={"神経衰弱のカードエリア"}
@@ -112,17 +61,14 @@ export const GameMain = () => {
                 gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
               }}
             >
-              {/* cardsを直接変更するはしないが、コピーを元に神経衰弱を描画 */}
-              {cards.map((card) => {
-                return (
-                  <Card
-                    card={card}
-                    key={card.idx}
-                    selectedCards={selectedCards}
-                    setSelectedCards={setSelectedCards}
-                  />
-                );
-              })}
+              {cards.map((card) => (
+                <Card
+                  card={card}
+                  key={card.idx}
+                  selectedCards={selectedCards}
+                  setSelectedCards={setSelectedCards}
+                />
+              ))}
             </div>
           </div>
         </div>

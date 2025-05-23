@@ -1,5 +1,6 @@
-import { ReactNode, useEffect } from "react";
-import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import { ReactNode } from "react";
+
+import { useLocation, Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: ReactNode;

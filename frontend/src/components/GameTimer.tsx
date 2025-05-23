@@ -14,7 +14,7 @@ export const GameTimer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
     start,
   } = useTimer({
     expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
+    onExpire: () => console.info("onExpire called"),
   });
 
   return (

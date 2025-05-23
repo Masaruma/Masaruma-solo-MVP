@@ -265,6 +265,7 @@ export default [
         { selector: "FunctionDeclaration", message: "Function statements are not allowed." },
       ],
       "max-lines": ["error", { max: 2000, skipBlankLines: true, skipComments: true }],
+      "react/jsx-pascal-case": "off",
     },
   },
   prettier,
