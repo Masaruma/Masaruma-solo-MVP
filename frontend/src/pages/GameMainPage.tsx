@@ -38,7 +38,6 @@ export const GameMainPage = () => {
 
   useEffect(() => {
     void initializeGame();
-    // 初期化時スコアやクリア状態もリセット（useNervousBreakdownLogic内に初期化用メソッド持たせてもOK）
   }, [initializeGame]);
 
   return (
@@ -57,7 +56,9 @@ export const GameMainPage = () => {
         score={score}
       />
       <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
-      <div className={"text-center text-2xl"}>現在の手数:{score}</div>
+      <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
+        現在の手数:{score}
+      </div>
       <div
         className={`
           flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12

@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { createMemoryHistory } from "history";
+import { MemoryRouter, Router } from "react-router-dom";
 import { beforeEach, expect } from "vitest";
 
 import { StartPage } from "@/pages/StartPage.tsx";
@@ -55,5 +56,32 @@ describe("NervousBreakdownのテスト", () => {
     const startButton = screen.getByRole("button", { name: "ゲームスタート" });
 
     expect(startButton).toBeInTheDocument();
+  });
+});
+
+describe("ルーティング関連", () => {
+  it("ゲームスタートボタンを押すと必要な'state'をもちゲームページへのnavigationが行われる", async () => {
+    const history = createMemoryHistory({ initialEntries: ["/"] });
+
+    render(
+      <Router location={history.location} navigator={history}>
+        <StartPage />
+      </Router>
+    );
+    const modeButton = screen.getByRole("button", { name: "irasutoya" });
+    await userEvent.click(modeButton);
+
+    await userEvent.click(screen.getByRole("button", { name: "12枚" }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "ゲームスタート" })
+    );
+
+    expect(history.location.pathname).toBe("/nervousbreakdown");
+    // toBeはstrictEqual
+    expect(history.location.state).toEqual({
+      gameMode: "irasutoya",
+      cardRowsCols: [2, 6],
+    });
   });
 });
