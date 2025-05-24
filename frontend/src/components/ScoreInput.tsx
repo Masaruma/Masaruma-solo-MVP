@@ -12,6 +12,7 @@ interface InputProps {
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
+  missCount: number;
   score: number;
 }
 
@@ -21,6 +22,7 @@ export const ScoreInput = ({
   gameMode,
   initializeGame,
   isCleared,
+  missCount,
   score,
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
@@ -36,6 +38,7 @@ export const ScoreInput = ({
       gameScore: score,
       gameLevel: culcGameLevel(cardRowsCols),
       elapsedTimeMillis: elapsedTimeMillis,
+      missCount: missCount,
     });
     if (responseStatus === 201) {
       alert("送信完了しました");

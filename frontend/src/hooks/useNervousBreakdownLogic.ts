@@ -17,6 +17,7 @@ export const useNervousBreakdownLogic = (
   );
   const [score, setScore] = useState(0);
   const [isCleared, setIsCleared] = useState(false);
+  const [missCount, setMissCount] = useState(0);
 
   // １枚目のカードと2枚目のカードのマッチ判定
   const checkMatch = useCallback(() => {
@@ -26,6 +27,8 @@ export const useNervousBreakdownLogic = (
           card.id === selectedCards[0].id ? { ...card, isMatched: true } : card
         )
       );
+    } else if (selectedCards[0].id !== selectedCards[1].id) {
+      setMissCount((prev) => prev + 1);
     }
   }, [selectedCards, setCards]);
 
@@ -51,5 +54,6 @@ export const useNervousBreakdownLogic = (
     setSelectedCards,
     score,
     isCleared,
+    missCount,
   };
 };

@@ -36,7 +36,7 @@ export const GameMainPage = () => {
     cardRowsCols
   );
 
-  const { isCleared, score, selectedCards, setSelectedCards } =
+  const { isCleared, missCount, score, selectedCards, setSelectedCards } =
     useNervousBreakdownLogic(cards, setCards);
 
   useEffect(() => {
@@ -84,6 +84,9 @@ export const GameMainPage = () => {
         <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
           現在の手数:{score}
         </div>
+        <div aria-label={"ミス回数"} className={"text-center text-2xl"}>
+          現在のミス回数:{missCount}
+        </div>
 
         <div
           className={`
@@ -120,6 +123,7 @@ export const GameMainPage = () => {
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}
+          missCount={missCount}
           score={score}
         />
       </DialogCustom>

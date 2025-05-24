@@ -36,12 +36,20 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
         <table border={1} className={"w-full table-fixed border-spacing-0"}>
           <thead>
             <tr>
-              {["Ranking", "Date", "User", "score", "level", "タイム"].map((label) => (
+              {[
+                "Ranking",
+                "Date",
+                "User",
+                "score",
+                "level",
+                "タイム",
+                "ミス",
+              ].map((label) => (
                 <th
                   className={`
-                    bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
-                    text-center text-base font-bold
-                  `}
+                      bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
+                      text-center text-base font-bold
+                    `}
                   key={label}
                 >
                   {label}
@@ -70,6 +78,7 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
                   <td>{getGameScore.gameScore}手</td>
                   <td>{getGameScore.gameLevel}マス</td>
                   <td>{getGameScore.elapsedTimeMillis / 1000}秒</td>
+                  <td>{getGameScore.missCount}ミス</td>
                 </tr>
               );
             })}

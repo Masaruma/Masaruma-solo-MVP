@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { useState } from "react";
 
 import { act, render, screen } from "@testing-library/react";
@@ -245,25 +244,43 @@ describe(`${GameMainPage.name}`, () => {
     });
     expect(scoreNow).toHaveTextContent("2");
   });
+  it("失敗するとミスカウントが増える", async () => {
+    render(<GameMain__test />);
+    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+    const missCount = screen.getByLabelText("ミス回数");
+    expect(missCount).toHaveTextContent("0");
+
+    const cards = Array.from(cardArea.children);
+    await userEvent.click(cards[0]);
+    await userEvent.click(cards[1]);
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+    expect(missCount).toHaveTextContent("1");
+
+    await userEvent.click(cards[0]);
+    await userEvent.click(cards[2]);
+
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+    expect(missCount).toHaveTextContent("1");
+  });
 
   it("全て表にするとゲームクリアになる", async () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
-    const firstCardComponet = cardArea.children[0];
-    const secondCardComponet = cardArea.children[1];
-    const thirdCardComponet = cardArea.children[2];
-    const fourthCardComponet = cardArea.children[3];
-
-    await userEvent.click(firstCardComponet);
-    await userEvent.click(thirdCardComponet);
+    const cards = Array.from(cardArea.children);
+    await userEvent.click(cards[0]);
+    await userEvent.click(cards[2]);
 
     act(() => {
       vi.advanceTimersByTime(800);
     });
 
-    await userEvent.click(secondCardComponet);
-    await userEvent.click(fourthCardComponet);
+    await userEvent.click(cards[1]);
+    await userEvent.click(cards[3]);
 
     act(() => {
       vi.advanceTimersByTime(800);
