@@ -7,7 +7,7 @@ import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 vi.mock("@/repository/GameScoreRepository.ts");
 
-describe("Input", () => {
+describe(`ScoreInput.name`, () => {
   let alertSpy: MockInstance<(message?: any) => void>;
   beforeEach(() => {
     vi.spyOn(GameScoreRepository, "postGameScore").mockResolvedValue(201);
@@ -17,6 +17,7 @@ describe("Input", () => {
     render(
       <ScoreInput
         cardRowsCols={[3, 4]}
+        clearTime={1000}
         gameMode={"irasutoya"}
         initializeGame={async () => {}}
         isCleared={true}

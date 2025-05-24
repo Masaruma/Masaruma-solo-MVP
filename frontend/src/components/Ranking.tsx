@@ -11,7 +11,7 @@ interface RankingProps {
 }
 
 export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
-  const [getResult, setGetResult] = useState<GetGameScoreType[]>([]);
+  const [getGameScores, setGetGameScores] = useState<GetGameScoreType[]>([]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
   useEffect(() => {
@@ -20,7 +20,7 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
         gameMode,
         cardRowsCols
       );
-      setGetResult(getScoreResult);
+      setGetGameScores(getScoreResult);
     })();
   }, [cardRowsCols, gameMode]);
   return (
@@ -50,11 +50,11 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
             </tr>
           </thead>
           <tbody>
-            {getResult.map((obj, tableIndex) => {
+            {getGameScores.map((getGameScore, tableIndex) => {
               return (
                 <tr
                   className={"border-b-1 border-solid border-[#b473bf]"}
-                  key={obj.id}
+                  key={getGameScore.id}
                 >
                   <th
                     className={`
@@ -65,10 +65,11 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
                   >
                     {tableIndex + 1}
                   </th>
-                  <td>{new Date(obj.createdAt).toLocaleString()}</td>
-                  <td>{obj.user}</td>
-                  <td>{obj.gameScore}手</td>
-                  <td>{obj.gameLevel}マス</td>
+                  <td>{new Date(getGameScore.createdAt).toLocaleString()}</td>
+                  <td>{getGameScore.user}</td>
+                  <td>{getGameScore.gameScore}手</td>
+                  <td>{getGameScore.gameLevel}マス</td>
+                  <td>{getGameScore.clearTime}マス</td>
                 </tr>
               );
             })}

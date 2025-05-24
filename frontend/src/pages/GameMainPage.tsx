@@ -44,19 +44,26 @@ export const GameMainPage = () => {
   }, [initializeGame]);
 
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [clearTime, setClearTime] = useState(0);
+
   const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols), () => {
     setIsGameOver(true);
   });
-  const [isStarted, setIsStarted] = useState<boolean>(false);
   const onCardClick = useCallback(() => {
     if (!isStarted) {
       setIsStarted(true);
       gameTimer.start();
     }
   }, [gameTimer, isStarted]);
+
   useEffect(() => {
     if (isCleared) {
       gameTimer.pause();
+      setClearTime(
+        (gameTimer.minutes * 60 + gameTimer.seconds) * 1000 +
+          gameTimer.milliseconds
+      );
     }
   }, [isCleared, gameTimer]);
 
@@ -77,6 +84,7 @@ export const GameMainPage = () => {
         <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
           現在の手数:{score}
         </div>
+
         <div
           className={`
             flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
@@ -108,6 +116,7 @@ export const GameMainPage = () => {
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
         <ScoreInput
           cardRowsCols={cardRowsCols}
+          clearTime={clearTime}
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}

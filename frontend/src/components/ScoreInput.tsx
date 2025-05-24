@@ -8,6 +8,7 @@ import { culcGameLevel } from "@/utils/culcGameLevel.ts";
 
 interface InputProps {
   cardRowsCols: [number, number];
+  clearTime: number;
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
@@ -16,6 +17,7 @@ interface InputProps {
 
 export const ScoreInput = ({
   cardRowsCols,
+  clearTime,
   gameMode,
   initializeGame,
   isCleared,
@@ -33,6 +35,7 @@ export const ScoreInput = ({
       gameMode: gameMode,
       gameScore: score,
       gameLevel: culcGameLevel(cardRowsCols),
+      clearTime,
     });
     if (responseStatus === 201) {
       alert("送信完了しました");
@@ -52,7 +55,6 @@ export const ScoreInput = ({
           type={"text"}
         />
       </div>
-
       {isCleared && (
         <Button
           className={"scorePost"}
