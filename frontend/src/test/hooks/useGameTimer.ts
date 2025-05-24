@@ -19,6 +19,7 @@ export const useGameTimer = (initialSeconds = 180, onExpire = () => {}) => {
     expiryTimestamp,
     onExpire: onExpire,
     autoStart: false,
+    interval: 10,
   });
 
   const restartTimer = () => {

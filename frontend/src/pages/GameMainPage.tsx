@@ -54,7 +54,6 @@ export const GameMainPage = () => {
       gameTimer.start();
     }
   }, [gameTimer, isStarted]);
-
   useEffect(() => {
     if (isCleared) {
       gameTimer.pause();
@@ -74,8 +73,7 @@ export const GameMainPage = () => {
         <GameTimer
           isRunning={gameTimer.isRunning}
           milliseconds={gameTimer.milliseconds}
-          minutes={gameTimer.minutes}
-          seconds={gameTimer.seconds}
+          seconds={gameTimer.minutes * 60 + gameTimer.seconds}
         />
         <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
           現在の手数:{score}

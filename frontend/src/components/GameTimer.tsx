@@ -2,17 +2,17 @@
 export const GameTimer = ({
   isRunning,
   milliseconds,
-  minutes,
+  // minutes,
   seconds,
 }: {
   isRunning: boolean;
   milliseconds: number;
-  minutes: number;
+  // minutes: number;
   seconds: number;
 }) => (
   <div style={{ textAlign: "center" }}>
     <div className={"text-2l"}>
-      <span>{minutes}</span>:<span>{seconds}</span>:<span>{milliseconds}</span>
+      <span>{seconds}</span>:<span>{milliseconds}</span>
     </div>
     <p>{isRunning ? "Running" : "Not running"}</p>
   </div>
