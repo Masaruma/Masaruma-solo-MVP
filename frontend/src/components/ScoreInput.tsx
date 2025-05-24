@@ -44,7 +44,7 @@ export const ScoreInput = ({
 
   return (
     <>
-      <div className={"m-4"}>
+      <div className={""}>
         <Input
           className={"border-4 border-gray-300 bg-amber-50"}
           placeholder={"名前を入れてね"}

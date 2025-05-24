@@ -43,9 +43,6 @@ export const useNervousBreakdownLogic = (
     if (cards.length === 0) return;
     if (cards.every((card) => card.isMatched)) {
       setIsCleared(true);
-      setTimeout(() => {
-        alert("ゲームクリア");
-      }, 500);
     }
   }, [cards]);
 

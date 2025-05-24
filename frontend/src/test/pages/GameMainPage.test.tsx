@@ -247,7 +247,6 @@ describe(`${GameMainPage.name}`, () => {
   });
 
   it("全て表にするとゲームクリアになる", async () => {
-    const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
@@ -269,13 +268,10 @@ describe(`${GameMainPage.name}`, () => {
     act(() => {
       vi.advanceTimersByTime(800);
     });
-    expect(alertSpy).toHaveBeenCalledWith("ゲームクリア");
+    expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
   });
 
   describe("gameTimer", () => {
-    beforeEach(() => {
-      vi.spyOn(window, "alert").mockImplementation(() => {});
-    });
     it("カードを枚数によってuseGameTimerの引数が変わる", async () => {
       const stubState: GameMainProps = {
         cardRowsCols: [8, 4],
@@ -356,7 +352,7 @@ describe(`${GameMainPage.name}`, () => {
         onExpireMock();
       });
 
-      expect(screen.getByText("homeに戻るかリスタートしてください")).toBeInTheDocument();
+      expect(screen.getByText("GAME OVER")).toBeInTheDocument();
     });
   });
 });

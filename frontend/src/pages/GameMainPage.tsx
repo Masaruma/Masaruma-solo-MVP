@@ -70,13 +70,7 @@ export const GameMainPage = () => {
         `}
       >
         <BreadcrumbWithCustomSeparator />
-        <ScoreInput
-          cardRowsCols={cardRowsCols}
-          gameMode={gameMode}
-          initializeGame={initializeGame}
-          isCleared={isCleared}
-          score={score}
-        />
+
         <GameTimer
           isRunning={gameTimer.isRunning}
           milliseconds={gameTimer.milliseconds}
@@ -114,6 +108,15 @@ export const GameMainPage = () => {
         </div>
       </div>
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
+      <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
+        <ScoreInput
+          cardRowsCols={cardRowsCols}
+          gameMode={gameMode}
+          initializeGame={initializeGame}
+          isCleared={isCleared}
+          score={score}
+        />
+      </DialogCustom>
     </>
   );
 };
