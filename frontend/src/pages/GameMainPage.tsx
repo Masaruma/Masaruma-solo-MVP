@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -9,6 +9,8 @@ import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
+import { useGameTimer } from "@/test/hooks/useGameTimer.ts";
+import { calcGameSeconds } from "@/utils/culcGameLevel.ts";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -40,6 +42,15 @@ export const GameMainPage = () => {
     void initializeGame();
   }, [initializeGame]);
 
+  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols)); // 3分（180秒）
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const onCardClick = useCallback(() => {
+    if (!isStarted) {
+      setIsStarted(true);
+      gameTimer.start();
+    }
+  }, [gameTimer, isStarted]);
+
   return (
     <div
       className={`
@@ -55,7 +66,12 @@ export const GameMainPage = () => {
         isCleared={isCleared}
         score={score}
       />
-      <GameTimer expiryTimestamp={new Date(Date.now() + 1000 * 60 * 3)} />
+      <GameTimer
+        isRunning={gameTimer.isRunning}
+        milliseconds={gameTimer.milliseconds}
+        minutes={gameTimer.minutes}
+        seconds={gameTimer.seconds}
+      />
       <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
         現在の手数:{score}
       </div>
@@ -78,6 +94,7 @@ export const GameMainPage = () => {
             <Card
               card={card}
               key={card.idx}
+              onCardClick={onCardClick}
               selectedCards={selectedCards}
               setSelectedCards={setSelectedCards}
             />

@@ -4,16 +4,23 @@ import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 
 interface CardProps {
   card: CardsWithMatchKeyType;
+  onCardClick: () => void;
   selectedCards: CardsWithMatchKeyType[];
   setSelectedCards: Dispatch<SetStateAction<CardsWithMatchKeyType[]>>;
 }
 
-export const Card = ({ card, selectedCards, setSelectedCards }: CardProps) => {
+export const Card = ({
+  card,
+  onCardClick,
+  selectedCards,
+  setSelectedCards,
+}: CardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleClick = () => {
     // 同じカードが選択されたら、すでにマッチしているカードが追加されないように、別のカードなら選択stateに
     if (!selectedCards.includes(card) && !card.isMatched) {
+      onCardClick();
       setSelectedCards([...selectedCards, card]);
     }
   };

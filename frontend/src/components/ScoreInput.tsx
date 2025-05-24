@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
-import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
+import { culcGameLevel } from "@/utils/culcGameLevel.ts";
 
 interface InputProps {
   cardRowsCols: [number, number];
@@ -32,7 +32,7 @@ export const ScoreInput = ({
       user,
       gameMode: gameMode,
       gameScore: score,
-      gameLevel: culcurateGameLevel(cardRowsCols),
+      gameLevel: culcGameLevel(cardRowsCols),
     });
     if (responseStatus === 201) {
       alert("送信完了しました");

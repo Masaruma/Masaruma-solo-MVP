@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { culcurateGameLevel } from "@/utils/culcurateGameLevel.ts";
+import { culcGameLevel } from "@/utils/culcGameLevel.ts";
 
 export type GetGameScoreType = {
   createdAt: string;
@@ -24,7 +24,7 @@ export const getGameScores = async (
   const response = await axios.get(`/api/score`, {
     params: {
       gameMode: gameMode,
-      gameLevel: culcurateGameLevel(cardRowsCols),
+      gameLevel: culcGameLevel(cardRowsCols),
     },
   });
   return response.data;
