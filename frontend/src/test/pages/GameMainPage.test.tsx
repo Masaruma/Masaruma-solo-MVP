@@ -7,6 +7,8 @@ import { afterEach, beforeEach, expect } from "vitest";
 
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
+import { useGameTimer } from "@/test/hooks/useGameTimer.ts";
+import { calcGameSeconds } from "@/utils/culcGameLevel.ts";
 
 const spyInitializeGame = vi.fn();
 
@@ -30,8 +32,29 @@ vi.mock("@/hooks/useInitializeGame", async () => {
   };
 });
 
+const spyStart = vi.fn();
+const spyPause = vi.fn();
+// useGameTimerモックもdescribe外で
+vi.mock("@/test/hooks/useGameTimer.ts", () => ({
+  useGameTimer: vi.fn((...args: any[]) => ({
+    milliseconds: 100,
+    seconds: 100,
+    minutes: 100,
+    hours: 1,
+    days: args,
+    isRunning: false,
+    start: spyStart,
+    pause: spyPause,
+    restart: () => {},
+  })),
+}));
+
+const initialState: GameMainProps = {
+  cardRowsCols: [3, 4],
+  gameMode: "irasutoya",
+};
 const GameMain__test = ({
-  state = { cardRowsCols: [3, 4], gameMode: "irasutoya" },
+  state = initialState,
 }: {
   state?: GameMainProps;
 }) => {
@@ -246,5 +269,42 @@ describe(`${GameMainPage.name}`, () => {
       vi.advanceTimersByTime(800);
     });
     expect(alertSpy).toHaveBeenCalledWith("ゲームクリア");
+  });
+
+  describe("gameTimer", () => {
+    beforeEach(() => {});
+    it("カードを枚数によってuseGameTimerの引数が変わる", async () => {
+      const stubState: GameMainProps = {
+        cardRowsCols: [8, 4],
+        gameMode: "irasutoya",
+      };
+
+      render(<GameMain__test state={stubState} />);
+
+      expect(useGameTimer).toHaveBeenCalledWith(
+        calcGameSeconds(stubState.cardRowsCols)
+      );
+    });
+    it("カードを初回クリックするとゲームタイマーが開始される", async () => {
+      render(<GameMain__test />);
+
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      await userEvent.click(cardArea.children[0]);
+
+      expect(spyStart).toHaveBeenCalledTimes(1);
+    });
+    it("カードを2枚目をクリックしてもゲームタイマーは開始されない", async () => {
+      render(<GameMain__test />);
+
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      await userEvent.click(cardArea.children[0]);
+      await userEvent.click(cardArea.children[1]);
+
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      expect(spyStart).toHaveBeenCalledTimes(1);
+    });
   });
 });

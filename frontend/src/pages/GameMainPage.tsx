@@ -42,7 +42,7 @@ export const GameMainPage = () => {
     void initializeGame();
   }, [initializeGame]);
 
-  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols)); // 3分（180秒）
+  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols));
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const onCardClick = useCallback(() => {
     if (!isStarted) {
