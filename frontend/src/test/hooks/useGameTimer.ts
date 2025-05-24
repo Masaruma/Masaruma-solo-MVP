@@ -1,7 +1,7 @@
 // hooks/useGameTimer.ts
 import { useTimer } from "react-timer-hook";
 
-export const useGameTimer = (initialSeconds = 180) => {
+export const useGameTimer = (initialSeconds = 180, onExpire = () => {}) => {
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + initialSeconds);
 
@@ -17,7 +17,7 @@ export const useGameTimer = (initialSeconds = 180) => {
     start,
   } = useTimer({
     expiryTimestamp,
-    onExpire: () => console.info("onExpire called"),
+    onExpire: onExpire,
     autoStart: false,
   });
 

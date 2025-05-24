@@ -42,7 +42,10 @@ export const GameMainPage = () => {
     void initializeGame();
   }, [initializeGame]);
 
-  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols));
+  const [isGameOver, setIsGameOver] = useState(false);
+  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols), () => {
+    setIsGameOver(true);
+  });
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const onCardClick = useCallback(() => {
     if (!isStarted) {
@@ -56,56 +59,60 @@ export const GameMainPage = () => {
       gameTimer.pause();
     }
   }, [isCleared, gameTimer]);
+
   return (
-    <div
-      className={`
-        flex min-h-0 w-full flex-col items-center justify-center overflow-auto
-        bg-transparent
-      `}
-    >
-      <BreadcrumbWithCustomSeparator />
-      <ScoreInput
-        cardRowsCols={cardRowsCols}
-        gameMode={gameMode}
-        initializeGame={initializeGame}
-        isCleared={isCleared}
-        score={score}
-      />
-      <GameTimer
-        isRunning={gameTimer.isRunning}
-        milliseconds={gameTimer.milliseconds}
-        minutes={gameTimer.minutes}
-        seconds={gameTimer.seconds}
-      />
-      <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
-        現在の手数:{score}
-      </div>
+    <>
       <div
         className={`
-          flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
-          shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)]
+          flex min-h-0 w-full flex-col items-center justify-center overflow-auto
+          bg-transparent
         `}
       >
+        <BreadcrumbWithCustomSeparator />
+        <ScoreInput
+          cardRowsCols={cardRowsCols}
+          gameMode={gameMode}
+          initializeGame={initializeGame}
+          isCleared={isCleared}
+          score={score}
+        />
+        <GameTimer
+          isRunning={gameTimer.isRunning}
+          milliseconds={gameTimer.milliseconds}
+          minutes={gameTimer.minutes}
+          seconds={gameTimer.seconds}
+        />
+        <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
+          現在の手数:{score}
+        </div>
         <div
-          aria-label={"神経衰弱のカードエリア"}
-          className={`w-fit gap-1`}
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
-            gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
-          }}
+          className={`
+            flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
+            shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)]
+          `}
         >
-          {cards.map((card) => (
-            <Card
-              card={card}
-              key={card.idx}
-              onCardClick={onCardClick}
-              selectedCards={selectedCards}
-              setSelectedCards={setSelectedCards}
-            />
-          ))}
+          <div
+            aria-label={"神経衰弱のカードエリア"}
+            className={`w-fit gap-1`}
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
+              gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+            }}
+          >
+            {cards.map((card) => (
+              <Card
+                card={card}
+                key={card.idx}
+                onCardClick={onCardClick}
+                selectedCards={selectedCards}
+                setSelectedCards={setSelectedCards}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      {isGameOver && <div>ゲームオーバーです</div>}
+    </>
   );
 };

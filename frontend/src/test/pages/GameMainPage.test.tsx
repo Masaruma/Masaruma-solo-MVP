@@ -1,9 +1,10 @@
+/// <reference types="vitest" />
 import { useState } from "react";
 
 import { act, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, beforeEach, expect } from "vitest";
+import { afterEach, beforeEach, expect, vi } from "vitest";
 
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
@@ -284,7 +285,8 @@ describe(`${GameMainPage.name}`, () => {
       render(<GameMain__test state={stubState} />);
 
       expect(useGameTimer).toHaveBeenCalledWith(
-        calcGameSeconds(stubState.cardRowsCols)
+        calcGameSeconds(stubState.cardRowsCols),
+        expect.any(Function)
       );
     });
     it("カードを初回クリックするとゲームタイマーが開始される", async () => {
@@ -329,6 +331,32 @@ describe(`${GameMainPage.name}`, () => {
       });
 
       expect(spyPause).toHaveBeenCalled();
+    });
+    it("useGameTimerの第２引数にsetGameOverが存在 timeが0になるとゲームオーバーになる", () => {
+      let onExpireMock: () => void;
+      (useGameTimer as any).mockImplementation(
+        (_: any, onExpire: () => void) => {
+          onExpireMock = onExpire;
+          return {
+            milliseconds: 0,
+            seconds: 0,
+            minutes: 0,
+            hours: 0,
+            days: 0,
+            isRunning: false,
+            start: vi.fn(),
+            pause: vi.fn(),
+            restart: vi.fn(),
+          };
+        }
+      );
+
+      render(<GameMain__test />);
+      act(() => {
+        onExpireMock();
+      });
+
+      expect(screen.getByText("ゲームオーバーです")).toBeInTheDocument();
     });
   });
 });
