@@ -17,7 +17,7 @@ describe(`ScoreInput.name`, () => {
     render(
       <ScoreInput
         cardRowsCols={[3, 4]}
-        clearTime={1000}
+        elapsedTimeMillis={1000}
         gameMode={"irasutoya"}
         initializeGame={async () => {}}
         isCleared={true}

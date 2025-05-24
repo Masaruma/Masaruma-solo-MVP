@@ -3,7 +3,7 @@ import axios from "axios";
 import { culcGameLevel } from "@/utils/culcGameLevel.ts";
 
 export type GetGameScoreType = {
-  clearTime: number;
+  elapsedTimeMillis: number;
   createdAt: string;
   gameLevel: number;
   gameScore: number;
@@ -12,7 +12,7 @@ export type GetGameScoreType = {
 };
 
 export type PostGameScoreType = {
-  clearTime: number;
+  elapsedTimeMillis: number;
   gameLevel: number;
   gameMode: string;
   gameScore: number;

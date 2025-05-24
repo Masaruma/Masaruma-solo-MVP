@@ -45,7 +45,7 @@ export const GameMainPage = () => {
 
   const [isGameOver, setIsGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [clearTime, setClearTime] = useState(0);
+  const [elapsedTimeMillis, setElapsedTimeMillis] = useState(0);
 
   const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols), () => {
     setIsGameOver(true);
@@ -60,7 +60,7 @@ export const GameMainPage = () => {
   useEffect(() => {
     if (isCleared) {
       gameTimer.pause();
-      setClearTime(
+      setElapsedTimeMillis(
         (gameTimer.minutes * 60 + gameTimer.seconds) * 1000 +
           gameTimer.milliseconds
       );
@@ -116,7 +116,7 @@ export const GameMainPage = () => {
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
         <ScoreInput
           cardRowsCols={cardRowsCols}
-          clearTime={clearTime}
+          elapsedTimeMillis={elapsedTimeMillis}
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}
