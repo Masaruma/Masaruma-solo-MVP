@@ -51,6 +51,11 @@ export const GameMainPage = () => {
     }
   }, [gameTimer, isStarted]);
 
+  useEffect(() => {
+    if (isCleared) {
+      gameTimer.pause();
+    }
+  }, [isCleared, gameTimer]);
   return (
     <div
       className={`

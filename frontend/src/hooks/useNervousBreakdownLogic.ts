@@ -42,9 +42,9 @@ export const useNervousBreakdownLogic = (
   useEffect(() => {
     if (cards.length === 0) return;
     if (cards.every((card) => card.isMatched)) {
+      setIsCleared(true);
       setTimeout(() => {
         alert("ゲームクリア");
-        setIsCleared(true);
       }, 500);
     }
   }, [cards]);

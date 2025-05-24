@@ -272,7 +272,9 @@ describe(`${GameMainPage.name}`, () => {
   });
 
   describe("gameTimer", () => {
-    beforeEach(() => {});
+    beforeEach(() => {
+      vi.spyOn(window, "alert").mockImplementation(() => {});
+    });
     it("カードを枚数によってuseGameTimerの引数が変わる", async () => {
       const stubState: GameMainProps = {
         cardRowsCols: [8, 4],
@@ -305,6 +307,28 @@ describe(`${GameMainPage.name}`, () => {
       });
 
       expect(spyStart).toHaveBeenCalledTimes(1);
+    });
+    it("全て表にするとゲームタイマーのstopが呼ばれる", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      // ペアを揃えるために、1と3, 2と4を順にクリックする
+      // まずクリック1枚目と3枚目
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      // 次にクリック2枚目と4枚目
+      await userEvent.click(cards[1]);
+      await userEvent.click(cards[3]);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      expect(spyPause).toHaveBeenCalled();
     });
   });
 });
