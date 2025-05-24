@@ -70,6 +70,8 @@ class GameScoreServiceTest {
         user = User(name = "Masaru"),
         gameMode = modeIrasutoya,
         gameLevel = gameLevel1,
+        elapsedTimeMillis = 1000,
+        missCount = 10,
       )
     val score2 =
       Score(
@@ -77,6 +79,8 @@ class GameScoreServiceTest {
         user = User(name = "Masaru2"),
         gameMode = modePokemon,
         gameLevel = gameLevel2,
+        elapsedTimeMillis = 1000,
+        missCount = 10,
       )
     val score3 =
       Score(
@@ -84,21 +88,25 @@ class GameScoreServiceTest {
         user = User(name = "Masaru3"),
         gameMode = modePokemon,
         gameLevel = gameLevel1,
+        elapsedTimeMillis = 1000,
+        missCount = 10,
       )
-
     val saveGameScoreResult =
       gameScoreRepository.saveAll(
         listOf(score1, score2, score3),
       )
-    val irasutoya = saveGameScoreResult[0]
+
+    val savedIrasutoya = saveGameScoreResult[0]
     val expected =
       listOf(
         ResponseScore(
-          id = irasutoya.id,
-          createdAt = irasutoya.createdAt,
-          gameScore = irasutoya.gameScore,
-          user = irasutoya.user.name,
-          gameLevel = irasutoya.gameLevel.level,
+          id = savedIrasutoya.id,
+          createdAt = savedIrasutoya.createdAt,
+          gameScore = savedIrasutoya.gameScore,
+          user = savedIrasutoya.user.name,
+          gameLevel = savedIrasutoya.gameLevel.level,
+          elapsedTimeMillis = savedIrasutoya.elapsedTimeMillis,
+          missCount = savedIrasutoya.missCount,
         ),
       )
 
@@ -119,6 +127,8 @@ class GameScoreServiceTest {
         gameScore = 300,
         gameMode = "irasutoya",
         gameLevel = "12",
+        elapsedTimeMillis = 1000,
+        missCount = 10,
       )
 
     gameScoreService.postScore(saveAndExpectedData)
@@ -127,6 +137,12 @@ class GameScoreServiceTest {
 
     assertEquals(saveAndExpectedData.user, actualResult.user.name)
     assertEquals(saveAndExpectedData.gameScore, actualResult.gameScore)
+    assertEquals(saveAndExpectedData.gameScore, actualResult.gameScore)
+    assertEquals(
+      saveAndExpectedData.elapsedTimeMillis,
+      actualResult.elapsedTimeMillis,
+    )
+    assertEquals(saveAndExpectedData.missCount, actualResult.missCount)
     assertEquals(
       saveAndExpectedData.gameMode,
       actualResult.gameMode.gameName,

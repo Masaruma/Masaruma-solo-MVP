@@ -35,6 +35,8 @@ class GameScoreControllerTest {
           gameScore = 200,
           gameLevel = 12,
           user = "testUser",
+          elapsedTimeMillis = 1000,
+          missCount = 10,
         ),
       )
 
@@ -61,7 +63,9 @@ class GameScoreControllerTest {
             "user": "Masaru",
             "gameMode": "irasutoya",
             "gameLevel": "12",
-            "gameScore": 2
+            "gameScore": 2,
+            "elapsedTimeMillis" : 1000,
+            "missCount" : 10,
         }
         """.trimIndent(),
       ),
@@ -75,6 +79,8 @@ class GameScoreControllerTest {
           gameMode = "irasutoya",
           gameScore = 2,
           gameLevel = "12",
+          elapsedTimeMillis = 1000,
+          missCount = 10,
         ),
       )
     }

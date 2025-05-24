@@ -6,6 +6,8 @@ data class ResponseScore(
   val id: Int?,
   var createdAt: Instant? = null,
   val gameScore: Int,
+  val elapsedTimeMillis: Int,
+  val missCount: Int,
   val gameLevel: Int,
   val user: String,
 )

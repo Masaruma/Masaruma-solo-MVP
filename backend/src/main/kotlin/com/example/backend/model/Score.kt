@@ -22,6 +22,8 @@ data class Score(
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Int? = null,
   val gameScore: Int,
+  val elapsedTimeMillis: Int,
+  val missCount: Int,
   @CreatedDate
   var createdAt: Instant? = null,
   @LastModifiedDate

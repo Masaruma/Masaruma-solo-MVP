@@ -11,3 +11,5 @@ docker-local-run:
  		   --env-file backend/.envDockerlocal \
  		   my-solo-app:latest
 
+lint:
+	cd backend && ./gradlew ./gradlew ktlintFormat

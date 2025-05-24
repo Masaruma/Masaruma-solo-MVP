@@ -37,11 +37,13 @@ class GameScoreServiceImpl(
     val scoreEntityToResponseScore =
       getResult.map {
         ResponseScore(
-          it.id,
-          it.createdAt,
-          it.gameScore,
-          it.gameLevel.level,
-          it.user.name,
+          id = it.id,
+          createdAt = it.createdAt,
+          gameScore = it.gameScore,
+          gameLevel = it.gameLevel.level,
+          elapsedTimeMillis = it.elapsedTimeMillis,
+          missCount = it.missCount,
+          user = it.user.name,
         )
       }.sortedBy { it.gameScore }
         .take(10)
@@ -64,6 +66,8 @@ class GameScoreServiceImpl(
         user = User(name = requestData.user),
         gameMode = nowGameMode,
         gameLevel = nowGameLevel,
+        elapsedTimeMillis = requestData.elapsedTimeMillis,
+        missCount = requestData.missCount,
       ),
     )
   }
