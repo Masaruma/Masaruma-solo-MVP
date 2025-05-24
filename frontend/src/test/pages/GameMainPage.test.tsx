@@ -356,7 +356,7 @@ describe(`${GameMainPage.name}`, () => {
         onExpireMock();
       });
 
-      expect(screen.getByText("ゲームオーバーです")).toBeInTheDocument();
+      expect(screen.getByText("homeに戻るかリスタートしてください")).toBeInTheDocument();
     });
   });
 });

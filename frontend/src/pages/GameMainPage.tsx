@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { Card } from "@/components/Card.tsx";
 import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
+import { DialogCustom } from "@/components/customUi/DialogCustom.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
@@ -112,7 +113,7 @@ export const GameMainPage = () => {
           </div>
         </div>
       </div>
-      {isGameOver && <div>ゲームオーバーです</div>}
+      <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
     </>
   );
 };
