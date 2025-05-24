@@ -71,7 +71,6 @@ export const GameMainPage = () => {
         <BreadcrumbWithCustomSeparator />
 
         <GameTimer
-          isRunning={gameTimer.isRunning}
           milliseconds={gameTimer.milliseconds}
           seconds={gameTimer.minutes * 60 + gameTimer.seconds}
         />
