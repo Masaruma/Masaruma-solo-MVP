@@ -7,10 +7,10 @@ import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbW
 import { DialogCustom } from "@/components/customUi/DialogCustom.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
+import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
-import { useGameTimer } from "@/test/hooks/useGameTimer.ts";
 import { calcGameSeconds } from "@/utils/culcGameLevel.ts";
 
 export interface GameMainProps {
@@ -45,7 +45,6 @@ export const GameMainPage = () => {
 
   const [isGameOver, setIsGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [elapsedTimeMillis, setElapsedTimeMillis] = useState(0);
 
   const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols), () => {
     setIsGameOver(true);
@@ -60,10 +59,6 @@ export const GameMainPage = () => {
   useEffect(() => {
     if (isCleared) {
       gameTimer.pause();
-      setElapsedTimeMillis(
-        (gameTimer.minutes * 60 + gameTimer.seconds) * 1000 +
-          gameTimer.milliseconds
-      );
     }
   }, [isCleared, gameTimer]);
 
@@ -77,10 +72,8 @@ export const GameMainPage = () => {
       >
         <BreadcrumbWithCustomSeparator />
 
-        <GameTimer
-          milliseconds={gameTimer.milliseconds}
-          seconds={gameTimer.minutes * 60 + gameTimer.seconds}
-        />
+        <GameTimer milliseconds={gameTimer.totalMilliseconds} />
+        <div> {gameTimer.elapsedMilliseconds}</div>
         <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
           現在の手数:{score}
         </div>
@@ -119,7 +112,7 @@ export const GameMainPage = () => {
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
         <ScoreInput
           cardRowsCols={cardRowsCols}
-          elapsedTimeMillis={elapsedTimeMillis}
+          elapsedTimeMillis={gameTimer.elapsedMilliseconds}
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}

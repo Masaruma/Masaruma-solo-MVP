@@ -5,9 +5,9 @@ import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 
+import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
-import { useGameTimer } from "@/test/hooks/useGameTimer.ts";
 import { calcGameSeconds } from "@/utils/culcGameLevel.ts";
 
 const spyInitializeGame = vi.fn();
@@ -35,7 +35,7 @@ vi.mock("@/hooks/useInitializeGame", async () => {
 const spyStart = vi.fn();
 const spyPause = vi.fn();
 // useGameTimerモックもdescribe外で
-vi.mock("@/test/hooks/useGameTimer.ts", () => ({
+vi.mock("@/hooks/useGameTimer.ts", () => ({
   useGameTimer: vi.fn((...args: any[]) => ({
     milliseconds: 100,
     seconds: 100,

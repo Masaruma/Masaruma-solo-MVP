@@ -47,9 +47,9 @@ export const Ranking = ({ cardRowsCols, gameMode }: RankingProps) => {
               ].map((label) => (
                 <th
                   className={`
-                      bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
-                      text-center text-base font-bold
-                    `}
+                    bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
+                    text-center text-base font-bold
+                  `}
                   key={label}
                 >
                   {label}
