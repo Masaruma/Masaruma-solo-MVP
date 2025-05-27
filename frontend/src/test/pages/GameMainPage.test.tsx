@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { act, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, vi } from "vitest";
@@ -244,6 +244,7 @@ describe(`${GameMainPage.name}`, () => {
     });
     expect(scoreNow).toHaveTextContent("2");
   });
+
   it("失敗するとミスカウントが増える", async () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -265,6 +266,54 @@ describe(`${GameMainPage.name}`, () => {
       vi.advanceTimersByTime(800);
     });
     expect(missCount).toHaveTextContent("1");
+  });
+
+  it("失敗の最大値は引数に依存する", () => {
+    const state: GameMainProps = {
+      cardRowsCols: [2, 2],
+      gameMode: "irasutoya",
+    };
+
+    render(<GameMain__test state={state} />);
+    const missCount = screen.getByLabelText("ミス回数");
+
+    expect(missCount).toHaveTextContent("2");
+
+    cleanup();
+    const state2: GameMainProps = {
+      cardRowsCols: [3, 2],
+      gameMode: "irasutoya",
+    };
+
+    render(<GameMain__test state={state2} />);
+    const missCount2 = screen.getByLabelText("ミス回数");
+
+    expect(missCount2).toHaveTextContent("3");
+  });
+
+  it("失敗が規定数に達するとゲームオーバーになる", async () => {
+    const state: GameMainProps = {
+      cardRowsCols: [2, 2],
+      gameMode: "irasutoya",
+    };
+
+    render(<GameMain__test state={state} />);
+    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+    const cards = Array.from(cardArea.children);
+    await userEvent.click(cards[0]);
+    await userEvent.click(cards[1]);
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+
+    await userEvent.click(cards[0]);
+    await userEvent.click(cards[1]);
+
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+    expect(screen.getByText("GAME OVER")).toBeInTheDocument();
   });
 
   it("全て表にするとゲームクリアになる", async () => {
@@ -345,7 +394,7 @@ describe(`${GameMainPage.name}`, () => {
 
       expect(spyPause).toHaveBeenCalled();
     });
-    it("useGameTimerの第２引数にsetGameOverが存在 timeが0になるとゲームオーバーになる", () => {
+    it("useGameTimerの第２引数にgameOverのstate更新関数がある timeが0になるとゲームオーバーになる", () => {
       let onExpireMock: () => void;
       (useGameTimer as any).mockImplementation(
         (_: any, onExpire: () => void) => {
