@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { culcGameLevel } from "@/utils/culcGameLevel.ts";
+import { calcGameLevel } from "@/utils/calcGameLevel.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -45,7 +45,7 @@ export const StartPage = () => {
   ];
   const gameSettingList = sizes.map((cols) => ({
     cardRowsCols: cols,
-    numberOfCards: culcGameLevel(cols),
+    numberOfCards: calcGameLevel(cols),
   }));
 
   return (
@@ -89,8 +89,8 @@ export const StartPage = () => {
                   }}
                   size={"default"}
                   variant={
-                    culcGameLevel(cardRowsCols) ===
-                    culcGameLevel(gameSetting.cardRowsCols)
+                    calcGameLevel(cardRowsCols) ===
+                    calcGameLevel(gameSetting.cardRowsCols)
                       ? "default"
                       : "secondary"
                   }

@@ -8,7 +8,7 @@ import { afterEach, beforeEach, expect, vi } from "vitest";
 import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
-import { calcGameSeconds } from "@/utils/culcGameLevel.ts";
+import { calcGameSeconds } from "@/utils/calcGameLevel.ts";
 
 const spyInitializeGame = vi.fn();
 

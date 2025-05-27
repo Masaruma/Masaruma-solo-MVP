@@ -11,7 +11,7 @@ import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
-import { calcGameSeconds, culcAllowMissCount } from "@/utils/culcGameLevel.ts";
+import { calcGameSeconds, calcAllowMissCount } from "@/utils/calcGameLevel.ts";
 
 export interface GameMainProps {
   cardRowsCols: [number, number];
@@ -62,9 +62,8 @@ export const GameMainPage = () => {
     }
   }, [isCleared, gameTimer]);
 
-
   useEffect(() => {
-    if(missCount === culcAllowMissCount(cardRowsCols)) {
+    if (missCount === calcAllowMissCount(cardRowsCols)) {
       setIsGameOver(true);
     }
   }, [cardRowsCols, missCount]);
@@ -81,11 +80,11 @@ export const GameMainPage = () => {
 
         <GameTimer milliseconds={gameTimer.totalMilliseconds} />
         {/*<div> {gameTimer.elapsedMilliseconds}</div>*/}
-        <div aria-label={"現在の手数"} className={"text-center text-2xl"}>
+        <div aria-label={"現在の手数"} className={"text-2l text-center"}>
           現在の手数:{score}
         </div>
         <div aria-label={"ミス回数"} className={"text-center text-2xl"}>
-          ミス回数:{missCount} / {culcAllowMissCount(cardRowsCols)}
+          ミス回数:{missCount} / {calcAllowMissCount(cardRowsCols)}
         </div>
 
         <div

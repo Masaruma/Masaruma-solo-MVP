@@ -1,4 +1,4 @@
-export const culcGameLevel = (cardRowsCols: [number, number]): number =>
+export const calcGameLevel = (cardRowsCols: [number, number]): number =>
   cardRowsCols[0] * cardRowsCols[1];
 
 export const calcGameSeconds = (cardRowsCols: [number, number]) => {
@@ -7,8 +7,7 @@ export const calcGameSeconds = (cardRowsCols: [number, number]) => {
   return 10 + ((numCards - 4) / 2) * 10;
 };
 
-
-export const culcAllowMissCount = (cardRowsCols: [number, number]) => {
+export const calcAllowMissCount = (cardRowsCols: [number, number]) => {
   const numCards = cardRowsCols[0] * cardRowsCols[1];
-  return numCards/2
-}
+  return numCards / 2;
+};

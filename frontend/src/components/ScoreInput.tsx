@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
-import { culcGameLevel } from "@/utils/culcGameLevel.ts";
+import { calcGameLevel } from "@/utils/calcGameLevel.ts";
 
 interface InputProps {
   cardRowsCols: [number, number];
@@ -36,7 +36,7 @@ export const ScoreInput = ({
       user,
       gameMode: gameMode,
       gameScore: score,
-      gameLevel: culcGameLevel(cardRowsCols),
+      gameLevel: calcGameLevel(cardRowsCols),
       elapsedTimeMillis: elapsedTimeMillis,
       missCount: missCount,
     });
