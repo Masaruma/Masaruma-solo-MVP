@@ -1,4 +1,3 @@
-
 export const calcGameSeconds = (selectedNumberOfCard: number) => {
   if (selectedNumberOfCard < 4) return 10;
   return 10 + ((selectedNumberOfCard - 4) / 2) * 10;

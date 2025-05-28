@@ -116,13 +116,18 @@ class GameScoreServiceTest {
         ),
       )
 
-    val testResult = gameScoreService.getScore("irasutoya", 12)
+    val testResult = gameScoreService.getScore(1, 12)
 
     assertEquals(expected, testResult)
   }
 
   @Test
   fun`postScoreを実行するとJPAGameScoreRepositoryを呼びデータが保存される`() {
+    val modeIrasutoya =
+      gameModeRepository.save(
+        GameMode(gameName = "irasutoya"),
+      )
+
     gameModeRepository.save(GameMode(gameName = "irasutoya"))
     gameModeRepository.save(GameMode(gameName = "pokemon"))
     numberOfCardsRepository.save(NumberOfCards(numberOfCard = 12))
@@ -131,7 +136,7 @@ class GameScoreServiceTest {
       RequestScore(
         user = "masaru",
         gameScore = 300,
-        gameMode = "irasutoya",
+        gameModeId = modeIrasutoya.id!!,
         numberOfCard = "12",
         elapsedTimeMillis = 1000,
         missCount = 10,
@@ -150,8 +155,8 @@ class GameScoreServiceTest {
     )
     assertEquals(saveAndExpectedData.missCount, actualResult.missCount)
     assertEquals(
-      saveAndExpectedData.gameMode,
-      actualResult.gameMode.gameName,
+      saveAndExpectedData.gameModeId,
+      actualResult.gameMode.id,
     )
     assertEquals(
       saveAndExpectedData.numberOfCard.toInt(),

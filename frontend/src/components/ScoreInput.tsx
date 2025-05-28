@@ -33,7 +33,7 @@ export const ScoreInput = ({
     }
     const responseStatus = await GameScoreRepository.postGameScore({
       user,
-      gameMode: gameMode,
+      gameModeId: gameMode === "irasutoya" ? 1 : 2,
       gameScore: score,
       numberOfCard: selectedNumberOfCards,
       elapsedTimeMillis: elapsedTimeMillis,

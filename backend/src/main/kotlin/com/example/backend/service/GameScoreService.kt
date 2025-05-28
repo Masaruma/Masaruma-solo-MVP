@@ -1,5 +1,6 @@
 package com.example.backend.service
 
+import com.example.backend.model.GameMode
 import com.example.backend.model.RequestScore
 import com.example.backend.model.ResponseScore
 import com.example.backend.model.Score
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service
 
 interface GameScoreService {
   fun getScore(
-    gameMode: String,
+    gameModeId: Int,
     numberOfCard: Int,
   ): List<ResponseScore>
 
@@ -21,17 +22,16 @@ interface GameScoreService {
 @Service
 class GameScoreServiceImpl(
   val gameScoreRepository: JPAGameScoreRepository,
-  val gameModeRepository: JPAGameModeRepository,
   val gameLevelRepository: JPANumberOfCardsRepository,
 ) : GameScoreService {
   override fun getScore(
-    gameMode: String,
+    gameModeId: Int,
     numberOfCard: Int,
   ): List<ResponseScore> {
 //        todo gameLevelでもsocreリポジトリを取得する必要がある
     val getResult =
-      gameScoreRepository.findByGameModeGameNameAndNumberOfCardsNumberOfCard(
-        gameMode,
+      gameScoreRepository.findByGameModeIdAndNumberOfCardsNumberOfCard(
+        gameModeId,
         numberOfCard,
       )
     val scoreEntityToResponseScore =
@@ -52,10 +52,6 @@ class GameScoreServiceImpl(
   }
 
   override fun postScore(requestData: RequestScore) {
-    val nowGameMode =
-      gameModeRepository.findByGameName(
-        requestData.gameMode,
-      )
     val nowGameLevel =
       gameLevelRepository.findByNumberOfCard(
         requestData.numberOfCard.toInt(),
@@ -64,7 +60,7 @@ class GameScoreServiceImpl(
       Score(
         gameScore = requestData.gameScore,
         user = User(name = requestData.user),
-        gameMode = nowGameMode,
+        gameMode = GameMode(id = requestData.gameModeId),
         numberOfCards = nowGameLevel,
         elapsedTimeMillis = requestData.elapsedTimeMillis,
         missCount = requestData.missCount,

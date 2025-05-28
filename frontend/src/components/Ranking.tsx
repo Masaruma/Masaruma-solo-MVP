@@ -6,7 +6,6 @@ import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
 
 interface RankingProps {
   gameMode: GameModeType;
-
   selectedNumberOfCard: number;
 }
 
@@ -17,7 +16,7 @@ export const Ranking = ({ gameMode, selectedNumberOfCard }: RankingProps) => {
   useEffect(() => {
     void (async () => {
       const getScoreResult = await GameScoreRepository.getGameScores(
-        gameMode,
+        gameMode === "irasutoya" ? 1 : 2,
         selectedNumberOfCard
       );
       setGetGameScores(getScoreResult);

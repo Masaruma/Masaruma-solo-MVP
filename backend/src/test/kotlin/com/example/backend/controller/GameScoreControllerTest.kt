@@ -43,11 +43,11 @@ class GameScoreControllerTest {
     mockMvc.perform(
       MockMvcRequestBuilders.get(
         "/api/score",
-      ).param("gameMode", "irasutoya") // ?gameMode=irasutoya
+      ).param("gameModeId", "1") // ?gameMode=irasutoya
         .param("numberOfCard", "12"),
     ).andExpect(status().isOk)
 
-    verify { gameScoreService.getScore("irasutoya", 12) }
+    verify { gameScoreService.getScore(1, 12) }
   }
 
   @Test
@@ -61,7 +61,7 @@ class GameScoreControllerTest {
         """
         {
             "user": "Masaru",
-            "gameMode": "irasutoya",
+            "gameModeId": "1",
             "numberOfCard": "12",
             "gameScore": 2,
             "elapsedTimeMillis" : 1000,
@@ -76,7 +76,7 @@ class GameScoreControllerTest {
       gameScoreService.postScore(
         RequestScore(
           user = "Masaru",
-          gameMode = "irasutoya",
+          gameModeId = 1,
           gameScore = 2,
           numberOfCard = "12",
           elapsedTimeMillis = 1000,

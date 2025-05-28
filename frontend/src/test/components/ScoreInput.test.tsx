@@ -20,8 +20,9 @@ describe(`ScoreInput.name`, () => {
         gameMode={"irasutoya"}
         initializeGame={async () => {}}
         isCleared={true}
+        missCount={2}
         score={20}
-        selectedNumberOfCards={[3, 4]}
+        selectedNumberOfCards={12}
       />
     );
 

@@ -3,29 +3,29 @@ import axios from "axios";
 export type GetGameScoreType = {
   createdAt: string;
   elapsedTimeMillis: number;
-  numberOfCard: number;
   gameScore: number;
   id: number;
   missCount: number;
+  numberOfCard: number;
   user: string;
 };
 
 export type PostGameScoreType = {
   elapsedTimeMillis: number;
-  numberOfCard: number;
-  gameMode: string;
+  gameModeId: number;
   gameScore: number;
   missCount: number;
+  numberOfCard: number;
   user: string;
 };
 
 export const getGameScores = async (
-  gameMode: string,
+  gameModeId: number,
   selectedNumberOfCard: number
 ): Promise<GetGameScoreType[]> => {
   const response = await axios.get(`/api/score`, {
     params: {
-      gameMode: gameMode,
+      gameModeId: gameModeId,
       numberOfCard: selectedNumberOfCard,
     },
   });

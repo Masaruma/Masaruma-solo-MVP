@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 class GameScoreController(private val gameScoreService: GameScoreService) {
   @GetMapping("/score")
   fun getModeScore(
-    @RequestParam gameMode: String,
+    @RequestParam gameModeId: Int,
     @RequestParam numberOfCard: Int,
   ): List<ResponseScore> {
-    return gameScoreService.getScore(gameMode, numberOfCard)
+    return gameScoreService.getScore(gameModeId, numberOfCard)
   }
 
   @ResponseStatus(HttpStatus.CREATED)
@@ -28,7 +28,6 @@ class GameScoreController(private val gameScoreService: GameScoreService) {
   fun postScore(
     @RequestBody requestData: RequestScore,
   ) {
-    println(requestData)
     gameScoreService.postScore(requestData)
   }
 }
