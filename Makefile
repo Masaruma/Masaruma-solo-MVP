@@ -12,4 +12,4 @@ docker-local-run:
  		   my-solo-app:latest
 
 lint:
-	cd backend && ./gradlew ./gradlew ktlintFormat
+	cd backend && ./gradlew ktlintFormat

@@ -1,14 +1,14 @@
 package com.example.backend.service
 
-import com.example.backend.model.GameLevel
 import com.example.backend.model.GameMode
+import com.example.backend.model.NumberOfCards
 import com.example.backend.model.RequestScore
 import com.example.backend.model.ResponseScore
 import com.example.backend.model.Score
 import com.example.backend.model.User
-import com.example.backend.repository.JPAGameLevelRepository
 import com.example.backend.repository.JPAGameModeRepository
 import com.example.backend.repository.JPAGameScoreRepository
+import com.example.backend.repository.JPANumberOfCardsRepository
 import com.example.backend.repository.JPAUserRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -33,19 +33,19 @@ class GameScoreServiceTest {
   private lateinit var gameModeRepository: JPAGameModeRepository
 
   @Autowired
-  private lateinit var gameLevelRepository: JPAGameLevelRepository
+  private lateinit var numberOfCardsRepository: JPANumberOfCardsRepository
 
   @BeforeEach
   fun setup() {
     gameScoreRepository.deleteAll()
     userRepository.deleteAll()
     gameModeRepository.deleteAll()
-    gameLevelRepository.deleteAll()
+    numberOfCardsRepository.deleteAll()
     gameScoreService =
       GameScoreServiceImpl(
         gameScoreRepository,
         gameModeRepository,
-        gameLevelRepository,
+        numberOfCardsRepository,
       )
   }
 
@@ -60,8 +60,14 @@ class GameScoreServiceTest {
         GameMode(gameName = "pokemon"),
       )
 
-    val gameLevel1 = gameLevelRepository.save(GameLevel(level = 12))
-    val gameLevel2 = gameLevelRepository.save(GameLevel(level = 20))
+    val numberOfCards1 =
+      numberOfCardsRepository.save(
+        NumberOfCards(numberOfCard = 12),
+      )
+    val numberOfCards2 =
+      numberOfCardsRepository.save(
+        NumberOfCards(numberOfCard = 20),
+      )
 
     // 2. Score を作成（irasutoyaモードのものと、別モードのもの）
     val score1 =
@@ -69,7 +75,7 @@ class GameScoreServiceTest {
         gameScore = 100,
         user = User(name = "Masaru"),
         gameMode = modeIrasutoya,
-        gameLevel = gameLevel1,
+        numberOfCards = numberOfCards1,
         elapsedTimeMillis = 1000,
         missCount = 10,
       )
@@ -78,7 +84,7 @@ class GameScoreServiceTest {
         gameScore = 50,
         user = User(name = "Masaru2"),
         gameMode = modePokemon,
-        gameLevel = gameLevel2,
+        numberOfCards = numberOfCards2,
         elapsedTimeMillis = 1000,
         missCount = 10,
       )
@@ -87,7 +93,7 @@ class GameScoreServiceTest {
         gameScore = 50,
         user = User(name = "Masaru3"),
         gameMode = modePokemon,
-        gameLevel = gameLevel1,
+        numberOfCards = numberOfCards1,
         elapsedTimeMillis = 1000,
         missCount = 10,
       )
@@ -104,7 +110,7 @@ class GameScoreServiceTest {
           createdAt = savedIrasutoya.createdAt,
           gameScore = savedIrasutoya.gameScore,
           user = savedIrasutoya.user.name,
-          gameLevel = savedIrasutoya.gameLevel.level,
+          numberOfCard = savedIrasutoya.numberOfCards.numberOfCard,
           elapsedTimeMillis = savedIrasutoya.elapsedTimeMillis,
           missCount = savedIrasutoya.missCount,
         ),
@@ -119,14 +125,14 @@ class GameScoreServiceTest {
   fun`postScoreを実行するとJPAGameScoreRepositoryを呼びデータが保存される`() {
     gameModeRepository.save(GameMode(gameName = "irasutoya"))
     gameModeRepository.save(GameMode(gameName = "pokemon"))
-    gameLevelRepository.save(GameLevel(level = 12))
+    numberOfCardsRepository.save(NumberOfCards(numberOfCard = 12))
 
     val saveAndExpectedData =
       RequestScore(
         user = "masaru",
         gameScore = 300,
         gameMode = "irasutoya",
-        gameLevel = "12",
+        numberOfCard = "12",
         elapsedTimeMillis = 1000,
         missCount = 10,
       )
@@ -148,8 +154,8 @@ class GameScoreServiceTest {
       actualResult.gameMode.gameName,
     )
     assertEquals(
-      saveAndExpectedData.gameLevel.toInt(),
-      actualResult.gameLevel.level,
+      saveAndExpectedData.numberOfCard.toInt(),
+      actualResult.numberOfCards.numberOfCard,
     )
   }
 }

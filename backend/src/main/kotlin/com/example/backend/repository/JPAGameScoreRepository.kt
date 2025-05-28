@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface JPAGameScoreRepository : JpaRepository<Score, Int> {
   // GameMode の gameName で検索
-  fun findByGameModeGameNameAndGameLevelLevel(
+  fun findByGameModeGameNameAndNumberOfCardsNumberOfCard(
     gameName: String,
-    level: Int,
+    numberOfCard: Int,
   ): List<Score>
 }

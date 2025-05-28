@@ -76,7 +76,7 @@ export const Ranking = ({ gameMode, selectedNumberOfCard }: RankingProps) => {
                   <td>{new Date(getGameScore.createdAt).toLocaleString()}</td>
                   <td>{getGameScore.user}</td>
                   <td>{getGameScore.gameScore}手</td>
-                  <td>{getGameScore.gameLevel}マス</td>
+                  <td>{getGameScore.numberOfCard}マス</td>
                   <td>{getGameScore.elapsedTimeMillis / 1000}秒</td>
                   <td>{getGameScore.missCount}ミス</td>
                 </tr>

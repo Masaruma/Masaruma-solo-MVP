@@ -1,3 +1,3 @@
 ALTER TABLE score
-    ADD COLUMN game_level_id INT,
-    ADD FOREIGN KEY (game_level_id) REFERENCES game_level(id);
+    ADD COLUMN number_of_cards_id INT,
+    ADD FOREIGN KEY (number_of_cards_id) REFERENCES number_of_cards(id);

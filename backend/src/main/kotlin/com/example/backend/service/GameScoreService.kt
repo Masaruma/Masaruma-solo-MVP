@@ -4,15 +4,15 @@ import com.example.backend.model.RequestScore
 import com.example.backend.model.ResponseScore
 import com.example.backend.model.Score
 import com.example.backend.model.User
-import com.example.backend.repository.JPAGameLevelRepository
 import com.example.backend.repository.JPAGameModeRepository
 import com.example.backend.repository.JPAGameScoreRepository
+import com.example.backend.repository.JPANumberOfCardsRepository
 import org.springframework.stereotype.Service
 
 interface GameScoreService {
   fun getScore(
     gameMode: String,
-    gameLevel: Int,
+    numberOfCard: Int,
   ): List<ResponseScore>
 
   fun postScore(requestData: RequestScore)
@@ -22,17 +22,17 @@ interface GameScoreService {
 class GameScoreServiceImpl(
   val gameScoreRepository: JPAGameScoreRepository,
   val gameModeRepository: JPAGameModeRepository,
-  val gameLevelRepository: JPAGameLevelRepository,
+  val gameLevelRepository: JPANumberOfCardsRepository,
 ) : GameScoreService {
   override fun getScore(
     gameMode: String,
-    gameLevel: Int,
+    numberOfCard: Int,
   ): List<ResponseScore> {
 //        todo gameLevelでもsocreリポジトリを取得する必要がある
     val getResult =
-      gameScoreRepository.findByGameModeGameNameAndGameLevelLevel(
+      gameScoreRepository.findByGameModeGameNameAndNumberOfCardsNumberOfCard(
         gameMode,
-        gameLevel,
+        numberOfCard,
       )
     val scoreEntityToResponseScore =
       getResult.map {
@@ -40,7 +40,7 @@ class GameScoreServiceImpl(
           id = it.id,
           createdAt = it.createdAt,
           gameScore = it.gameScore,
-          gameLevel = it.gameLevel.level,
+          numberOfCard = it.numberOfCards.numberOfCard,
           elapsedTimeMillis = it.elapsedTimeMillis,
           missCount = it.missCount,
           user = it.user.name,
@@ -57,15 +57,15 @@ class GameScoreServiceImpl(
         requestData.gameMode,
       )
     val nowGameLevel =
-      gameLevelRepository.findByLevel(
-        requestData.gameLevel.toInt(),
+      gameLevelRepository.findByNumberOfCard(
+        requestData.numberOfCard.toInt(),
       )
     gameScoreRepository.save(
       Score(
         gameScore = requestData.gameScore,
         user = User(name = requestData.user),
         gameMode = nowGameMode,
-        gameLevel = nowGameLevel,
+        numberOfCards = nowGameLevel,
         elapsedTimeMillis = requestData.elapsedTimeMillis,
         missCount = requestData.missCount,
       ),

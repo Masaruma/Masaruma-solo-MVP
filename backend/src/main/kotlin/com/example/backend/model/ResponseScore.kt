@@ -8,6 +8,6 @@ data class ResponseScore(
   val gameScore: Int,
   val elapsedTimeMillis: Int,
   val missCount: Int,
-  val gameLevel: Int,
+  val numberOfCard: Int,
   val user: String,
 )

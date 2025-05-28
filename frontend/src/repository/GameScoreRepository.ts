@@ -3,7 +3,7 @@ import axios from "axios";
 export type GetGameScoreType = {
   createdAt: string;
   elapsedTimeMillis: number;
-  gameLevel: number;
+  numberOfCard: number;
   gameScore: number;
   id: number;
   missCount: number;
@@ -12,7 +12,7 @@ export type GetGameScoreType = {
 
 export type PostGameScoreType = {
   elapsedTimeMillis: number;
-  gameLevel: number;
+  numberOfCard: number;
   gameMode: string;
   gameScore: number;
   missCount: number;
@@ -26,7 +26,7 @@ export const getGameScores = async (
   const response = await axios.get(`/api/score`, {
     params: {
       gameMode: gameMode,
-      gameLevel: selectedNumberOfCard,
+      numberOfCard: selectedNumberOfCard,
     },
   });
   return response.data;

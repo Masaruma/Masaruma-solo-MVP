@@ -1,4 +1,4 @@
-CREATE TABLE game_level (
+CREATE TABLE number_of_cards (
     id SERIAL PRIMARY KEY ,
-    level INT
+    number_of_card INT
 );

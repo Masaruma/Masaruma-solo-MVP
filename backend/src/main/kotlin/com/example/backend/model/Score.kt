@@ -35,6 +35,6 @@ data class Score(
   @JoinColumn(name = "game_mode_id")
   val gameMode: GameMode,
   @ManyToOne
-  @JoinColumn(name = "game_level_id")
-  val gameLevel: GameLevel,
+  @JoinColumn(name = "number_of_cards_id")
+  val numberOfCards: NumberOfCards,
 )

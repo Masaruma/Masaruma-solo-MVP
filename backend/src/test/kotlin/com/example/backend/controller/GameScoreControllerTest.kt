@@ -33,7 +33,7 @@ class GameScoreControllerTest {
           id = 1,
           createdAt = Instant.now(),
           gameScore = 200,
-          gameLevel = 12,
+          numberOfCard = 12,
           user = "testUser",
           elapsedTimeMillis = 1000,
           missCount = 10,
@@ -44,7 +44,7 @@ class GameScoreControllerTest {
       MockMvcRequestBuilders.get(
         "/api/score",
       ).param("gameMode", "irasutoya") // ?gameMode=irasutoya
-        .param("gameLevel", "12"),
+        .param("numberOfCard", "12"),
     ).andExpect(status().isOk)
 
     verify { gameScoreService.getScore("irasutoya", 12) }
@@ -62,10 +62,10 @@ class GameScoreControllerTest {
         {
             "user": "Masaru",
             "gameMode": "irasutoya",
-            "gameLevel": "12",
+            "numberOfCard": "12",
             "gameScore": 2,
             "elapsedTimeMillis" : 1000,
-            "missCount" : 10,
+            "missCount" : 10
         }
         """.trimIndent(),
       ),
@@ -78,7 +78,7 @@ class GameScoreControllerTest {
           user = "Masaru",
           gameMode = "irasutoya",
           gameScore = 2,
-          gameLevel = "12",
+          numberOfCard = "12",
           elapsedTimeMillis = 1000,
           missCount = 10,
         ),

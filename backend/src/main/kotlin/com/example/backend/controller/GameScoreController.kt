@@ -18,9 +18,9 @@ class GameScoreController(private val gameScoreService: GameScoreService) {
   @GetMapping("/score")
   fun getModeScore(
     @RequestParam gameMode: String,
-    @RequestParam gameLevel: Int,
+    @RequestParam numberOfCard: Int,
   ): List<ResponseScore> {
-    return gameScoreService.getScore(gameMode, gameLevel)
+    return gameScoreService.getScore(gameMode, numberOfCard)
   }
 
   @ResponseStatus(HttpStatus.CREATED)

@@ -5,7 +5,7 @@ data class RequestScore(
   val gameScore: Int,
   val elapsedTimeMillis: Int,
   val missCount: Int,
-  val gameLevel: String,
+  val numberOfCard: String,
   val gameMode: String,
   val user: String,
 )

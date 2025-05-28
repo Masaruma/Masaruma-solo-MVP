@@ -35,7 +35,7 @@ export const ScoreInput = ({
       user,
       gameMode: gameMode,
       gameScore: score,
-      gameLevel: selectedNumberOfCards,
+      numberOfCard: selectedNumberOfCards,
       elapsedTimeMillis: elapsedTimeMillis,
       missCount: missCount,
     });
