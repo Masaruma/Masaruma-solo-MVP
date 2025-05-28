@@ -4,26 +4,25 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
-import { calcGameLevel } from "@/utils/calcGameLevel.ts";
 
 interface InputProps {
-  cardRowsCols: [number, number];
   elapsedTimeMillis: number;
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
   missCount: number;
   score: number;
+  selectedNumberOfCards: number;
 }
 
 export const ScoreInput = ({
-  cardRowsCols,
   elapsedTimeMillis,
   gameMode,
   initializeGame,
   isCleared,
   missCount,
   score,
+  selectedNumberOfCards,
 }: InputProps) => {
   const nameInput = useRef<HTMLInputElement>(null);
   const postScore = async () => {
@@ -36,7 +35,7 @@ export const ScoreInput = ({
       user,
       gameMode: gameMode,
       gameScore: score,
-      gameLevel: calcGameLevel(cardRowsCols),
+      gameLevel: selectedNumberOfCards,
       elapsedTimeMillis: elapsedTimeMillis,
       missCount: missCount,
     });

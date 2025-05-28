@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import { calcGameLevel } from "@/utils/calcGameLevel.ts";
-
 export type GetGameScoreType = {
   createdAt: string;
   elapsedTimeMillis: number;
@@ -23,12 +21,12 @@ export type PostGameScoreType = {
 
 export const getGameScores = async (
   gameMode: string,
-  cardRowsCols: [number, number]
+  selectedNumberOfCard: number
 ): Promise<GetGameScoreType[]> => {
   const response = await axios.get(`/api/score`, {
     params: {
       gameMode: gameMode,
-      gameLevel: calcGameLevel(cardRowsCols),
+      gameLevel: selectedNumberOfCard,
     },
   });
   return response.data;

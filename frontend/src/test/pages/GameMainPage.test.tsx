@@ -50,7 +50,7 @@ vi.mock("@/hooks/useGameTimer.ts", () => ({
 }));
 
 const initialState: GameMainProps = {
-  cardRowsCols: [3, 4],
+  selectedNumberOfCard: 12,
   gameMode: "irasutoya",
 };
 const GameMain__test = ({
@@ -107,6 +107,7 @@ describe(`${GameMainPage.name}`, () => {
       "表のカード"
     );
   });
+
   it("カードが裏になると裏のクラスを持つ", () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -117,6 +118,7 @@ describe(`${GameMainPage.name}`, () => {
       "裏のカード"
     );
   });
+
   it("2枚表にし、失敗した場合カードは表から裏になる。", async () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -270,7 +272,7 @@ describe(`${GameMainPage.name}`, () => {
 
   it("失敗の最大値は引数に依存する", () => {
     const state: GameMainProps = {
-      cardRowsCols: [2, 2],
+      selectedNumberOfCard: 4,
       gameMode: "irasutoya",
     };
 
@@ -281,7 +283,7 @@ describe(`${GameMainPage.name}`, () => {
 
     cleanup();
     const state2: GameMainProps = {
-      cardRowsCols: [3, 2],
+      selectedNumberOfCard: 6,
       gameMode: "irasutoya",
     };
 
@@ -293,7 +295,7 @@ describe(`${GameMainPage.name}`, () => {
 
   it("失敗が規定数に達するとゲームオーバーになる", async () => {
     const state: GameMainProps = {
-      cardRowsCols: [2, 2],
+      selectedNumberOfCard: 4,
       gameMode: "irasutoya",
     };
 
@@ -340,14 +342,14 @@ describe(`${GameMainPage.name}`, () => {
   describe("gameTimer", () => {
     it("カードを枚数によってuseGameTimerの引数が変わる", async () => {
       const stubState: GameMainProps = {
-        cardRowsCols: [8, 4],
+        selectedNumberOfCard: 32,
         gameMode: "irasutoya",
       };
 
       render(<GameMain__test state={stubState} />);
 
       expect(useGameTimer).toHaveBeenCalledWith(
-        calcGameSeconds(stubState.cardRowsCols),
+        calcGameSeconds(stubState.selectedNumberOfCard),
         expect.any(Function)
       );
     });

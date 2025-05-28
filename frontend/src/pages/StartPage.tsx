@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { calcGameLevel } from "@/utils/calcGameLevel.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
 export const StartPage = () => {
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
-  const [cardRowsCols, setCardRowsCols] = useState<[number, number]>([0, 0]);
+  const [selectedNumberOfCard, setSelectedNumberOfCard] = useState<number>(0);
   const [gameStart, setGameStart] = useState({
     IsOkModeSelect: false,
     isOkNumberSelect: false,
@@ -21,32 +20,10 @@ export const StartPage = () => {
   const gameModeArray: GameModeType[] = ["irasutoya", "pokemon"];
 
   // カードの枚数が偶数、4〜100枚まで許容するサイズリスト（例）
-  const sizes: [number, number][] = [
-    [2, 2],
-    [2, 3],
-    [2, 4],
-    [2, 5],
-    [2, 6],
-    [2, 7],
-    [2, 8],
-    [2, 9],
-    [2, 10],
-    [4, 6],
-    [4, 7],
-    [4, 8],
-    [4, 9],
-    [4, 10],
-    [5, 10],
-    [6, 10],
-    [7, 10],
-    [8, 10],
-    [9, 10],
-    [10, 10],
+  const numberOfCardArray = [
+    ...Array.from({ length: (60 - 4) / 2 + 1 }, (_, i) => 4 + i * 2),
+    ...Array.from({ length: (100 - 60) / 10 }, (_, i) => 60 + (i + 1) * 10),
   ];
-  const gameSettingList = sizes.map((cols) => ({
-    cardRowsCols: cols,
-    numberOfCards: calcGameLevel(cols),
-  }));
 
   return (
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
@@ -77,11 +54,11 @@ export const StartPage = () => {
             マス目を選択してください
             <h6>10×10はポケモンのみ。</h6>
             <div className={"m-2.5 grid grid-cols-10 grid-rows-3 gap-2"}>
-              {gameSettingList.map((gameSetting) => (
+              {numberOfCardArray.map((numberOfCard) => (
                 <Button
-                  key={gameSetting.numberOfCards}
+                  key={numberOfCard}
                   onClick={() => {
-                    setCardRowsCols(gameSetting.cardRowsCols);
+                    setSelectedNumberOfCard(numberOfCard);
                     setGameStart({
                       IsOkModeSelect: true,
                       isOkNumberSelect: true,
@@ -89,13 +66,12 @@ export const StartPage = () => {
                   }}
                   size={"default"}
                   variant={
-                    calcGameLevel(cardRowsCols) ===
-                    calcGameLevel(gameSetting.cardRowsCols)
+                    selectedNumberOfCard === numberOfCard
                       ? "default"
                       : "secondary"
                   }
                 >
-                  {gameSetting.numberOfCards}枚
+                  {numberOfCard}枚
                 </Button>
               ))}
             </div>
@@ -103,11 +79,17 @@ export const StartPage = () => {
         )}
         {gameStart.isOkNumberSelect && (
           <>
-            <Ranking cardRowsCols={cardRowsCols} gameMode={gameMode} />
+            <Ranking
+              gameMode={gameMode}
+              selectedNumberOfCard={selectedNumberOfCard}
+            />
             <Button
               onClick={() => {
                 void navigate("/nervousbreakdown", {
-                  state: { gameMode, cardRowsCols },
+                  state: {
+                    gameMode,
+                    selectedNumberOfCard: selectedNumberOfCard,
+                  },
                 });
               }}
               size={"lg"}

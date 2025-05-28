@@ -6,7 +6,7 @@ import { irasutoyaImages } from "@/utils/irasutoyaImageArray.ts";
 // todo ここのテスト作成
 export const useInitializeGame = (
   gameMode: string,
-  cardRowsCols: [number, number]
+  selectedNumberOfCard: number
 ) => {
   const [cards, setCards] = useState<CardsWithMatchKeyType[]>([]);
   // ?randomな重複なしな数値をもった配列を生成するヘルパー関数 pokemon用
@@ -16,20 +16,20 @@ export const useInitializeGame = (
     const randoms: number[] = [];
     const min = 1,
       max = 1025;
-    const count = (cardRowsCols[0] * cardRowsCols[1]) / 2;
+    const count = selectedNumberOfCard / 2;
     while (randoms.length < count) {
       const tmp = intRandom(min, max);
       if (!randoms.includes(tmp)) randoms.push(tmp);
     }
     return randoms;
-  }, [cardRowsCols]);
+  }, [selectedNumberOfCard]);
 
   const initializeNervousBreakdownCards = useCallback(async () => {
     let images: CardImageType[] = [];
     if (gameMode === "irasutoya") {
       images = irasutoyaImages
         .sort(() => Math.random() - 0.5)
-        .slice(0, (cardRowsCols[0] * cardRowsCols[1]) / 2);
+        .slice(0, selectedNumberOfCard / 2);
     } else if (gameMode === "pokemon") {
       const randoms = randomArray();
       let i = 1;
@@ -90,7 +90,7 @@ export const useInitializeGame = (
       .sort(() => Math.random() - 0.5);
 
     setCards(shuffled);
-  }, [gameMode, cardRowsCols, randomArray]);
+  }, [gameMode, selectedNumberOfCard, randomArray]);
 
   const initializeGame = useCallback(async () => {
     await initializeNervousBreakdownCards();

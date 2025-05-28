@@ -81,7 +81,7 @@ describe("ルーティング関連", () => {
     // toBeはstrictEqual
     expect(history.location.state).toEqual({
       gameMode: "irasutoya",
-      cardRowsCols: [2, 6],
+      selectedNumberOfCard: 12,
     });
   });
 });

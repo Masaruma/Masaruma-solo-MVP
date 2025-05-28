@@ -16,12 +16,12 @@ describe(`ScoreInput.name`, () => {
   it("送信ボタンを押した時Repositoryのpostが呼ばれる。成功時のメッセージが表示される", async () => {
     render(
       <ScoreInput
-        cardRowsCols={[3, 4]}
         elapsedTimeMillis={1000}
         gameMode={"irasutoya"}
         initializeGame={async () => {}}
         isCleared={true}
         score={20}
+        selectedNumberOfCards={[3, 4]}
       />
     );
 

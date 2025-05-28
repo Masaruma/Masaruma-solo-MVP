@@ -5,13 +5,13 @@ import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 
 describe(`${useInitializeGame.name}`, () => {
   let stubGameMode = "irasutoya";
-  let stubCardRowsCols: [number, number] = [3, 4];
+  let stubSelectedNumberOfCard: number = 12;
   beforeEach(() => {
     vi.resetModules();
   });
   it("initializeGame関数を実行すると、引数cardRowsColsに戻り値cardsの枚数が連動している", () => {
     const { result } = renderHook(() =>
-      useInitializeGame(stubGameMode, stubCardRowsCols)
+      useInitializeGame(stubGameMode, stubSelectedNumberOfCard)
     );
     expect(result.current.cards.length).toBe(0);
 
@@ -29,7 +29,7 @@ describe(`${useInitializeGame.name}`, () => {
 
     const { useInitializeGame } = await import("@/hooks/useInitializeGame.ts");
     const { result } = renderHook(() =>
-      useInitializeGame(stubGameMode, stubCardRowsCols)
+      useInitializeGame(stubGameMode, stubSelectedNumberOfCard)
     );
 
     act(() => {
@@ -40,6 +40,6 @@ describe(`${useInitializeGame.name}`, () => {
   });
   it.skip("gameModeがpokemonの場合pokemonのカード情報を取得している", () => {
     let stubGameMode = "pokemon";
-    renderHook(() => useInitializeGame(stubGameMode, stubCardRowsCols));
+    renderHook(() => useInitializeGame(stubGameMode, stubSelectedNumberOfCard));
   });
 });

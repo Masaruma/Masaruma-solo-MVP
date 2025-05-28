@@ -11,11 +11,15 @@ import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
 import { GameModeType } from "@/pages/StartPage.tsx";
-import { calcGameSeconds, calcAllowMissCount } from "@/utils/calcGameLevel.ts";
+import {
+  calcGameSeconds,
+  calcAllowMissCount,
+  calcGridTemplateColumns,
+} from "@/utils/calcGameLevel.ts";
 
 export interface GameMainProps {
-  cardRowsCols: [number, number];
   gameMode: GameModeType;
+  selectedNumberOfCard: number;
 }
 
 export type CardImageType = {
@@ -29,11 +33,11 @@ export type CardsWithMatchKeyType = CardImageType & {
 
 export const GameMainPage = () => {
   const { state } = useLocation();
-  const { cardRowsCols, gameMode } = (state as GameMainProps) || {};
+  const { gameMode, selectedNumberOfCard } = (state as GameMainProps) || {};
 
   const { cards, initializeGame, setCards } = useInitializeGame(
     gameMode,
-    cardRowsCols
+    selectedNumberOfCard
   );
 
   const { isCleared, missCount, score, selectedCards, setSelectedCards } =
@@ -46,7 +50,7 @@ export const GameMainPage = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState<boolean>(false);
 
-  const gameTimer = useGameTimer(calcGameSeconds(cardRowsCols), () => {
+  const gameTimer = useGameTimer(calcGameSeconds(selectedNumberOfCard), () => {
     setIsGameOver(true);
   });
   const onCardClick = useCallback(() => {
@@ -63,10 +67,10 @@ export const GameMainPage = () => {
   }, [isCleared, gameTimer]);
 
   useEffect(() => {
-    if (missCount === calcAllowMissCount(cardRowsCols)) {
+    if (missCount === calcAllowMissCount(selectedNumberOfCard)) {
       setIsGameOver(true);
     }
-  }, [cardRowsCols, missCount]);
+  }, [selectedNumberOfCard, missCount]);
 
   return (
     <>
@@ -84,7 +88,7 @@ export const GameMainPage = () => {
           現在の手数:{score}
         </div>
         <div aria-label={"ミス回数"} className={"text-center text-2xl"}>
-          ミス回数:{missCount} / {calcAllowMissCount(cardRowsCols)}
+          ミス回数:{missCount} / {calcAllowMissCount(selectedNumberOfCard)}
         </div>
 
         <div
@@ -98,8 +102,8 @@ export const GameMainPage = () => {
             className={`w-fit gap-1`}
             style={{
               display: "grid",
-              gridTemplateColumns: `repeat(${cardRowsCols[1]}, 1fr)`,
-              gridTemplateRows: `repeat(${cardRowsCols[0]}, 1fr)`,
+              gridTemplateColumns: `repeat(${calcGridTemplateColumns(selectedNumberOfCard)}, 1fr)`,
+              // gridTemplateRows: `repeat(${selectedNumberOfCard[0]}, 1fr)`,
             }}
           >
             {cards.map((card) => (
@@ -117,13 +121,13 @@ export const GameMainPage = () => {
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
         <ScoreInput
-          cardRowsCols={cardRowsCols}
           elapsedTimeMillis={gameTimer.elapsedMilliseconds}
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}
           missCount={missCount}
           score={score}
+          selectedNumberOfCards={selectedNumberOfCard}
         />
       </DialogCustom>
     </>
