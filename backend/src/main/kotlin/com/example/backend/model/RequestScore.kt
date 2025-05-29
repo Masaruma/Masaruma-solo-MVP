@@ -7,6 +7,6 @@ data class RequestScore(
   val missCount: Int,
   val numberOfCard: String,
   val gameModeId: Int,
-  val gameLevel: String,
+  val gameLevelId: Int,
   val user: String,
 )

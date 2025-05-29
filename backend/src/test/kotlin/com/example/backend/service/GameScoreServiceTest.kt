@@ -1,11 +1,13 @@
 package com.example.backend.service
 
+import com.example.backend.model.GameLevels
 import com.example.backend.model.GameMode
 import com.example.backend.model.NumberOfCards
 import com.example.backend.model.RequestScore
 import com.example.backend.model.ResponseScore
 import com.example.backend.model.Score
 import com.example.backend.model.User
+import com.example.backend.repository.JPAGameLevelsRepository
 import com.example.backend.repository.JPAGameModeRepository
 import com.example.backend.repository.JPAGameScoreRepository
 import com.example.backend.repository.JPANumberOfCardsRepository
@@ -35,16 +37,20 @@ class GameScoreServiceTest {
   @Autowired
   private lateinit var numberOfCardsRepository: JPANumberOfCardsRepository
 
+  @Autowired
+  private lateinit var gameLevelsRepository: JPAGameLevelsRepository
+
   @BeforeEach
   fun setup() {
     gameScoreRepository.deleteAll()
     userRepository.deleteAll()
     gameModeRepository.deleteAll()
     numberOfCardsRepository.deleteAll()
+    gameLevelsRepository.deleteAll()
+
     gameScoreService =
       GameScoreServiceImpl(
         gameScoreRepository,
-        gameModeRepository,
         numberOfCardsRepository,
       )
   }
@@ -69,6 +75,9 @@ class GameScoreServiceTest {
         NumberOfCards(numberOfCard = 20),
       )
 
+    val level1 = gameLevelsRepository.save(GameLevels(gameLevel = "優しい"))
+    val level2 = gameLevelsRepository.save(GameLevels(gameLevel = "ふつう"))
+
     // 2. Score を作成（irasutoyaモードのものと、別モードのもの）
     val score1 =
       Score(
@@ -78,6 +87,7 @@ class GameScoreServiceTest {
         numberOfCards = numberOfCards1,
         elapsedTimeMillis = 1000,
         missCount = 10,
+        gameLevel = level1,
       )
     val score2 =
       Score(
@@ -87,19 +97,13 @@ class GameScoreServiceTest {
         numberOfCards = numberOfCards2,
         elapsedTimeMillis = 1000,
         missCount = 10,
+        gameLevel = level2,
+
       )
-    val score3 =
-      Score(
-        gameScore = 50,
-        user = User(name = "Masaru3"),
-        gameMode = modePokemon,
-        numberOfCards = numberOfCards1,
-        elapsedTimeMillis = 1000,
-        missCount = 10,
-      )
+
     val saveGameScoreResult =
       gameScoreRepository.saveAll(
-        listOf(score1, score2, score3),
+        listOf(score1, score2),
       )
 
     val savedIrasutoya = saveGameScoreResult[0]
@@ -116,7 +120,7 @@ class GameScoreServiceTest {
         ),
       )
 
-    val testResult = gameScoreService.getScore(1, 12)
+    val testResult = gameScoreService.getScore(1, 12, 1)
 
     assertEquals(expected, testResult)
   }
@@ -128,9 +132,10 @@ class GameScoreServiceTest {
         GameMode(gameName = "irasutoya"),
       )
 
-    gameModeRepository.save(GameMode(gameName = "irasutoya"))
+//    gameModeRepository.save(GameMode(gameName = "irasutoya"))
     gameModeRepository.save(GameMode(gameName = "pokemon"))
     numberOfCardsRepository.save(NumberOfCards(numberOfCard = 12))
+    val level1 = gameLevelsRepository.save(GameLevels(gameLevel = "優しい"))
 
     val saveAndExpectedData =
       RequestScore(
@@ -140,6 +145,7 @@ class GameScoreServiceTest {
         numberOfCard = "12",
         elapsedTimeMillis = 1000,
         missCount = 10,
+        gameLevelId = level1.id!!,
       )
 
     gameScoreService.postScore(saveAndExpectedData)
@@ -162,5 +168,7 @@ class GameScoreServiceTest {
       saveAndExpectedData.numberOfCard.toInt(),
       actualResult.numberOfCards.numberOfCard,
     )
+
+    assertEquals(saveAndExpectedData.gameLevelId, actualResult.gameLevel.id)
   }
 }

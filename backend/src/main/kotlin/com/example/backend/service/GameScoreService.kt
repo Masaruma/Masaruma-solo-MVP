@@ -1,11 +1,11 @@
 package com.example.backend.service
 
+import com.example.backend.model.GameLevels
 import com.example.backend.model.GameMode
 import com.example.backend.model.RequestScore
 import com.example.backend.model.ResponseScore
 import com.example.backend.model.Score
 import com.example.backend.model.User
-import com.example.backend.repository.JPAGameModeRepository
 import com.example.backend.repository.JPAGameScoreRepository
 import com.example.backend.repository.JPANumberOfCardsRepository
 import org.springframework.stereotype.Service
@@ -14,6 +14,7 @@ interface GameScoreService {
   fun getScore(
     gameModeId: Int,
     numberOfCard: Int,
+    gameLevelId: Int,
   ): List<ResponseScore>
 
   fun postScore(requestData: RequestScore)
@@ -22,18 +23,22 @@ interface GameScoreService {
 @Service
 class GameScoreServiceImpl(
   val gameScoreRepository: JPAGameScoreRepository,
-  val gameLevelRepository: JPANumberOfCardsRepository,
+  val numberOfCardsRepository: JPANumberOfCardsRepository,
 ) : GameScoreService {
   override fun getScore(
     gameModeId: Int,
     numberOfCard: Int,
+    gameLevelId: Int,
   ): List<ResponseScore> {
 //        todo gameLevelでもsocreリポジトリを取得する必要がある
+
     val getResult =
-      gameScoreRepository.findByGameModeIdAndNumberOfCardsNumberOfCard(
+      gameScoreRepository.findByGameModeIdAndGameLevelIdAndNumberOfCardsNumberOfCard(
         gameModeId,
+        gameLevelId,
         numberOfCard,
       )
+
     val scoreEntityToResponseScore =
       getResult.map {
         ResponseScore(
@@ -53,7 +58,7 @@ class GameScoreServiceImpl(
 
   override fun postScore(requestData: RequestScore) {
     val nowGameLevel =
-      gameLevelRepository.findByNumberOfCard(
+      numberOfCardsRepository.findByNumberOfCard(
         requestData.numberOfCard.toInt(),
       )
     gameScoreRepository.save(
@@ -64,6 +69,7 @@ class GameScoreServiceImpl(
         numberOfCards = nowGameLevel,
         elapsedTimeMillis = requestData.elapsedTimeMillis,
         missCount = requestData.missCount,
+        gameLevel = GameLevels(id = requestData.gameLevelId),
       ),
     )
   }
