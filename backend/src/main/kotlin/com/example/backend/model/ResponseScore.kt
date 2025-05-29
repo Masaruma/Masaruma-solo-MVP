@@ -10,4 +10,5 @@ data class ResponseScore(
   val missCount: Int,
   val numberOfCard: Int,
   val user: String,
+  val gameLevel: String,
 )
