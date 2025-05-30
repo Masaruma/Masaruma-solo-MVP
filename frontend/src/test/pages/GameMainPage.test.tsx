@@ -96,152 +96,189 @@ describe(`${GameMainPage.name}`, () => {
     expect(spyInitializeGame).toHaveBeenCalledTimes(1);
   });
 
-  it("カードが表になると表のクラスを持つ", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-    const firstCardComponet = cardArea.children[0];
-
-    await userEvent.click(cardArea.children[0]);
-
-    expect(firstCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "表のカード"
-    );
-  });
-
-  it("カードが裏になると裏のクラスを持つ", () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-
-    const firstCardComponet = cardArea.children[0];
-    expect(firstCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "裏のカード"
-    );
-  });
-
-  it("2枚表にし、失敗した場合カードは表から裏になる。", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-
-    const firstCardComponet = cardArea.children[0];
-    const secondCardComponet = cardArea.children[1];
-    await userEvent.click(firstCardComponet);
-    await userEvent.click(secondCardComponet);
-    expect(firstCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "表のカード"
-    );
-    expect(secondCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "表のカード"
-    );
-
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-
-    expect(firstCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "裏のカード"
-    );
-    expect(secondCardComponet.children[0]).toHaveAttribute(
-      "aria-label",
-      "裏のカード"
-    );
-  });
-
-  it("2枚表にし、成功した場合カードは表のままになる。", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-
-    const firstCardComponent = cardArea.children[0];
-    const thirdCardComponent = cardArea.children[2];
-
-    await userEvent.click(firstCardComponent);
-    await userEvent.click(thirdCardComponent);
-
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-
-    expect(firstCardComponent.children[0]).toHaveAttribute(
-      "aria-label",
-      "表のカード"
-    );
-    expect(thirdCardComponent.children[0]).toHaveAttribute(
-      "aria-label",
-      "表のカード"
-    );
-  });
-  describe("バグ挙動予防", () => {
-    it("クリックして表になっているカードをクリックしても何も起きない", async () => {
+  describe("神経衰弱のメイン動作", () => {
+    it("カードが表になると表のクラスを持つ", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const firstCardComponet = cardArea.children[0];
+
+      await userEvent.click(cardArea.children[0]);
+
+      expect(firstCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+    });
+
+    it("カードが裏になると裏のクラスを持つ", () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponet = cardArea.children[0];
+      expect(firstCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "裏のカード"
+      );
+    });
+
+    it("2枚表にし、失敗した場合1000ms後にカードは表から裏になる。", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponet = cardArea.children[0];
+      const secondCardComponet = cardArea.children[1];
+      await userEvent.click(firstCardComponet);
+      await userEvent.click(secondCardComponet);
+      expect(firstCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+      expect(secondCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      expect(firstCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "裏のカード"
+      );
+      expect(secondCardComponet.children[0]).toHaveAttribute(
+        "aria-label",
+        "裏のカード"
+      );
+    });
+    it("2枚表にし、失敗した場合、別のカードをクリックすると即時カードは表から裏になる。", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponent = cardArea.children[0];
+      const secondCardComponent = cardArea.children[1];
+      const thirdCardComponent = cardArea.children[2];
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(secondCardComponent);
+      expect(firstCardComponent.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+      expect(secondCardComponent.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+
+      await userEvent.click(thirdCardComponent);
+
+
+      expect(firstCardComponent.children[0]).toHaveAttribute(
+        "aria-label",
+        "裏のカード"
+      );
+      expect(secondCardComponent.children[0]).toHaveAttribute(
+        "aria-label",
+        "裏のカード"
+      );
+      expect(thirdCardComponent.children[0]).toHaveAttribute(
+        "aria-label",
+        "表のカード"
+      );
+    });
+
+    it("2枚表にし、成功した場合カードは表のままになる。", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
       const firstCardComponent = cardArea.children[0];
       const thirdCardComponent = cardArea.children[2];
 
       await userEvent.click(firstCardComponent);
-      await userEvent.click(firstCardComponent);
+      await userEvent.click(thirdCardComponent);
+
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
-      // アンチパターン 1枚目クリック1枚目クリック すると1枚目も3枚目も表に
-      // 良いパターン 1枚目クリック1枚目クリック すると1枚目だけ表
+
       expect(firstCardComponent.children[0]).toHaveAttribute(
         "aria-label",
         "表のカード"
       );
       expect(thirdCardComponent.children[0]).toHaveAttribute(
         "aria-label",
-        "裏のカード"
-      );
-    });
-
-    it("マッチして表になっているカードをクリックしても何も起きない", async () => {
-      render(<GameMain__test />);
-      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-      const firstCardComponent = cardArea.children[0];
-      const secondCardComponent = cardArea.children[1];
-      const thirdCardComponent = cardArea.children[2];
-
-      await userEvent.click(firstCardComponent);
-      await userEvent.click(thirdCardComponent);
-      act(() => {
-        vi.advanceTimersByTime(800);
-      });
-
-      await userEvent.click(firstCardComponent);
-      await userEvent.click(secondCardComponent);
-      act(() => {
-        vi.advanceTimersByTime(800);
-      });
-      expect(secondCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
         "表のカード"
       );
     });
-  });
 
-  it("全て表にするとゲームクリアになる", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+    it("全て表にするとゲームクリアになる", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
-    const cards = Array.from(cardArea.children);
-    await userEvent.click(cards[0]);
-    await userEvent.click(cards[2]);
+      const cards = Array.from(cardArea.children);
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
 
-    act(() => {
-      vi.advanceTimersByTime(800);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(cards[1]);
+      await userEvent.click(cards[3]);
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
     });
 
-    await userEvent.click(cards[1]);
-    await userEvent.click(cards[3]);
+    describe("バグ挙動予防", () => {
+      it("クリックして表になっているカードをクリックしても何も起きない", async () => {
+        render(<GameMain__test />);
+        const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+        const firstCardComponent = cardArea.children[0];
+        const thirdCardComponent = cardArea.children[2];
 
-    act(() => {
-      vi.advanceTimersByTime(800);
+        await userEvent.click(firstCardComponent);
+        await userEvent.click(firstCardComponent);
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+        // アンチパターン 1枚目クリック1枚目クリック すると1枚目も3枚目も表に
+        // 良いパターン 1枚目クリック1枚目クリック すると1枚目だけ表
+        expect(firstCardComponent.children[0]).toHaveAttribute(
+          "aria-label",
+          "表のカード"
+        );
+        expect(thirdCardComponent.children[0]).toHaveAttribute(
+          "aria-label",
+          "裏のカード"
+        );
+      });
+
+      it("マッチして表になっているカードをクリックしても何も起きない", async () => {
+        render(<GameMain__test />);
+        const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+        const firstCardComponent = cardArea.children[0];
+        const secondCardComponent = cardArea.children[1];
+        const thirdCardComponent = cardArea.children[2];
+
+        await userEvent.click(firstCardComponent);
+        await userEvent.click(thirdCardComponent);
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+
+        await userEvent.click(firstCardComponent);
+        await userEvent.click(secondCardComponent);
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+        expect(secondCardComponent.children[0]).toHaveAttribute(
+          "aria-label",
+          "表のカード"
+        );
+      });
     });
-    expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
   });
 
   describe("ミス回数", () => {
@@ -257,7 +294,7 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(firstCardComponent);
       await userEvent.click(secondCardComponent);
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
       expect(scoreNow).toHaveTextContent("1");
 
@@ -265,7 +302,7 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(thirdCardComponent);
 
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
       expect(scoreNow).toHaveTextContent("2");
     });
@@ -279,7 +316,7 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(cards[0]);
       await userEvent.click(cards[1]);
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
       expect(missCount).toHaveTextContent("1");
 
@@ -287,7 +324,7 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(cards[2]);
 
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
       expect(missCount).toHaveTextContent("1");
     });
@@ -359,14 +396,14 @@ describe(`${GameMainPage.name}`, () => {
         await userEvent.click(cards[0]);
         await userEvent.click(cards[1]);
         act(() => {
-          vi.advanceTimersByTime(800);
+          vi.advanceTimersByTime(1000);
         });
 
         await userEvent.click(cards[0]);
         await userEvent.click(cards[1]);
 
         act(() => {
-          vi.advanceTimersByTime(800);
+          vi.advanceTimersByTime(1000);
         });
         expect(screen.getByText("GAME OVER")).toBeInTheDocument();
       });
@@ -416,7 +453,7 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(cardArea.children[1]);
 
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
 
       expect(spyStart).toHaveBeenCalledTimes(1);
@@ -431,14 +468,14 @@ describe(`${GameMainPage.name}`, () => {
       await userEvent.click(cards[0]);
       await userEvent.click(cards[2]);
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
 
       // 次にクリック2枚目と4枚目
       await userEvent.click(cards[1]);
       await userEvent.click(cards[3]);
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(1000);
       });
 
       expect(spyPause).toHaveBeenCalled();

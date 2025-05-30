@@ -21,7 +21,11 @@ export const Card = ({
     // 同じカードが選択されたら、すでにマッチしているカードが追加されないように、別のカードなら選択stateに
     if (!selectedCards.includes(card) && !card.isMatched) {
       onCardClick();
-      setSelectedCards([...selectedCards, card]);
+      setSelectedCards(prev => {
+        // もしすでに2枚選択済みなら、一度リセットしてから新しいカードだけを追加
+        const cleared = prev.length === 2 ? [] : prev;
+        return [...cleared, card];
+      });
     }
   };
 

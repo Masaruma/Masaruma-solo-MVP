@@ -35,9 +35,11 @@ export const useNervousBreakdownLogic = (
   // 選択処理
   useEffect(() => {
     if (selectedCards.length === 2) {
-      setTimeout(() => setSelectedCards([]), 800);
       setScore((prev) => prev + 1);
       checkMatch();
+      const timeoutId = setTimeout(() => setSelectedCards([]), 1000);
+      return () => clearTimeout(timeoutId);
+
     }
   }, [selectedCards, checkMatch]);
 
