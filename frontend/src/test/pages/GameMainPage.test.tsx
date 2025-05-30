@@ -171,7 +171,6 @@ describe(`${GameMainPage.name}`, () => {
 
       await userEvent.click(thirdCardComponent);
 
-
       expect(firstCardComponent.children[0]).toHaveAttribute(
         "aria-label",
         "裏のカード"

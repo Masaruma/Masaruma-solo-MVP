@@ -1,16 +1,11 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
+import * as React from "react";
 
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 
 export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
-  setCards: Dispatch<SetStateAction<CardsWithMatchKeyType[]>>
+  setCards: React.Dispatch<React.SetStateAction<CardsWithMatchKeyType[]>>
 ) => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
@@ -39,7 +34,6 @@ export const useNervousBreakdownLogic = (
       checkMatch();
       const timeoutId = setTimeout(() => setSelectedCards([]), 1000);
       return () => clearTimeout(timeoutId);
-
     }
   }, [selectedCards, checkMatch]);
 
@@ -51,9 +45,18 @@ export const useNervousBreakdownLogic = (
     }
   }, [cards]);
 
+  const handleCardClick = (card: CardsWithMatchKeyType) => {
+    if (!selectedCards.includes(card) && !card.isMatched) {
+      setSelectedCards((prev) => {
+        const cleared = prev.length === 2 ? [] : prev;
+        return [...cleared, card];
+      });
+    }
+  };
+
   return {
     selectedCards,
-    setSelectedCards,
+    handleCardClick,
     score,
     isCleared,
     missCount,

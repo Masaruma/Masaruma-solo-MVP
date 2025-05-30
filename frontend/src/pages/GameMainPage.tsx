@@ -42,7 +42,7 @@ export const GameMainPage = () => {
     selectedNumberOfCard
   );
 
-  const { isCleared, missCount, score, selectedCards, setSelectedCards } =
+  const { handleCardClick, isCleared, missCount, score, selectedCards } =
     useNervousBreakdownLogic(cards, setCards);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const GameMainPage = () => {
       setIsGameOver(true);
     }
   );
-  const onCardClick = useCallback(() => {
+  const startWithCardClick = useCallback(() => {
     if (!isStarted) {
       setIsStarted(true);
       gameTimer.start();
@@ -121,10 +121,10 @@ export const GameMainPage = () => {
             {cards.map((card) => (
               <Card
                 card={card}
+                handleCardClick={handleCardClick}
                 key={card.idx}
-                onCardClick={onCardClick}
                 selectedCards={selectedCards}
-                setSelectedCards={setSelectedCards}
+                startWithCardClick={startWithCardClick}
               />
             ))}
           </div>

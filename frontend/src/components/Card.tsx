@@ -1,40 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
-
-interface CardProps {
-  card: CardsWithMatchKeyType;
-  onCardClick: () => void;
-  selectedCards: CardsWithMatchKeyType[];
-  setSelectedCards: Dispatch<SetStateAction<CardsWithMatchKeyType[]>>;
-}
 
 export const Card = ({
   card,
-  onCardClick,
+  handleCardClick,
   selectedCards,
-  setSelectedCards,
-}: CardProps) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const handleClick = () => {
-    // 同じカードが選択されたら、すでにマッチしているカードが追加されないように、別のカードなら選択stateに
-    if (!selectedCards.includes(card) && !card.isMatched) {
-      onCardClick();
-      setSelectedCards(prev => {
-        // もしすでに2枚選択済みなら、一度リセットしてから新しいカードだけを追加
-        const cleared = prev.length === 2 ? [] : prev;
-        return [...cleared, card];
-      });
-    }
-  };
-
-  useEffect(() => {
-    // 選んだカード表向きか裏向きか決定する
-    setIsFlipped(
-      selectedCards[0] === card || selectedCards[1] === card || card.isMatched
-    );
-  }, [selectedCards, card]);
+  startWithCardClick,
+}: {
+  card: CardsWithMatchKeyType;
+  handleCardClick: (card: CardsWithMatchKeyType) => void;
+  selectedCards: CardsWithMatchKeyType[];
+  startWithCardClick: () => void;
+}) => {
+  const isFlipped = selectedCards.includes(card) || card.isMatched;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- enterで押さないため
@@ -44,7 +21,10 @@ export const Card = ({
         bg-transparent
         max-sm:h-17.5 max-sm:w-[55px]
       `}
-      onClick={handleClick}
+      onClick={() => {
+        startWithCardClick();
+        handleCardClick(card);
+      }}
       role={"button"}
       tabIndex={0}
     >
