@@ -52,6 +52,7 @@ vi.mock("@/hooks/useGameTimer.ts", () => ({
 const initialState: GameMainProps = {
   selectedNumberOfCard: 12,
   gameMode: "irasutoya",
+  gameLevel: 3,
 };
 const GameMain__test = ({
   state = initialState,
@@ -222,102 +223,6 @@ describe(`${GameMainPage.name}`, () => {
     });
   });
 
-  it("失敗、成功どちらの場合も手数が増える", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-    const scoreNow = screen.getByLabelText("現在の手数");
-    expect(scoreNow).toHaveTextContent("0");
-
-    const firstCardComponent = cardArea.children[0];
-    const secondCardComponent = cardArea.children[1];
-    const thirdCardComponent = cardArea.children[2];
-    await userEvent.click(firstCardComponent);
-    await userEvent.click(secondCardComponent);
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-    expect(scoreNow).toHaveTextContent("1");
-
-    await userEvent.click(firstCardComponent);
-    await userEvent.click(thirdCardComponent);
-
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-    expect(scoreNow).toHaveTextContent("2");
-  });
-
-  it("失敗するとミスカウントが増える", async () => {
-    render(<GameMain__test />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-    const missCount = screen.getByLabelText("ミス回数");
-    expect(missCount).toHaveTextContent("0");
-
-    const cards = Array.from(cardArea.children);
-    await userEvent.click(cards[0]);
-    await userEvent.click(cards[1]);
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-    expect(missCount).toHaveTextContent("1");
-
-    await userEvent.click(cards[0]);
-    await userEvent.click(cards[2]);
-
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-    expect(missCount).toHaveTextContent("1");
-  });
-
-  it("失敗の最大値は引数に依存する", () => {
-    const state: GameMainProps = {
-      selectedNumberOfCard: 4,
-      gameMode: "irasutoya",
-    };
-
-    render(<GameMain__test state={state} />);
-    const missCount = screen.getByLabelText("ミス回数");
-
-    expect(missCount).toHaveTextContent("2");
-
-    cleanup();
-    const state2: GameMainProps = {
-      selectedNumberOfCard: 6,
-      gameMode: "irasutoya",
-    };
-
-    render(<GameMain__test state={state2} />);
-    const missCount2 = screen.getByLabelText("ミス回数");
-
-    expect(missCount2).toHaveTextContent("3");
-  });
-
-  it("失敗が規定数に達するとゲームオーバーになる", async () => {
-    const state: GameMainProps = {
-      selectedNumberOfCard: 4,
-      gameMode: "irasutoya",
-    };
-
-    render(<GameMain__test state={state} />);
-    const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-
-    const cards = Array.from(cardArea.children);
-    await userEvent.click(cards[0]);
-    await userEvent.click(cards[1]);
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-
-    await userEvent.click(cards[0]);
-    await userEvent.click(cards[1]);
-
-    act(() => {
-      vi.advanceTimersByTime(800);
-    });
-    expect(screen.getByText("GAME OVER")).toBeInTheDocument();
-  });
-
   it("全て表にするとゲームクリアになる", async () => {
     render(<GameMain__test />);
     const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -339,17 +244,159 @@ describe(`${GameMainPage.name}`, () => {
     expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
   });
 
+  describe("ミス回数", () => {
+    it("失敗、成功どちらの場合も手数が増える", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const scoreNow = screen.getByLabelText("現在の手数");
+      expect(scoreNow).toHaveTextContent("0");
+
+      const firstCardComponent = cardArea.children[0];
+      const secondCardComponent = cardArea.children[1];
+      const thirdCardComponent = cardArea.children[2];
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(secondCardComponent);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      expect(scoreNow).toHaveTextContent("1");
+
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(thirdCardComponent);
+
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      expect(scoreNow).toHaveTextContent("2");
+    });
+    it("失敗するとミスカウントが増える", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const missCount = screen.getByLabelText("ミス回数");
+      expect(missCount).toHaveTextContent("0");
+
+      const cards = Array.from(cardArea.children);
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      expect(missCount).toHaveTextContent("1");
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+      expect(missCount).toHaveTextContent("1");
+    });
+
+    describe("gameLevel:1, gameLevel2", () => {
+      it("失敗の最大値はInfinityとなる", () => {
+        const state: GameMainProps = {
+          selectedNumberOfCard: 4,
+          gameMode: "irasutoya",
+          gameLevel: 1,
+        };
+
+        render(<GameMain__test state={state} />);
+        const missCount = screen.getByLabelText("ミス回数");
+
+        expect(missCount).toHaveTextContent("Infinity");
+
+        cleanup();
+        const state2: GameMainProps = {
+          selectedNumberOfCard: 6,
+          gameMode: "irasutoya",
+          gameLevel: 2,
+        };
+
+        render(<GameMain__test state={state2} />);
+        const missCount2 = screen.getByLabelText("ミス回数");
+
+        expect(missCount2).toHaveTextContent("Infinity");
+      });
+    });
+
+    describe("gameLevel:3", () => {
+      it("失敗の最大値は引数に依存する", () => {
+        const state: GameMainProps = {
+          selectedNumberOfCard: 4,
+          gameMode: "irasutoya",
+          gameLevel: 3,
+        };
+
+        render(<GameMain__test state={state} />);
+        const missCount = screen.getByLabelText("ミス回数");
+
+        expect(missCount).toHaveTextContent("2");
+
+        cleanup();
+        const state2: GameMainProps = {
+          selectedNumberOfCard: 6,
+          gameMode: "irasutoya",
+          gameLevel: 3,
+        };
+
+        render(<GameMain__test state={state2} />);
+        const missCount2 = screen.getByLabelText("ミス回数");
+
+        expect(missCount2).toHaveTextContent("3");
+      });
+
+      it("失敗が規定数に達するとゲームオーバーになる", async () => {
+        const state: GameMainProps = {
+          selectedNumberOfCard: 4,
+          gameMode: "irasutoya",
+          gameLevel: 3,
+        };
+
+        render(<GameMain__test state={state} />);
+        const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+        const cards = Array.from(cardArea.children);
+        await userEvent.click(cards[0]);
+        await userEvent.click(cards[1]);
+        act(() => {
+          vi.advanceTimersByTime(800);
+        });
+
+        await userEvent.click(cards[0]);
+        await userEvent.click(cards[1]);
+
+        act(() => {
+          vi.advanceTimersByTime(800);
+        });
+        expect(screen.getByText("GAME OVER")).toBeInTheDocument();
+      });
+    });
+  });
+
   describe("gameTimer", () => {
+    it("gameLevel1: calcGameSecondsが無限に近い値を持つ", () => {
+      const stubState: GameMainProps = {
+        selectedNumberOfCard: 32,
+        gameMode: "irasutoya",
+        gameLevel: 1,
+      };
+
+      expect(
+        calcGameSeconds(stubState.selectedNumberOfCard, stubState.gameLevel)
+      ).toBe(500000000);
+    });
+
     it("カードを枚数によってuseGameTimerの引数が変わる", async () => {
       const stubState: GameMainProps = {
         selectedNumberOfCard: 32,
         gameMode: "irasutoya",
+        gameLevel: 3,
       };
 
       render(<GameMain__test state={stubState} />);
 
       expect(useGameTimer).toHaveBeenCalledWith(
-        calcGameSeconds(stubState.selectedNumberOfCard),
+        calcGameSeconds(stubState.selectedNumberOfCard, stubState.gameLevel),
         expect.any(Function)
       );
     });

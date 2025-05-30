@@ -7,19 +7,34 @@ import { Button } from "@/components/ui/button.tsx";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
+const gameLevelMap: Record<number, "優しい" | "ふつう" | "難しい"> = {
+  1: "優しい",
+  2: "ふつう",
+  3: "難しい",
+};
+
+const gameLevelIdMap: Record<"優しい" | "ふつう" | "難しい", number> = {
+  優しい: 1,
+  ふつう: 2,
+  難しい: 3,
+};
+
 export const StartPage = () => {
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
+  const [gameLevel, setGameLevel] = useState(1);
+
   const [selectedNumberOfCard, setSelectedNumberOfCard] = useState<number>(0);
   const [gameStart, setGameStart] = useState({
     IsOkModeSelect: false,
+    IsOkLevelSelect: false,
     isOkNumberSelect: false,
   });
 
   const navigate = useNavigate();
 
   const gameModeArray: GameModeType[] = ["irasutoya", "pokemon"];
+  const gameLevelArray = Object.values(gameLevelMap);
 
-  // カードの枚数が偶数、4〜100枚まで許容するサイズリスト（例）
   const numberOfCardArray = [
     ...Array.from({ length: (60 - 4) / 2 + 1 }, (_, i) => 4 + i * 2),
     ...Array.from({ length: (100 - 60) / 10 }, (_, i) => 60 + (i + 1) * 10),
@@ -29,27 +44,59 @@ export const StartPage = () => {
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
       <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
       <div className={"m-2.5 w-1/2"}>
-        モードを選択してください
-        <div className={"m-2.5 grid grid-cols-2 gap-2"}>
-          {gameModeArray.map((mode) => (
-            <Button
-              className={""}
-              key={mode}
-              onClick={() => {
-                setGameMode(mode);
-                setGameStart({
-                  IsOkModeSelect: true,
-                  isOkNumberSelect: false,
-                });
-              }}
-              size={"default"}
-              variant={gameMode === mode ? "default" : "secondary"}
-            >
-              {mode}
-            </Button>
-          ))}
+        <div aria-label={"ゲームの絵柄を選択"} className={"w-full"}>
+          モードを選択してください
+          <div className={"m-2.5 grid grid-cols-2 gap-2"}>
+            {gameModeArray.map((mode) => (
+              <Button
+                className={""}
+                key={mode}
+                onClick={() => {
+                  setGameMode(mode);
+                  setGameStart({
+                    IsOkModeSelect: true,
+                    IsOkLevelSelect: false,
+                    isOkNumberSelect: false,
+                  });
+                }}
+                size={"default"}
+                variant={gameMode === mode ? "default" : "secondary"}
+              >
+                {mode}
+              </Button>
+            ))}
+          </div>
         </div>
         {gameStart.IsOkModeSelect && (
+          <div aria-label={"ゲームの難易度を選択"} className={`w-full`}>
+            難易度を選択してください
+            <div className={"m-2.5 grid grid-cols-3 gap-2"}>
+              {gameLevelArray.map((level) => (
+                <Button
+                  className={""}
+                  key={level}
+                  onClick={() => {
+                    setGameLevel(gameLevelIdMap[level]);
+                    setGameStart({
+                      IsOkModeSelect: true,
+                      IsOkLevelSelect: true,
+                      isOkNumberSelect: false,
+                    });
+                  }}
+                  size={"default"}
+                  variant={
+                    gameLevel === gameLevelIdMap[level]
+                      ? "default"
+                      : "secondary"
+                  }
+                >
+                  {level}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+        {gameStart.IsOkLevelSelect && (
           <div aria-label={"カードの枚数を選択"} className={"w-full"}>
             マス目を選択してください
             <h6>10×10はポケモンのみ。</h6>
@@ -61,6 +108,7 @@ export const StartPage = () => {
                     setSelectedNumberOfCard(numberOfCard);
                     setGameStart({
                       IsOkModeSelect: true,
+                      IsOkLevelSelect: true,
                       isOkNumberSelect: true,
                     });
                   }}
@@ -80,6 +128,7 @@ export const StartPage = () => {
         {gameStart.isOkNumberSelect && (
           <>
             <Ranking
+              gameLevelId={gameLevel}
               gameMode={gameMode}
               selectedNumberOfCard={selectedNumberOfCard}
             />
@@ -87,6 +136,7 @@ export const StartPage = () => {
               onClick={() => {
                 void navigate("/nervousbreakdown", {
                   state: {
+                    gameLevel,
                     gameMode,
                     selectedNumberOfCard: selectedNumberOfCard,
                   },

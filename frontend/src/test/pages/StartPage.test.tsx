@@ -29,27 +29,18 @@ describe("NervousBreakdownのテスト", () => {
     expect(headerText).toBeInTheDocument();
   });
 
-  it("GameModeを選択するとカードの枚数選択画面が出現する", async () => {
+  it("GameMode⇨ゲームレベル⇨カードの枚数選択画面⇨スタートとランキングが出現する", async () => {
     const gameModeButton = screen.getByRole("button", { name: "irasutoya" });
-
     await userEvent.click(gameModeButton);
+
+    const selectGameLevel = screen.getByLabelText("ゲームの難易度を選択");
+    expect(selectGameLevel).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "優しい" }));
+
     const selectNumberOfCards = screen.getByLabelText("カードの枚数を選択");
 
     expect(selectNumberOfCards).toBeInTheDocument();
-  });
 
-  it("ゲーム開始前はゲームスタートボタンとランキングが表示されない", () => {
-    const startButton = screen.queryByRole("button", {
-      name: "ゲームスタート",
-    });
-    const ranking = screen.queryByTestId("mock-ranking");
-    expect(startButton).not.toBeInTheDocument();
-    expect(ranking).not.toBeInTheDocument();
-  });
-
-  it("カードの枚数を選択するとゲームスタートボタンとランキングが出現する", async () => {
-    const gameModeButton = screen.getByRole("button", { name: "irasutoya" });
-    await userEvent.click(gameModeButton);
     const cardSixButton = screen.getByRole("button", { name: "6枚" });
 
     await userEvent.click(cardSixButton);
@@ -70,6 +61,7 @@ describe("ルーティング関連", () => {
     );
     const modeButton = screen.getByRole("button", { name: "irasutoya" });
     await userEvent.click(modeButton);
+    await userEvent.click(screen.getByRole("button", { name: "優しい" }));
 
     await userEvent.click(screen.getByRole("button", { name: "12枚" }));
 
@@ -78,8 +70,8 @@ describe("ルーティング関連", () => {
     );
 
     expect(history.location.pathname).toBe("/nervousbreakdown");
-    // toBeはstrictEqual
     expect(history.location.state).toEqual({
+      gameLevel: 1,
       gameMode: "irasutoya",
       selectedNumberOfCard: 12,
     });

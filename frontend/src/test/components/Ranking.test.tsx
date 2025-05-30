@@ -11,7 +11,13 @@ describe("Ranking", () => {
     vi.spyOn(GameScoreRepository, "getGameScores").mockResolvedValue([]);
   });
   it("初期レンダリング時にrepositoryのgetを読んでいる", async () => {
-    render(<Ranking gameMode={"irasutoya"} selectedNumberOfCard={12} />);
+    render(
+      <Ranking
+        gameLevelId={1}
+        gameMode={"irasutoya"}
+        selectedNumberOfCard={12}
+      />
+    );
     await waitFor(() => {
       expect(GameScoreRepository.getGameScores).toHaveBeenCalledTimes(1);
     });

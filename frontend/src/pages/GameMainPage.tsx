@@ -18,6 +18,7 @@ import {
 } from "@/utils/calcGameLevel.ts";
 
 export interface GameMainProps {
+  gameLevel: number;
   gameMode: GameModeType;
   selectedNumberOfCard: number;
 }
@@ -33,7 +34,8 @@ export type CardsWithMatchKeyType = CardImageType & {
 
 export const GameMainPage = () => {
   const { state } = useLocation();
-  const { gameMode, selectedNumberOfCard } = (state as GameMainProps) || {};
+  const { gameLevel, gameMode, selectedNumberOfCard } =
+    (state as GameMainProps) || {};
 
   const { cards, initializeGame, setCards } = useInitializeGame(
     gameMode,
@@ -50,9 +52,12 @@ export const GameMainPage = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState<boolean>(false);
 
-  const gameTimer = useGameTimer(calcGameSeconds(selectedNumberOfCard), () => {
-    setIsGameOver(true);
-  });
+  const gameTimer = useGameTimer(
+    calcGameSeconds(selectedNumberOfCard, gameLevel),
+    () => {
+      setIsGameOver(true);
+    }
+  );
   const onCardClick = useCallback(() => {
     if (!isStarted) {
       setIsStarted(true);
@@ -67,10 +72,10 @@ export const GameMainPage = () => {
   }, [isCleared, gameTimer]);
 
   useEffect(() => {
-    if (missCount === calcAllowMissCount(selectedNumberOfCard)) {
+    if (missCount === calcAllowMissCount(selectedNumberOfCard, gameLevel)) {
       setIsGameOver(true);
     }
-  }, [selectedNumberOfCard, missCount]);
+  }, [selectedNumberOfCard, missCount, gameLevel]);
 
   return (
     <>
@@ -82,13 +87,20 @@ export const GameMainPage = () => {
       >
         <BreadcrumbWithCustomSeparator />
 
-        <GameTimer milliseconds={gameTimer.totalMilliseconds} />
+        <GameTimer
+          milliseconds={
+            gameLevel === 1
+              ? gameTimer.elapsedMilliseconds
+              : gameTimer.totalMilliseconds
+          }
+        />
         {/*<div> {gameTimer.elapsedMilliseconds}</div>*/}
         <div aria-label={"現在の手数"} className={"text-2l text-center"}>
           現在の手数:{score}
         </div>
         <div aria-label={"ミス回数"} className={"text-center text-2xl"}>
-          ミス回数:{missCount} / {calcAllowMissCount(selectedNumberOfCard)}
+          ミス回数:{missCount} /{" "}
+          {calcAllowMissCount(selectedNumberOfCard, gameLevel)}
         </div>
 
         <div
@@ -122,6 +134,7 @@ export const GameMainPage = () => {
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
         <ScoreInput
           elapsedTimeMillis={gameTimer.elapsedMilliseconds}
+          gameLevel={gameLevel}
           gameMode={gameMode}
           initializeGame={initializeGame}
           isCleared={isCleared}

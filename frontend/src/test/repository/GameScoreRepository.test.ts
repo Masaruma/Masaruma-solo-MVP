@@ -30,17 +30,18 @@ const stubPostRequestBody: PostGameScoreType = {
   numberOfCard: 4,
   user: "user",
   gameModeId: 2,
+  gameLevelId: 1,
 };
 
 describe("GameScoreRepository", () => {
   it("getGameScoresがaxiosを正しく呼び出している", async () => {
     vi.spyOn(axios, "get").mockResolvedValue(stubAxiosGetResponse);
 
-    await GameScoreRepository.getGameScores(1, 4);
+    await GameScoreRepository.getGameScores(1, 4, 1);
 
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toHaveBeenCalledWith("/api/score", {
-      params: { gameModeId: 1, numberOfCard: 4 },
+      params: { gameModeId: 1, numberOfCard: 4, gameLevelId: 1 },
     });
   });
 

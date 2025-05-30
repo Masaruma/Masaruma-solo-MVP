@@ -12,6 +12,7 @@ export type GetGameScoreType = {
 
 export type PostGameScoreType = {
   elapsedTimeMillis: number;
+  gameLevelId: number;
   gameModeId: number;
   gameScore: number;
   missCount: number;
@@ -21,12 +22,14 @@ export type PostGameScoreType = {
 
 export const getGameScores = async (
   gameModeId: number,
-  selectedNumberOfCard: number
+  selectedNumberOfCard: number,
+  gameLevelId: number
 ): Promise<GetGameScoreType[]> => {
   const response = await axios.get(`/api/score`, {
     params: {
       gameModeId: gameModeId,
       numberOfCard: selectedNumberOfCard,
+      gameLevelId: gameLevelId,
     },
   });
   return response.data;

@@ -5,11 +5,16 @@ import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
 
 interface RankingProps {
+  gameLevelId: number;
   gameMode: GameModeType;
   selectedNumberOfCard: number;
 }
 
-export const Ranking = ({ gameMode, selectedNumberOfCard }: RankingProps) => {
+export const Ranking = ({
+  gameLevelId,
+  gameMode,
+  selectedNumberOfCard,
+}: RankingProps) => {
   const [getGameScores, setGetGameScores] = useState<GetGameScoreType[]>([]);
 
   // !初回更新でランキングデータ取得 モード変更で描画変更
@@ -17,11 +22,12 @@ export const Ranking = ({ gameMode, selectedNumberOfCard }: RankingProps) => {
     void (async () => {
       const getScoreResult = await GameScoreRepository.getGameScores(
         gameMode === "irasutoya" ? 1 : 2,
-        selectedNumberOfCard
+        selectedNumberOfCard,
+        gameLevelId
       );
       setGetGameScores(getScoreResult);
     })();
-  }, [selectedNumberOfCard, gameMode]);
+  }, [selectedNumberOfCard, gameMode, gameLevelId]);
   return (
     <>
       <div

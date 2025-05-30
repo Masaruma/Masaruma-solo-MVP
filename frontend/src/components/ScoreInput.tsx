@@ -7,6 +7,7 @@ import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 
 interface InputProps {
   elapsedTimeMillis: number;
+  gameLevel: number;
   gameMode: GameModeType;
   initializeGame: () => Promise<void>;
   isCleared: boolean;
@@ -17,6 +18,7 @@ interface InputProps {
 
 export const ScoreInput = ({
   elapsedTimeMillis,
+  gameLevel,
   gameMode,
   initializeGame,
   isCleared,
@@ -38,6 +40,7 @@ export const ScoreInput = ({
       numberOfCard: selectedNumberOfCards,
       elapsedTimeMillis: elapsedTimeMillis,
       missCount: missCount,
+      gameLevelId: gameLevel,
     });
     if (responseStatus === 201) {
       alert("送信完了しました");

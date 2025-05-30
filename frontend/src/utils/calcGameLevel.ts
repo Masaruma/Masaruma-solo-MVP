@@ -1,9 +1,23 @@
-export const calcGameSeconds = (selectedNumberOfCard: number) => {
+export const calcGameSeconds = (
+  selectedNumberOfCard: number,
+  gameLevel: number
+) => {
+  if (gameLevel === 1) {
+    return 500000000;
+  }
+
   if (selectedNumberOfCard < 4) return 10;
   return 10 + ((selectedNumberOfCard - 4) / 2) * 10;
 };
 
-export const calcAllowMissCount = (selectedNumberOfCard: number) => {
+export const calcAllowMissCount = (
+  selectedNumberOfCard: number,
+  gameLevel: number
+) => {
+  if (gameLevel <= 2) {
+    return Infinity;
+  }
+
   return selectedNumberOfCard / 2;
 };
 
