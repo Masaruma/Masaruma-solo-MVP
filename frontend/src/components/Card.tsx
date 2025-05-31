@@ -26,31 +26,45 @@ export const Card = ({
         handleCardClick(card);
       }}
       role={"button"}
+      style={{
+        transformStyle: "preserve-3d",
+        transition: "transform 0.3s",
+        transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+      }}
       tabIndex={0}
     >
-      {isFlipped ? (
-        <div aria-label={"表のカード"} className={"bg-transparent"}>
-          <img
-            alt={""}
-            className={`
-              h-[158px] w-[130px] rounded-[10px] border-[0.15rem] border-solid
-              border-red-500 bg-white object-contain
-              max-sm:h-[70px] max-sm:w-[55px]
-            `}
-            src={card.img}
-          />
-        </div>
-      ) : (
-        <div
-          aria-label={"裏のカード"}
+      {/* 背面 */}
+      <div
+        aria-label={"裏のカード"}
+        className={`
+          absolute h-full w-full cursor-pointer
+          bg-[url('/images/illustkun-01476-back-of-cards.png')] bg-center
+          bg-no-repeat shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
+          bg-[length:150%]
+        `}
+        style={{
+          position: "absolute",
+          backfaceVisibility: "hidden",
+        }}
+      />
+      <div
+        aria-label={"表のカード"}
+        style={{
+          position: "absolute",
+          backfaceVisibility: "hidden",
+          transform: "rotateY(180deg)",
+        }}
+      >
+        <img
+          alt={""}
           className={`
-            absolute h-full w-full cursor-pointer
-            bg-[url('/images/illustkun-01476-back-of-cards.png')] bg-center
-            bg-no-repeat shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
-            bg-[length:150%]
+            h-[158px] w-[130px] rounded-[10px] border-[0.15rem] border-solid
+            border-red-500 bg-white object-contain
+            max-sm:h-[70px] max-sm:w-[55px]
           `}
+          src={card.img}
         />
-      )}
+      </div>
     </div>
   );
 };

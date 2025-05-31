@@ -32,7 +32,7 @@ export const useNervousBreakdownLogic = (
     if (selectedCards.length === 2) {
       setScore((prev) => prev + 1);
       checkMatch();
-      const timeoutId = setTimeout(() => setSelectedCards([]), 1000);
+      const timeoutId = setTimeout(() => setSelectedCards([]), 800);
       return () => clearTimeout(timeoutId);
     }
   }, [selectedCards, checkMatch]);

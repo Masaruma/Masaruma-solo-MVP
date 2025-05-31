@@ -97,17 +97,18 @@ describe(`${GameMainPage.name}`, () => {
   });
 
   describe("神経衰弱のメイン動作", () => {
-    it("カードが表になると表のクラスを持つ", async () => {
+    it("クリックすると transform が rotateY(180deg) になり、カードが表向きになる", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-      const firstCardComponet = cardArea.children[0];
+      const firstCardComponent = cardArea.children[0] as HTMLElement;
 
-      await userEvent.click(cardArea.children[0]);
+      // まず初期状態では transform: "rotateY(0deg)"
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
 
-      expect(firstCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
+      // クリックして isFlipped=true にする
+      await userEvent.click(firstCardComponent);
+      // JSDOM では setTimeout やアニメーション不要。クリック直後に style.transform が更新されるはず
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
     });
 
     it("カードが裏になると裏のクラスを持つ", () => {
@@ -115,10 +116,7 @@ describe(`${GameMainPage.name}`, () => {
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
 
       const firstCardComponet = cardArea.children[0];
-      expect(firstCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "裏のカード"
-      );
+      expect(firstCardComponet).toHaveStyle({ transform: "rotateY(0deg)" });
     });
 
     it("2枚表にし、失敗した場合1000ms後にカードは表から裏になる。", async () => {
@@ -129,27 +127,15 @@ describe(`${GameMainPage.name}`, () => {
       const secondCardComponet = cardArea.children[1];
       await userEvent.click(firstCardComponet);
       await userEvent.click(secondCardComponet);
-      expect(firstCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
-      expect(secondCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
+      expect(firstCardComponet).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(secondCardComponet).toHaveStyle({ transform: "rotateY(180deg)" });
 
       act(() => {
         vi.advanceTimersByTime(1000);
       });
 
-      expect(firstCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "裏のカード"
-      );
-      expect(secondCardComponet.children[0]).toHaveAttribute(
-        "aria-label",
-        "裏のカード"
-      );
+      expect(firstCardComponet).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(secondCardComponet).toHaveStyle({ transform: "rotateY(0deg)" });
     });
     it("2枚表にし、失敗した場合、別のカードをクリックすると即時カードは表から裏になる。", async () => {
       render(<GameMain__test />);
@@ -160,29 +146,14 @@ describe(`${GameMainPage.name}`, () => {
       const thirdCardComponent = cardArea.children[2];
       await userEvent.click(firstCardComponent);
       await userEvent.click(secondCardComponent);
-      expect(firstCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
-      expect(secondCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
 
       await userEvent.click(thirdCardComponent);
 
-      expect(firstCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "裏のカード"
-      );
-      expect(secondCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "裏のカード"
-      );
-      expect(thirdCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
     });
 
     it("2枚表にし、成功した場合カードは表のままになる。", async () => {
@@ -199,14 +170,8 @@ describe(`${GameMainPage.name}`, () => {
         vi.advanceTimersByTime(1000);
       });
 
-      expect(firstCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
-      expect(thirdCardComponent.children[0]).toHaveAttribute(
-        "aria-label",
-        "表のカード"
-      );
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
     });
 
     it("全て表にするとゲームクリアになる", async () => {
@@ -244,14 +209,10 @@ describe(`${GameMainPage.name}`, () => {
         });
         // アンチパターン 1枚目クリック1枚目クリック すると1枚目も3枚目も表に
         // 良いパターン 1枚目クリック1枚目クリック すると1枚目だけ表
-        expect(firstCardComponent.children[0]).toHaveAttribute(
-          "aria-label",
-          "表のカード"
-        );
-        expect(thirdCardComponent.children[0]).toHaveAttribute(
-          "aria-label",
-          "裏のカード"
-        );
+        expect(firstCardComponent).toHaveStyle({
+          transform: "rotateY(180deg)",
+        });
+        expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
       });
 
       it("マッチして表になっているカードをクリックしても何も起きない", async () => {
@@ -272,10 +233,9 @@ describe(`${GameMainPage.name}`, () => {
         act(() => {
           vi.advanceTimersByTime(1000);
         });
-        expect(secondCardComponent.children[0]).toHaveAttribute(
-          "aria-label",
-          "表のカード"
-        );
+        expect(secondCardComponent).toHaveStyle({
+          transform: "rotateY(180deg)",
+        });
       });
     });
   });
