@@ -7,6 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+dist/
+dist/index.html
+dist/assets
+dist/images
+build/
+
 node_modules
 /
 *.local
@@ -21,7 +27,3 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
-
-dist/
-dist/index.html
-dist/assets

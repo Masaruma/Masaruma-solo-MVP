@@ -129,15 +129,14 @@ out
 .yarn/install-state.gz
 .pnp.*
 
-
+dist/
+frontend/dist/
+frontend/dist/assets
+frontend/dist/images
+.DS_Store
 
 public
 passport.js
 
 .idea
 
-dist/
-frontend/dist/
-frontend/dist/assets
-frontend/dist/images
-.DS_Store

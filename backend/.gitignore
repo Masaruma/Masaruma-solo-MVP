@@ -45,3 +45,9 @@ out/
 .env
 
 .DS_Store
+
+frontend/dist/
+dist/
+dist/index.html
+dist/assets
+dist/images
