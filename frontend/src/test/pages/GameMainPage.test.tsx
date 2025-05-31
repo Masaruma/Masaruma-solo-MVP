@@ -493,7 +493,7 @@ describe(`${GameMainPage.name}`, () => {
       });
       // 通知が表示される
       expect(
-          await screen.findByText("カードがシャッフルされます！")
+        await screen.findByText("カードがシャッフルされます！")
       ).toBeInTheDocument();
     });
 
@@ -507,7 +507,7 @@ describe(`${GameMainPage.name}`, () => {
       render(<GameMain__test state={state} />);
 
       const cards = await screen.findAllByRole("button");
-      
+
       // 2枚クリックしてシャッフルを発生させる
       await userEvent.click(cards[0]);
       await userEvent.click(cards[1]);
@@ -529,13 +529,15 @@ describe(`${GameMainPage.name}`, () => {
       render(<GameMain__test state={state} />);
 
       const cards = await screen.findAllByRole("button");
-      
+
       // 2枚クリック
       await userEvent.click(cards[0]);
       await userEvent.click(cards[1]);
 
       // シャッフル通知が表示されないことを確認
-      expect(screen.queryByText("カードがシャッフルされます！")).not.toBeInTheDocument();
+      expect(
+        screen.queryByText("カードがシャッフルされます！")
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -595,5 +597,4 @@ describe(`${GameMainPage.name}`, () => {
       expect(cardArea).toHaveStyle({ pointerEvents: "none" });
     });
   });
-
 });
