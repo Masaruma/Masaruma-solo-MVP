@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { useNervousBreakdownLogic } from "./useNervousBreakdownLogic.ts";
+import { useNervousBreakdownLogic } from "../../hooks/useNervousBreakdownLogic.ts";
 
 describe("useNervousBreakdownLogic", () => {
   const mockCards = [
