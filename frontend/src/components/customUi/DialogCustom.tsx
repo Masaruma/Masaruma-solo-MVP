@@ -12,6 +12,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog.tsx";
 
+// reloadPage関数をexport
+export const reloadPage = () => window.location.reload();
+
 export const DialogCustom = ({
   children,
   dialogTitle,
@@ -21,13 +24,19 @@ export const DialogCustom = ({
   dialogTitle: string;
   isOpen: boolean;
 }) => {
+  const handleRetry = () => {
+    reloadPage();
+  };
+
   return (
     <Dialog open={isOpen}>
       <CustomDialogContent className={"sm:max-w-[425px]"}>
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
-            homeに戻るかリスタートしてください
+            {dialogTitle === "GAME OVER" &&
+              "残念でした。リトライしてみましょう。"}
+            {dialogTitle === "GAME CLEAR" && "おめでとうございます！"}
           </DialogDescription>
         </DialogHeader>
         <div className={"grid gap-4 py-4"}>
@@ -35,6 +44,9 @@ export const DialogCustom = ({
           {children}
         </div>
         <DialogFooter>
+          <Button onClick={handleRetry} variant={"default"}>
+            リトライ
+          </Button>
           <Button type={"button"}>
             <Link to={"/"}>HOMEへ</Link>
           </Button>

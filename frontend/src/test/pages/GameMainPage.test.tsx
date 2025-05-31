@@ -597,4 +597,43 @@ describe(`${GameMainPage.name}`, () => {
       expect(cardArea).toHaveStyle({ pointerEvents: "none" });
     });
   });
+
+  describe("モーダル", () => {
+    it("リトライボタンをクリックするとページがリロードされる", async () => {
+      const reloadMock = vi.fn();
+      vi.stubGlobal("location", {
+        ...window.location,
+        reload: reloadMock,
+      });
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      // 全てのカードをマッチさせる
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(cards[1]);
+      await userEvent.click(cards[3]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      // ゲームクリア状態を確認
+      expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
+
+      // リトライボタンを取得
+      const retryButton = screen.getByRole("button", { name: "リトライ" });
+      await userEvent.click(retryButton);
+
+      // reloadPageが呼ばれたことを確認
+      expect(reloadMock).toHaveBeenCalled();
+
+      vi.unstubAllGlobals();
+      reloadMock.mockReset();
+    });
+  });
 });
