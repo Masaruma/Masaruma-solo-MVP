@@ -43,3 +43,5 @@ out/
 #src/**/static/
 
 .env
+
+.DS_Store

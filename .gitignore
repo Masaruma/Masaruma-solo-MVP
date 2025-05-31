@@ -137,3 +137,7 @@ passport.js
 .idea
 
 dist/
+frontend/dist/
+frontend/dist/assets
+frontend/dist/images
+.DS_Store
