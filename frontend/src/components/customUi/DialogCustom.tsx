@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog.tsx";
 
 // reloadPage関数をexport
-export const reloadPage = () => window.location.reload();
+const reloadPage = () => window.location.reload();
 
 export const DialogCustom = ({
   children,

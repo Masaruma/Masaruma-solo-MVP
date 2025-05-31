@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { useGameSound } from "@/hooks/useGameSound.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -35,6 +36,7 @@ export const StartPage = () => {
     IsOkLevelSelect: false,
     isOkNumberSelect: false,
   });
+  const gameSound = useGameSound();
 
   const navigate = useNavigate();
 
@@ -58,6 +60,7 @@ export const StartPage = () => {
                 className={""}
                 key={mode}
                 onClick={() => {
+                  gameSound.playClick();
                   setGameMode(mode);
                   setGameStart({
                     IsOkModeSelect: true,
@@ -82,6 +85,8 @@ export const StartPage = () => {
                   className={""}
                   key={level}
                   onClick={() => {
+                    gameSound.playClick();
+
                     setGameLevel(gameLevelIdMap[level]);
                     setGameStart({
                       IsOkModeSelect: true,
@@ -111,6 +116,8 @@ export const StartPage = () => {
                 <Button
                   key={numberOfCard}
                   onClick={() => {
+                    gameSound.playClick();
+
                     setSelectedNumberOfCard(numberOfCard);
                     setGameStart({
                       IsOkModeSelect: true,
@@ -140,6 +147,8 @@ export const StartPage = () => {
             />
             <Button
               onClick={() => {
+                gameSound.playClick();
+
                 void navigate("/nervousbreakdown", {
                   state: {
                     gameLevel,

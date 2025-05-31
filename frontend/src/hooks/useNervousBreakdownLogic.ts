@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
+import {useGameSound} from "@/hooks/useGameSound.ts";
 
 export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
@@ -17,6 +18,8 @@ export const useNervousBreakdownLogic = (
   const [isShowReverseNotification, setIsShowReverseNotification] =
     useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
+
+  const gameSound = useGameSound()
 
   // カードのシャッフル処理
   const shuffleCardsPercent = useCallback(
@@ -44,15 +47,18 @@ export const useNervousBreakdownLogic = (
   // １枚目のカードと2枚目のカードのマッチ判定
   const checkMatch = useCallback(() => {
     if (selectedCards[0].id === selectedCards[1].id) {
+      setTimeout(gameSound.playSuccess,300)
+
       setCards((prevCards) =>
         prevCards.map((card) =>
           card.id === selectedCards[0].id ? { ...card, isMatched: true } : card
         )
       );
     } else if (selectedCards[0].id !== selectedCards[1].id) {
+      setTimeout(gameSound.playFailed,300)
       setMissCount((prev) => prev + 1);
     }
-  }, [selectedCards, setCards]);
+  }, [gameSound.playFailed, gameSound.playSuccess, selectedCards, setCards]);
 
   // 選択処理
   useEffect(() => {
@@ -76,8 +82,9 @@ export const useNervousBreakdownLogic = (
     if (cards.length === 0) return;
     if (cards.every((card) => card.isMatched)) {
       setIsCleared(true);
+      // gameSound.playClear()
     }
-  }, [cards]);
+  }, [cards, gameSound]);
 
   const handleCardClick = (card: CardsWithMatchKeyType) => {
     if (isShuffling) return; // シャッフル中はクリックを無効化
