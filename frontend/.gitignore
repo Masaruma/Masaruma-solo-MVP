@@ -21,3 +21,7 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+
+dist/
+dist/index.html
+dist/assets

@@ -76,7 +76,7 @@ solo-MVP-ソロ神経衰弱
 DBを作成するためにコンテナを起動します
 
 ```
-docker compose up -d
+make docker-compose-up:
 ```
 
 #### バックエンドの起動
@@ -98,7 +98,7 @@ http://localhost:5173/ にアクセスし、神経衰弱ゲームが表示され
 上記の手順ができない場合
 ルートディレクトリで下記コマンドを実行
 ```
-docker compose up -d
+make docker-compose-up:
 make docker-build
 make docker-local-run
 ```

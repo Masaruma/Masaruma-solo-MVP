@@ -135,3 +135,5 @@ public
 passport.js
 
 .idea
+
+dist/

@@ -17,6 +17,7 @@ describe(`ScoreInput.name`, () => {
     render(
       <ScoreInput
         elapsedTimeMillis={1000}
+        gameLevel={1}
         gameMode={"irasutoya"}
         initializeGame={async () => {}}
         isCleared={true}
