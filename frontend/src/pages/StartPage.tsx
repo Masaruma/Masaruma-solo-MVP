@@ -7,16 +7,22 @@ import { Button } from "@/components/ui/button.tsx";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
-const gameLevelMap: Record<number, "優しい" | "ふつう" | "難しい"> = {
-  1: "優しい",
-  2: "ふつう",
-  3: "難しい",
-};
+const gameLevelMap: Record<number, "優しい" | "ふつう" | "難しい" | "超難関"> =
+  {
+    1: "優しい",
+    2: "ふつう",
+    3: "難しい",
+    5: "超難関",
+  };
 
-const gameLevelIdMap: Record<"優しい" | "ふつう" | "難しい", number> = {
+const gameLevelIdMap: Record<
+  "優しい" | "ふつう" | "難しい" | "超難関",
+  number
+> = {
   優しい: 1,
   ふつう: 2,
   難しい: 3,
+  超難関: 5,
 };
 
 export const StartPage = () => {

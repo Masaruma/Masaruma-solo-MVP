@@ -37,7 +37,7 @@ export const Card = ({
       <div
         aria-label={"裏のカード"}
         className={`
-          absolute h-full w-full cursor-pointer
+          absolute h-full w-full
           bg-[url('/images/illustkun-01476-back-of-cards.png')] bg-center
           bg-no-repeat shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
           bg-[length:150%]

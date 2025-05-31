@@ -6,6 +6,7 @@ import { Card } from "@/components/Card.tsx";
 import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
 import { DialogCustom } from "@/components/customUi/DialogCustom.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
+import { Notification } from "@/components/Notification.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
 import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
@@ -42,8 +43,14 @@ export const GameMainPage = () => {
     selectedNumberOfCard
   );
 
-  const { handleCardClick, isCleared, missCount, score, selectedCards } =
-    useNervousBreakdownLogic(cards, setCards);
+  const {
+    handleCardClick,
+    isCleared,
+    isShowReverseNotification,
+    missCount,
+    score,
+    selectedCards,
+  } = useNervousBreakdownLogic(cards, setCards, gameLevel);
 
   useEffect(() => {
     void initializeGame();
@@ -94,7 +101,12 @@ export const GameMainPage = () => {
               : gameTimer.totalMilliseconds
           }
         />
-        {/*<div> {gameTimer.elapsedMilliseconds}</div>*/}
+        {isShowReverseNotification && (
+          <Notification
+            duration={2000}
+            message={"カードがシャッフルされます！"}
+          />
+        )}
         <div aria-label={"現在の手数"} className={"text-2l text-center"}>
           現在の手数:{score}
         </div>
