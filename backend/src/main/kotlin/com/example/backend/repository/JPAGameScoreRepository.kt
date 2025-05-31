@@ -13,6 +13,6 @@ interface JPAGameScoreRepository : JpaRepository<Score, Int> {
   fun findByGameModeIdAndGameLevelIdAndNumberOfCardsNumberOfCard(
     gameModeId: Int,
     gameLevelId: Int,
-    numberOfCard: Int
+    numberOfCard: Int,
   ): List<Score>
 }

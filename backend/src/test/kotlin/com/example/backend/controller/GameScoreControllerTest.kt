@@ -28,6 +28,7 @@ class GameScoreControllerTest {
 
   @Autowired
   private lateinit var objectMapper: ObjectMapper
+
   @Test
   fun `getModeScoreが呼ばれたときOKを返しserviceのgetScoreを呼んでいること`() {
     every { gameScoreService.getScore(any(), any(), any()) } returns
@@ -58,15 +59,16 @@ class GameScoreControllerTest {
   fun `postModeScoreが呼ばれた時Createdを返しserviceのpostScoreを読んでいること`() {
     every { gameScoreService.postScore(any()) } returns Unit
 
-    val request = RequestScore(
-      user = "Masaru",
-      gameModeId = 1,
-      gameScore = 2,
-      numberOfCard = "12",
-      elapsedTimeMillis = 1000,
-      missCount = 10,
-      gameLevelId = 1
-    )
+    val request =
+      RequestScore(
+        user = "Masaru",
+        gameModeId = 1,
+        gameScore = 2,
+        numberOfCard = "12",
+        elapsedTimeMillis = 1000,
+        missCount = 10,
+        gameLevelId = 1,
+      )
     val json = objectMapper.writeValueAsString(request)
 
     mockMvc.perform(

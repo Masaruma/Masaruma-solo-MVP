@@ -21,7 +21,7 @@ class GameScoreController(private val gameScoreService: GameScoreService) {
     @RequestParam numberOfCard: Int,
     @RequestParam gameLevelId: Int,
   ): List<ResponseScore> {
-    return gameScoreService.getScore(gameModeId, numberOfCard,gameLevelId)
+    return gameScoreService.getScore(gameModeId, numberOfCard, gameLevelId)
   }
 
   @ResponseStatus(HttpStatus.CREATED)

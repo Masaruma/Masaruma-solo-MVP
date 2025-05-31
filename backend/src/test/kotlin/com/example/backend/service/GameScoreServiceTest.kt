@@ -98,7 +98,6 @@ class GameScoreServiceTest {
         elapsedTimeMillis = 1000,
         missCount = 10,
         gameLevel = level2,
-
       )
 
     val saveGameScoreResult =
