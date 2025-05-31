@@ -19,30 +19,27 @@ export const useNervousBreakdownLogic = (
   const [isShuffling, setIsShuffling] = useState(false);
 
   // カードのシャッフル処理
-  const shuffleCards = useCallback(() => {
-    if (gameLevel !== 5) return;
-    setIsShuffling(true);
+  const shuffleCardsPercent = useCallback(
+    (percent: number) => {
+      if (Math.random() > percent) return;
+      setIsShuffling(true);
 
-    setIsShowReverseNotification(true);
-    setTimeout(() => {
-      setCards((prevCards) => {
-        // マッチしていないカードのみをシャッフル対象とする
-        // const unmatchedCards = prevCards.filter(card => !card.isMatched);
-        // const matchedCards = prevCards.filter(card => card.isMatched);
-
-        // フィッシャー・イェーツのシャッフルアルゴリズム
-        for (let i = prevCards.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [prevCards[i], prevCards[j]] = [prevCards[j], prevCards[i]];
-        }
-
-        // マッチしたカードとシャッフルしたカードを結合
-        return [...prevCards];
-      });
-      setIsShowReverseNotification(false);
-      setIsShuffling(false);
-    }, 1100);
-  }, [gameLevel, setCards]);
+      setIsShowReverseNotification(true);
+      setTimeout(() => {
+        setCards((prevCards) => {
+          // フィッシャー・イェーツのシャッフルアルゴリズム
+          for (let i = prevCards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [prevCards[i], prevCards[j]] = [prevCards[j], prevCards[i]];
+          }
+          return [...prevCards];
+        });
+        setIsShowReverseNotification(false);
+        setIsShuffling(false);
+      }, 1100);
+    },
+    [setCards]
+  );
 
   // １枚目のカードと2枚目のカードのマッチ判定
   const checkMatch = useCallback(() => {
@@ -62,15 +59,17 @@ export const useNervousBreakdownLogic = (
     if (selectedCards.length === 2) {
       setScore((prev) => prev + 1);
       checkMatch();
+
       if (gameLevel === 5) {
-        shuffleCards();
+        shuffleCardsPercent(0.15);
       }
+
       const timeoutId = setTimeout(() => {
         setSelectedCards([]);
       }, 800);
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedCards, checkMatch, gameLevel, shuffleCards]);
+  }, [selectedCards, checkMatch, gameLevel, shuffleCardsPercent]);
 
   // クリア判定
   useEffect(() => {

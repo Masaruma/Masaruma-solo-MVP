@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-import { act, cleanup, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  render,
+  screen,
+  fireEvent,
+} from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, vi } from "vitest";
@@ -466,4 +472,128 @@ describe(`${GameMainPage.name}`, () => {
       expect(screen.getByText("GAME OVER")).toBeInTheDocument();
     });
   });
+
+  describe("シャッフル機能", () => {
+    it("gameLevel5:でカードを2枚選択するとシャッフル通知が表示される", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0);
+      const state: GameMainProps = {
+        gameLevel: 5,
+        gameMode: "irasutoya",
+        selectedNumberOfCard: 4,
+      };
+      render(<GameMain__test state={state} />);
+
+      // カードが2枚以上表示されるまで待つ
+      const cards = await screen.findAllByRole("button");
+      expect(cards.length).toBeGreaterThanOrEqual(2);
+      // 2枚クリック
+      act(() => {
+        fireEvent.click(cards[0]);
+        fireEvent.click(cards[1]);
+      });
+      // 通知が表示される
+      expect(
+          await screen.findByText("カードがシャッフルされます！")
+      ).toBeInTheDocument();
+    });
+
+    it("レベル5でシャッフル中はカードをクリックできない", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0);
+      const state: GameMainProps = {
+        gameLevel: 5,
+        gameMode: "irasutoya",
+        selectedNumberOfCard: 4,
+      };
+      render(<GameMain__test state={state} />);
+
+      const cards = await screen.findAllByRole("button");
+      
+      // 2枚クリックしてシャッフルを発生させる
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+
+      // シャッフル中に別のカードをクリック
+      await userEvent.click(cards[2]);
+
+      // シャッフル中はカードが選択されないことを確認
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(0deg)" });
+    });
+
+    it("レベル5以外ではシャッフルが発生しない", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0);
+      const state: GameMainProps = {
+        gameLevel: 3,
+        gameMode: "irasutoya",
+        selectedNumberOfCard: 4,
+      };
+      render(<GameMain__test state={state} />);
+
+      const cards = await screen.findAllByRole("button");
+      
+      // 2枚クリック
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+
+      // シャッフル通知が表示されないことを確認
+      expect(screen.queryByText("カードがシャッフルされます！")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("エッジケース", () => {
+    it("ゲームクリア後にカードをクリックしても何も起きない", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      // 全てのカードをマッチさせる
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(cards[1]);
+      await userEvent.click(cards[3]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      // ゲームクリア状態を確認
+      expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
+
+      // クリア後はカードがクリックできないことを確認
+      expect(cardArea).toHaveStyle({ pointerEvents: "none" });
+    });
+
+    it("ゲームオーバー後にカードをクリックしても何も起きない", async () => {
+      const state: GameMainProps = {
+        selectedNumberOfCard: 4,
+        gameMode: "irasutoya",
+        gameLevel: 3,
+      };
+      render(<GameMain__test state={state} />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      // ミスを2回発生させてゲームオーバーにする
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      // ゲームオーバー状態を確認
+      expect(screen.getByText("GAME OVER")).toBeInTheDocument();
+
+      // オーバー後はカードがクリックできないことを確認
+      expect(cardArea).toHaveStyle({ pointerEvents: "none" });
+    });
+  });
+
 });
