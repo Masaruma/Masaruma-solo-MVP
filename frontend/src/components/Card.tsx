@@ -49,6 +49,7 @@ export const Card = ({
       />
       <div
         aria-label={"表のカード"}
+        className={card.isMatched ? 'animate-fade-out' : ''}
         style={{
           position: "absolute",
           backfaceVisibility: "hidden",

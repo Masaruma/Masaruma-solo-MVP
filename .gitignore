@@ -140,3 +140,5 @@ passport.js
 
 .idea
 
+.vscode
+backend/.DS_Store
