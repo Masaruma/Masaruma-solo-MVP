@@ -18,7 +18,7 @@ export const calcAllowMissCount = (
     return Infinity;
   }
 
-  return selectedNumberOfCard / 2;
+  return selectedNumberOfCard / 2 + 1;
 };
 
 export const calcGridTemplateColumns = (selectedNumberOfCard: number) => {

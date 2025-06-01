@@ -332,7 +332,7 @@ describe(`${GameMainPage.name}`, () => {
         render(<GameMain__test state={state} />);
         const missCount = screen.getByLabelText("ミス回数");
 
-        expect(missCount).toHaveTextContent("2");
+        expect(missCount).toHaveTextContent("3");
 
         cleanup();
         const state2: GameMainProps = {
@@ -344,7 +344,7 @@ describe(`${GameMainPage.name}`, () => {
         render(<GameMain__test state={state2} />);
         const missCount2 = screen.getByLabelText("ミス回数");
 
-        expect(missCount2).toHaveTextContent("3");
+        expect(missCount2).toHaveTextContent("4");
       });
 
       it("失敗が規定数に達するとゲームオーバーになる", async () => {
@@ -370,6 +370,8 @@ describe(`${GameMainPage.name}`, () => {
         act(() => {
           vi.advanceTimersByTime(1000);
         });
+        await userEvent.click(cards[0]);
+        await userEvent.click(cards[1]);
         expect(screen.getByText("GAME OVER")).toBeInTheDocument();
       });
     });
@@ -578,6 +580,12 @@ describe(`${GameMainPage.name}`, () => {
       const cards = Array.from(cardArea.children);
 
       // ミスを2回発生させてゲームオーバーにする
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
       await userEvent.click(cards[0]);
       await userEvent.click(cards[1]);
       act(() => {
