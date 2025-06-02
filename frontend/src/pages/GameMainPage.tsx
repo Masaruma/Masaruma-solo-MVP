@@ -117,9 +117,12 @@ export const GameMainPage = () => {
 
         <div
           className={`
-            flex w-fit justify-center rounded-2xl bg-[#a2e29b] p-12
-            shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)]
+            flex w-fit justify-center rounded-2xl bg-beige-100 p-12
+            shadow-[inset_0_0_18px_2px_rgba(0,0,0,0.35),inset_0_1.5px_18px_0_rgba(0,0,0,0.25)]
+            border-[2px] border-[#e0dcbc]
+            backdrop-blur-xl
           `}
+
         >
           <div
             aria-label={"神経衰弱のカードエリア"}
