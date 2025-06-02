@@ -88,8 +88,8 @@ export const useNervousBreakdownLogic = (
 
   const handleCardClick = (card: CardsWithMatchKeyType) => {
     if (isShuffling) return; // シャッフル中はクリックを無効化
-
     if (!selectedCards.includes(card) && !card.isMatched) {
+      gameSound.playCardClick()
       setSelectedCards((prev) => {
         const cleared = prev.length === 2 ? [] : prev;
         return [...cleared, card];
