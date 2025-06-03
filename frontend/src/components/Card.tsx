@@ -38,7 +38,7 @@ export const Card = ({
         aria-label={"裏のカード"}
         className={`
           absolute h-full w-full
-          bg-[url('/images/illustkun-01476-back-of-cards.png')] bg-center
+          bg-[url('/images/cardImage.png')] background bg-auto bg-center
           bg-no-repeat shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
           bg-[length:150%]
         `}
@@ -60,8 +60,8 @@ export const Card = ({
           alt={""}
           className={`
             h-[158px] w-[130px] rounded-[10px] border-[0.15rem] border-solid
-            border-red-500 bg-white object-contain
-            max-sm:h-[70px] max-sm:w-[55px]
+            border-red-500 bg-white object-contain 
+            max-sm:h-[70px] max-sm:w-[55px] overflow-hidden
           `}
           src={card.img}
         />
