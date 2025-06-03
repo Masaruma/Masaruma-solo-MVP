@@ -689,7 +689,6 @@ describe(`${GameMainPage.name}`, () => {
       ).toBeDisabled();
     });
 
-    //   このボタンはゲーム中1度しか押せない
     it("ヘルパーボタンはゲーム中1度しか押すことができない", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -705,6 +704,37 @@ describe(`${GameMainPage.name}`, () => {
       expect(
         screen.getByRole("button", { name: "ペアを見つける" })
       ).toBeDisabled();
+    });
+
+    it("全て表にするボタンを押すと250msごとに1枚ずつ全てのカードを順に表にする", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const firstCardComponent = cardArea.children[0];
+      const secondCardComponent = cardArea.children[1];
+      const thirdCardComponent = cardArea.children[2];
+      const fourthCardComponent = cardArea.children[3];
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(thirdCardComponent);
+      await act(async () => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "すべて表を見る" })
+      );
+
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      await act(async () => {
+        vi.advanceTimersByTime(250);
+      });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      await act(async () => {
+        vi.advanceTimersByTime(250);
+      });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
     });
   });
 });

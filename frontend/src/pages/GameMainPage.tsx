@@ -47,10 +47,12 @@ export const GameMainPage = () => {
   const {
     handleCardClick,
     handleFindPairCard,
+    handleTurnAllCardOut,
     isCleared,
     isShowReverseNotification,
     missCount,
     remainHelpsFindPairCard,
+    remainHelpsTurnAll,
     score,
     selectedCards,
   } = useNervousBreakdownLogic(cards, setCards, gameLevel);
@@ -146,31 +148,59 @@ export const GameMainPage = () => {
             ))}
           </div>
         </div>
-        <Button
-          className={"relative mt-2"}
-          disabled={
-            !isStarted ||
-            isCleared ||
-            isGameOver ||
-            remainHelpsFindPairCard === 0
-          }
-          onClick={() => {
-            handleFindPairCard();
-          }}
-          size={"default"}
-          variant={"outline"}
-        >
-          <span
-            aria-hidden={"true"}
-            className={`
-              absolute top-0 right-0 translate-x-1/2 -translate-y-1/2
-              rounded-full bg-red-500 px-1.5 py-0.5 text-xs text-white
-            `}
+        <div className={"flex flex-row gap-2"}>
+          <Button
+            className={"relative mt-2"}
+            disabled={
+              !isStarted ||
+              isCleared ||
+              isGameOver ||
+              remainHelpsFindPairCard === 0
+            }
+            onClick={() => {
+              handleFindPairCard();
+            }}
+            size={"default"}
+            variant={"outline"}
           >
-            {remainHelpsFindPairCard}
-          </span>
-          ペアを見つける
-        </Button>
+            <span
+              aria-hidden={"true"}
+              className={`
+                absolute top-0 right-0 translate-x-1/2 -translate-y-1/2
+                rounded-full bg-red-500 px-1.5 py-0.5 text-xs text-white
+              `}
+            >
+              {remainHelpsFindPairCard}
+            </span>
+            ペアを見つける
+          </Button>
+          <Button
+            className={"relative mt-2"}
+            disabled={
+              !isStarted ||
+              isCleared ||
+              isGameOver ||
+              remainHelpsTurnAll === 0 ||
+              selectedCards.length === 1
+            }
+            onClick={() => {
+              handleTurnAllCardOut();
+            }}
+            size={"default"}
+            variant={"outline"}
+          >
+            <span
+              aria-hidden={"true"}
+              className={`
+                absolute top-0 right-0 translate-x-1/2 -translate-y-1/2
+                rounded-full bg-red-500 px-1.5 py-0.5 text-xs text-white
+              `}
+            >
+              {remainHelpsTurnAll}
+            </span>
+            すべて表を見る
+          </Button>
+        </div>
       </div>
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>

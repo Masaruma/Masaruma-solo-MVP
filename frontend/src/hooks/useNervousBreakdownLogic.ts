@@ -99,7 +99,7 @@ export const useNervousBreakdownLogic = (
 
   const [remainHelpsFindPairCard, setRemainHelpsFindPairCard] = useState(1);
 
-  const handleFindPairCard = () => {
+  const handleFindPairCard = useCallback(() => {
     if (remainHelpsFindPairCard === 0) return;
     if (selectedCards.length === 1) {
       const selectedCardId = selectedCards[0].id;
@@ -119,7 +119,38 @@ export const useNervousBreakdownLogic = (
       setSelectedCards(noMatchedPairCards);
     }
     setRemainHelpsFindPairCard((prev) => prev - 1);
-  };
+  }, [
+    cards,
+    remainHelpsFindPairCard,
+    selectedCards,
+    setRemainHelpsFindPairCard,
+  ]);
+  const [remainHelpsTurnAll, setRemainHelpsTurnAll] = useState(
+    gameLevel >= 3 ? 1 : 0
+  );
+
+  const handleTurnAllCardOut = useCallback(() => {
+    if (remainHelpsTurnAll === 0) return;
+
+    const noMatchedAllCards = cards.filter((card) => !card.isMatched);
+
+    const flipSequentially = (index: number) => {
+      if (index >= noMatchedAllCards.length) {
+        setSelectedCards([]);
+        return;
+      }
+
+      setSelectedCards([noMatchedAllCards[index]]);
+
+      setTimeout(() => {
+        flipSequentially(index + 1);
+      }, 250);
+    };
+
+    flipSequentially(0);
+    setRemainHelpsTurnAll((prev) => prev - 1);
+  }, [cards, remainHelpsTurnAll]);
+
   return {
     selectedCards,
     handleCardClick,
@@ -129,5 +160,7 @@ export const useNervousBreakdownLogic = (
     isShowReverseNotification,
     handleFindPairCard,
     remainHelpsFindPairCard,
+    handleTurnAllCardOut,
+    remainHelpsTurnAll,
   };
 };
