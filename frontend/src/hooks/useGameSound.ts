@@ -1,12 +1,12 @@
 import useSound from "use-sound";
 
+import cardClickSound from "@/sounds/cardClick.mp3";
 import clickSound from "@/sounds/click.mp3";
 import failedSound from "@/sounds/failed.mp3";
 import gameClearSound from "@/sounds/gameClear.mp3";
 import gameFailedSound from "@/sounds/gameFailed.mp3";
 import shuffleSound from "@/sounds/shuffle.mp3";
 import successSound from "@/sounds/success.mp3";
-import cardClickSound from "@/sounds/cardClick.mp3";
 
 export const useGameSound = () => {
   const [playSuccess] = useSound(successSound, { volume: 0.5 });
@@ -24,9 +24,9 @@ export const useGameSound = () => {
     playSuccess,
     playFailed,
     playClick,
-    playShuffle,  
+    playShuffle,
     playClear,
     playGameFailed,
-    playCardClick
+    playCardClick,
   };
 };

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 
+import { useGameSound } from "@/hooks/useGameSound.ts";
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
-import {useGameSound} from "@/hooks/useGameSound.ts";
 
 export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
@@ -19,7 +19,7 @@ export const useNervousBreakdownLogic = (
     useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
 
-  const gameSound = useGameSound()
+  const gameSound = useGameSound();
 
   // カードのシャッフル処理
   const shuffleCardsPercent = useCallback(
@@ -47,7 +47,7 @@ export const useNervousBreakdownLogic = (
   // １枚目のカードと2枚目のカードのマッチ判定
   const checkMatch = useCallback(() => {
     if (selectedCards[0].id === selectedCards[1].id) {
-      setTimeout(gameSound.playSuccess,300)
+      setTimeout(gameSound.playSuccess, 300);
 
       setCards((prevCards) =>
         prevCards.map((card) =>
@@ -55,7 +55,7 @@ export const useNervousBreakdownLogic = (
         )
       );
     } else if (selectedCards[0].id !== selectedCards[1].id) {
-      setTimeout(gameSound.playFailed,300)
+      setTimeout(gameSound.playFailed, 300);
       setMissCount((prev) => prev + 1);
     }
   }, [gameSound.playFailed, gameSound.playSuccess, selectedCards, setCards]);
@@ -89,7 +89,7 @@ export const useNervousBreakdownLogic = (
   const handleCardClick = (card: CardsWithMatchKeyType) => {
     if (isShuffling) return; // シャッフル中はクリックを無効化
     if (!selectedCards.includes(card) && !card.isMatched) {
-      gameSound.playCardClick()
+      gameSound.playCardClick();
       setSelectedCards((prev) => {
         const cleared = prev.length === 2 ? [] : prev;
         return [...cleared, card];
@@ -97,6 +97,29 @@ export const useNervousBreakdownLogic = (
     }
   };
 
+  const [remainHelpsFindPairCard, setRemainHelpsFindPairCard] = useState(1);
+
+  const handleFindPairCard = () => {
+    if (remainHelpsFindPairCard === 0) return;
+    if (selectedCards.length === 1) {
+      const selectedCardId = selectedCards[0].id;
+      const pairCard = cards.find((card) => card.id === selectedCardId)!!;
+      setSelectedCards((prev) => [...prev, pairCard]);
+    } else {
+      const noMatchedAllCards = cards.filter((card) => !card.isMatched);
+
+      const randomIdNoMatchedCard =
+        noMatchedAllCards[Math.floor(Math.random() * noMatchedAllCards.length)]
+          .id;
+
+      const noMatchedPairCards = cards.filter(
+        (card) => card.id === randomIdNoMatchedCard
+      );
+
+      setSelectedCards(noMatchedPairCards);
+    }
+    setRemainHelpsFindPairCard((prev) => prev - 1);
+  };
   return {
     selectedCards,
     handleCardClick,
@@ -104,5 +127,7 @@ export const useNervousBreakdownLogic = (
     isCleared,
     missCount,
     isShowReverseNotification,
+    handleFindPairCard,
+    remainHelpsFindPairCard,
   };
 };

@@ -8,6 +8,7 @@ import { DialogCustom } from "@/components/customUi/DialogCustom.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { Notification } from "@/components/Notification.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
@@ -45,9 +46,11 @@ export const GameMainPage = () => {
 
   const {
     handleCardClick,
+    handleFindPairCard,
     isCleared,
     isShowReverseNotification,
     missCount,
+    remainHelpsFindPairCard,
     score,
     selectedCards,
   } = useNervousBreakdownLogic(cards, setCards, gameLevel);
@@ -117,12 +120,11 @@ export const GameMainPage = () => {
 
         <div
           className={`
-            flex w-fit justify-center rounded-2xl bg-beige-100 p-12
+            bg-beige-100 flex w-fit justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12
             shadow-[inset_0_0_18px_2px_rgba(0,0,0,0.35),inset_0_1.5px_18px_0_rgba(0,0,0,0.25)]
-            border-[2px] border-[#e0dcbc]
             backdrop-blur-xl
           `}
-
         >
           <div
             aria-label={"神経衰弱のカードエリア"}
@@ -144,6 +146,31 @@ export const GameMainPage = () => {
             ))}
           </div>
         </div>
+        <Button
+          className={"relative mt-2"}
+          disabled={
+            !isStarted ||
+            isCleared ||
+            isGameOver ||
+            remainHelpsFindPairCard === 0
+          }
+          onClick={() => {
+            handleFindPairCard();
+          }}
+          size={"default"}
+          variant={"outline"}
+        >
+          <span
+            aria-hidden={"true"}
+            className={`
+              absolute top-0 right-0 translate-x-1/2 -translate-y-1/2
+              rounded-full bg-red-500 px-1.5 py-0.5 text-xs text-white
+            `}
+          >
+            {remainHelpsFindPairCard}
+          </span>
+          ペアを見つける
+        </Button>
       </div>
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>

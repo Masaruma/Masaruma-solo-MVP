@@ -644,4 +644,67 @@ describe(`${GameMainPage.name}`, () => {
       reloadMock.mockReset();
     });
   });
+
+  describe("ヘルパー機能", () => {
+    it("1枚表:ペアを見つけるボタンを押すと表にしたカードと同じ絵柄のカードを表にしてくれる。", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponent = cardArea.children[0];
+      const thirdCardComponent = cardArea.children[2];
+      await userEvent.click(firstCardComponent);
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "ペアを見つける" })
+      );
+
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+    it("2枚表:ペアを見つけるボタンを押すと同じ絵柄のカードを表にしてくれる。", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.9);
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponent = cardArea.children[0];
+      const secondCardComponent = cardArea.children[1];
+      const thirdCardComponent = cardArea.children[2];
+      const fourthCardComponent = cardArea.children[3];
+      await userEvent.click(firstCardComponent);
+      await userEvent.click(thirdCardComponent);
+      await act(async () => {
+        vi.advanceTimersByTime(1000);
+      });
+      await userEvent.click(
+        screen.getByRole("button", { name: "ペアを見つける" })
+      );
+
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+    it("ゲームがスタートしていなければボタンはdisable", async () => {
+      render(<GameMain__test />);
+      expect(
+        screen.getByRole("button", { name: "ペアを見つける" })
+      ).toBeDisabled();
+    });
+
+    //   このボタンはゲーム中1度しか押せない
+    it("ヘルパーボタンはゲーム中1度しか押すことができない", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const firstCardComponent = cardArea.children[0];
+      const thirdCardComponent = cardArea.children[2];
+      await userEvent.click(firstCardComponent);
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "ペアを見つける" })
+      );
+      expect(
+        screen.getByRole("button", { name: "ペアを見つける" })
+      ).toBeDisabled();
+    });
+  });
 });
