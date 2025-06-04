@@ -372,6 +372,11 @@ describe(`${GameMainPage.name}`, () => {
         });
         await userEvent.click(cards[0]);
         await userEvent.click(cards[1]);
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+        await userEvent.click(cards[0]);
+        await userEvent.click(cards[1]);
         expect(screen.getByText("GAME OVER")).toBeInTheDocument();
       });
     });
@@ -597,7 +602,11 @@ describe(`${GameMainPage.name}`, () => {
       act(() => {
         vi.advanceTimersByTime(1000);
       });
-
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
       // ゲームオーバー状態を確認
       expect(screen.getByText("GAME OVER")).toBeInTheDocument();
 

@@ -85,7 +85,7 @@ export const GameMainPage = () => {
   }, [isCleared, gameTimer]);
 
   useEffect(() => {
-    if (missCount === calcAllowMissCount(selectedNumberOfCard, gameLevel)) {
+    if (missCount > calcAllowMissCount(selectedNumberOfCard, gameLevel)) {
       setIsGameOver(true);
     }
   }, [selectedNumberOfCard, missCount, gameLevel]);
