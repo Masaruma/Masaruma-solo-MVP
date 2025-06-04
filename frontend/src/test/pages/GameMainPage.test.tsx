@@ -706,14 +706,14 @@ describe(`${GameMainPage.name}`, () => {
       ).toBeDisabled();
     });
 
-    it("全て表にするボタンを押すと200msごとに何枚かずつ全てのカードを順に表にする", async () => {
+    it("全て表にするボタンを押すと120msごとに何枚かずつ全てのカードを順に表にする", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.51);
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
-      const firstCardComponent = cardArea.children[0];
-      const secondCardComponent = cardArea.children[1];
-      const thirdCardComponent = cardArea.children[2];
-      await userEvent.click(firstCardComponent);
-      await userEvent.click(secondCardComponent);
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
       await act(async () => {
         vi.advanceTimersByTime(1000);
       });
@@ -722,19 +722,28 @@ describe(`${GameMainPage.name}`, () => {
         screen.getByRole("button", { name: "すべて表を見る" })
       );
 
-      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
-      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(0deg)" });
       await act(async () => {
-        vi.advanceTimersByTime(200);
+        vi.advanceTimersByTime(120);
       });
-      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
-      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
       await act(async () => {
-        vi.advanceTimersByTime(250);
+        vi.advanceTimersByTime(120);
       });
-      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
-      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
-      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(180deg)" });
+      await act(async () => {
+        vi.advanceTimersByTime(120);
+      });
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(cards[3]).toHaveStyle({ transform: "rotateY(180deg)" });
+      await act(async () => {
+        vi.advanceTimersByTime(120);
+      });
+
+      expect(cards[3]).toHaveStyle({ transform: "rotateY(0deg)" });
     });
   });
 });
