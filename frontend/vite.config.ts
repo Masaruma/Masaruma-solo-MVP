@@ -20,6 +20,20 @@ export default defineConfig({
         environment: 'jsdom',
         setupFiles: './src/setupTest.ts',
         mockReset: true,
+      coverage: {
+        provider: "istanbul",
+        reporter: ["text", "html"],
+        include: ["src/**/*.{js,ts,jsx,tsx}"],
+        exclude: ["assets",
+          "dist/**",
+          "public/**",
+          "src/**/main.tsx",
+          "src/ui/**",
+          "src/**/*.d.ts",
+          "vite.config.ts"
+
+        ],
+      },
     },
     server: {
         proxy: {
