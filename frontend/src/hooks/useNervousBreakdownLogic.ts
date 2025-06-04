@@ -138,27 +138,19 @@ export const useNervousBreakdownLogic = (
     const noMatchedAllCards = cards
       .filter((card) => !card.isMatched)
       .sort(() => Math.random() - 0.5);
-    const maxNumberOfCardsHelpFront = cards.length / 2 - 1;
+    const maxSimultaneousFront = cards.length / 2 - 1;
 
-    const flipSequentially = (numberOfFlips: number) => {
-      if (
-        numberOfFlips >=
-        noMatchedAllCards.length + maxNumberOfCardsHelpFront
-      ) {
+    const flipSequentially = (step: number) => {
+      if (step >= noMatchedAllCards.length + maxSimultaneousFront) {
         setHelperFlipCards([]);
         return;
       }
-      const startIdx = Math.max(
-        0,
-        numberOfFlips + 1 - maxNumberOfCardsHelpFront
-      );
-      const endIdx =
-        numberOfFlips >= noMatchedAllCards.length
-          ? noMatchedAllCards.length
-          : numberOfFlips + 1;
+      const startIdx = Math.max(0, step + 1 - maxSimultaneousFront);
+      const endIdx = Math.min(noMatchedAllCards.length, step + 1);
       const currentBatch = noMatchedAllCards.slice(startIdx, endIdx);
+
       setHelperFlipCards(currentBatch);
-      setTimeout(() => flipSequentially(numberOfFlips + 1), 120);
+      setTimeout(() => flipSequentially(step + 1), 120);
     };
 
     flipSequentially(0);
