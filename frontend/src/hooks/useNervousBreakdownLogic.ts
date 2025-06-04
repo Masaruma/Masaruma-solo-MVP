@@ -128,30 +128,53 @@ export const useNervousBreakdownLogic = (
   const [remainHelpsTurnAll, setRemainHelpsTurnAll] = useState(
     gameLevel >= 3 ? 1 : 0
   );
+  const [helperFlipCards, setHelperFlipCards] = useState<
+    CardsWithMatchKeyType[]
+  >([]);
 
+  // カードの総数に応じて同時に表示する最大枚数を計算する関数
+  const calculateMaxSimultaneousFlips = (totalCards: number): number => {
+    if (totalCards <= 12) return 2;
+    if (totalCards <= 20) return 3;
+    return 10;
+  };
   const handleTurnAllCardOut = useCallback(() => {
     if (remainHelpsTurnAll === 0) return;
 
     const noMatchedAllCards = cards.filter((card) => !card.isMatched);
-
+    const maxSimultaneousFlips = calculateMaxSimultaneousFlips(cards.length);
     const flipSequentially = (index: number) => {
       if (index >= noMatchedAllCards.length) {
-        setSelectedCards([]);
+        hideSequentially(helperFlipCards.length);
         return;
       }
 
-      setSelectedCards([noMatchedAllCards[index]]);
+      const startIdx = Math.max(0, index - maxSimultaneousFlips + 1);
+      const endIdx = index + 1;
 
-      setTimeout(() => {
-        flipSequentially(index + 1);
-      }, 250);
+      const currentBatch = noMatchedAllCards.slice(startIdx, endIdx);
+      setHelperFlipCards(currentBatch);
+
+      setTimeout(() => flipSequentially(index + 1), 200);
+    };
+
+    const hideSequentially = (count: number) => {
+      if (count === 0) {
+        setHelperFlipCards([]);
+        return;
+      }
+
+      setHelperFlipCards((prev) => prev.slice(1));
+
+      setTimeout(() => hideSequentially(count - 1), 200);
     };
 
     flipSequentially(0);
     setRemainHelpsTurnAll((prev) => prev - 1);
-  }, [cards, remainHelpsTurnAll]);
+  }, [cards, helperFlipCards.length, remainHelpsTurnAll]);
 
   return {
+    helperFlipCards,
     selectedCards,
     handleCardClick,
     score,

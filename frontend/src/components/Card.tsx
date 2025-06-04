@@ -3,15 +3,20 @@ import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 export const Card = ({
   card,
   handleCardClick,
+  helperFlipCards,
   selectedCards,
   startWithCardClick,
 }: {
   card: CardsWithMatchKeyType;
   handleCardClick: (card: CardsWithMatchKeyType) => void;
+  helperFlipCards: CardsWithMatchKeyType[];
   selectedCards: CardsWithMatchKeyType[];
   startWithCardClick: () => void;
 }) => {
-  const isFlipped = selectedCards.includes(card) || card.isMatched;
+  const isFlipped =
+    selectedCards.includes(card) ||
+    card.isMatched ||
+    helperFlipCards.includes(card);
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- enterで押さないため

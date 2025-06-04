@@ -706,15 +706,14 @@ describe(`${GameMainPage.name}`, () => {
       ).toBeDisabled();
     });
 
-    it("全て表にするボタンを押すと250msごとに1枚ずつ全てのカードを順に表にする", async () => {
+    it("全て表にするボタンを押すと200msごとに何枚かずつ全てのカードを順に表にする", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
       const firstCardComponent = cardArea.children[0];
       const secondCardComponent = cardArea.children[1];
       const thirdCardComponent = cardArea.children[2];
-      const fourthCardComponent = cardArea.children[3];
       await userEvent.click(firstCardComponent);
-      await userEvent.click(thirdCardComponent);
+      await userEvent.click(secondCardComponent);
       await act(async () => {
         vi.advanceTimersByTime(1000);
       });
@@ -723,18 +722,19 @@ describe(`${GameMainPage.name}`, () => {
         screen.getByRole("button", { name: "すべて表を見る" })
       );
 
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      await act(async () => {
+        vi.advanceTimersByTime(200);
+      });
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
       expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
-      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
       await act(async () => {
         vi.advanceTimersByTime(250);
       });
-      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
-      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
-      await act(async () => {
-        vi.advanceTimersByTime(250);
-      });
-      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
-      expect(fourthCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(firstCardComponent).toHaveStyle({ transform: "rotateY(0deg)" });
+      expect(secondCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(thirdCardComponent).toHaveStyle({ transform: "rotateY(180deg)" });
     });
   });
 });

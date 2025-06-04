@@ -48,6 +48,7 @@ export const GameMainPage = () => {
     handleCardClick,
     handleFindPairCard,
     handleTurnAllCardOut,
+    helperFlipCards,
     isCleared,
     isShowReverseNotification,
     missCount,
@@ -141,6 +142,7 @@ export const GameMainPage = () => {
               <Card
                 card={card}
                 handleCardClick={handleCardClick}
+                helperFlipCards={helperFlipCards}
                 key={card.idx}
                 selectedCards={selectedCards}
                 startWithCardClick={startWithCardClick}
