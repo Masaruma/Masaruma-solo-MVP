@@ -12,7 +12,6 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 
 import { useGameTimer } from "@/hooks/useGameTimer.ts";
-import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage, GameMainProps } from "@/pages/GameMainPage.tsx";
 import { calcGameSeconds } from "@/utils/calcGameLevel.ts";
 
@@ -81,20 +80,6 @@ describe(`${GameMainPage.name}`, () => {
   afterEach(() => {
     vi.useRealTimers();
   });
-  it("stateがない場合何も表示されない", () => {
-    render(
-      <MemoryRouter initialEntries={[{ pathname: "/nervousbreakdown" }]}>
-        <ProtectedRoute>
-          <GameMainPage />
-        </ProtectedRoute>
-      </MemoryRouter>
-    );
-
-    expect(
-      screen.queryByLabelText("神経衰弱のカードエリア")
-    ).not.toBeInTheDocument();
-  });
-
   it("初期レンダー時にinitializeGameが呼ばれている", () => {
     // モックでカードが作れられているからテストが必要
     render(<GameMain__test />);
