@@ -6,6 +6,7 @@ import {
   render,
   screen,
   fireEvent,
+  waitFor,
 } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
@@ -66,7 +67,7 @@ const GameMain__test = ({
 }) => {
   return (
     <MemoryRouter initialEntries={[{ pathname: "/nervousbreakdown", state }]}>
-      <GameMainPage />
+      <GameMainPage key={state.selectedNumberOfCard} />
     </MemoryRouter>
   );
 };
@@ -533,7 +534,7 @@ describe(`${GameMainPage.name}`, () => {
     });
   });
 
-  describe("エッジケース", () => {
+  describe("ゲーム終了後", () => {
     it("ゲームクリア後にカードをクリックしても何も起きない", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
@@ -600,7 +601,7 @@ describe(`${GameMainPage.name}`, () => {
     });
   });
 
-  describe("モーダル", () => {
+  describe("ゲーム終了後モーダル", () => {
     it("リトライボタンをクリックするとページがリロードされる", async () => {
       const reloadMock = vi.fn();
       vi.stubGlobal("location", {
@@ -636,6 +637,33 @@ describe(`${GameMainPage.name}`, () => {
 
       vi.unstubAllGlobals();
       reloadMock.mockReset();
+    });
+    it("次のレベルボタンをクリックすると次のレベルになる。", async () => {
+      render(<GameMain__test />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      // 全てのカードをマッチさせる
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      await userEvent.click(cards[1]);
+      await userEvent.click(cards[3]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      await waitFor(() => {
+        expect(screen.getByText(/7/)).toBeInTheDocument();
+      });
+      expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole("button", { name: "次のレベル" }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/8/)).toBeInTheDocument();
+      });
     });
   });
 
