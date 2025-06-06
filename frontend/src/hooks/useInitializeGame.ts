@@ -67,7 +67,7 @@ export const useInitializeGame = (
         // };
 
         const pokeResponse = await axios.get(
-            `https://pokeapi.co/api/v2/pokemon/${n}`
+            `http://localhost:80/api/v2/pokemon/${n}`
         );
         const pokeData = await pokeResponse.data;
         const pokemonSprite = pokeData.sprites?.front_default;
