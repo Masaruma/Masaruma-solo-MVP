@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 
 import { CardImageType, CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 import { irasutoyaImages } from "@/utils/irasutoyaImageArray.ts";
-import axios from "axios";
 
 // todo ここのテスト作成
 export const useInitializeGame = (
@@ -35,51 +34,39 @@ export const useInitializeGame = (
       const randoms = randomArray();
       let i = 1;
       const loadImages = randoms.map(async (n) => {
-        // const getPokemonSpriteUrl = (n: number, shinyRate = 0.3) => {
-        //   const isShiny = Math.random() < shinyRate;
-        //
-        //   // バリエーション候補を作る
-        //   const candidates = [];
-        //
-        //   // 世代ごとに可能なバリエーションを配列に追加
-        //   if (n <= 151) {
-        //     candidates.push(
-        //       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/yellow/${n}.png`
-        //     );
-        //   }
-        //   if (n <= 251) {
-        //     candidates.push(
-        //       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/crystal/${isShiny ? "shiny/" : ""}${n}.png`
-        //     );
-        //   }
-        //   if (n <= 649) {
-        //     candidates.push(
-        //       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${isShiny ? "shiny/" : ""}${n}.gif`
-        //     );
-        //   }
-        //   // 常に通常のスプライトも
-        //   candidates.push(
-        //     `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${isShiny ? "shiny/" : ""}${n}.png`
-        //   );
-        //
-        //   // 候補からランダムに1つ選ぶ
-        //   return candidates[Math.floor(Math.random() * candidates.length)];
-        // };
+        const getPokemonSpriteUrl = (n: number, shinyRate = 0.3) => {
+          const isShiny = Math.random() < shinyRate;
 
-        const pokeResponse = await axios.get(
-            `http://localhost:80/api/v2/pokemon/${n}`
-        );
-        const pokeData = await pokeResponse.data;
-        const pokemonSprite = pokeData.sprites?.front_default;
-        const localSprite = pokemonSprite
-          ? pokemonSprite.replace(
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/",
-            "http://localhost:8888/"
-          )
-          : undefined;
-        // const pokemonSprite = getPokemonSpriteUrl(n);
+          // バリエーション候補を作る
+          const candidates = [];
+
+          // 世代ごとに可能なバリエーションを配列に追加
+          if (n <= 151) {
+            candidates.push(
+              `http://localhost:8888/sprites/pokemon/versions/generation-i/yellow/${n}.png`
+            );
+          }
+          if (n <= 251) {
+            candidates.push(
+              `http://localhost:8888/sprites/pokemon/versions/generation-ii/crystal/${isShiny ? "shiny/" : ""}${n}.png`
+            );
+          }
+          if (n <= 649) {
+            candidates.push(
+              `http://localhost:8888/sprites/pokemon/versions/generation-v/black-white/animated/${isShiny ? "shiny/" : ""}${n}.gif`
+            );
+          }
+          // 常に通常のスプライトも
+          candidates.push(
+            `http://localhost:8888/sprites/pokemon/${isShiny ? "shiny/" : ""}${n}.png`
+          );
+
+          // 候補からランダムに1つ選ぶ
+          return candidates[Math.floor(Math.random() * candidates.length)];
+        };
+        const pokemonSprite = getPokemonSpriteUrl(n);
         const imgElement = new Image();
-        imgElement.src = localSprite;
+        imgElement.src = pokemonSprite;
         await new Promise<void>((resolve) => {
           imgElement.onload = () => {
             images.push({ id: i, img: imgElement.src });
