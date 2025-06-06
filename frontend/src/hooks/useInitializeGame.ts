@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 
 import { CardImageType, CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 import { irasutoyaImages } from "@/utils/irasutoyaImageArray.ts";
+const SPRITE_BASE_URL = import.meta.env.VITE_SPRITE_BASE_URL;
 
 // todo ここのテスト作成
 export const useInitializeGame = (
@@ -43,22 +44,22 @@ export const useInitializeGame = (
           // 世代ごとに可能なバリエーションを配列に追加
           if (n <= 151) {
             candidates.push(
-              `http://localhost:8888/sprites/pokemon/versions/generation-i/yellow/${n}.png`
+              `${SPRITE_BASE_URL}/sprites/pokemon/versions/generation-i/yellow/${n}.png`
             );
           }
           if (n <= 251) {
             candidates.push(
-              `http://localhost:8888/sprites/pokemon/versions/generation-ii/crystal/${isShiny ? "shiny/" : ""}${n}.png`
+              `${SPRITE_BASE_URL}/sprites/pokemon/versions/generation-ii/crystal/${isShiny ? "shiny/" : ""}${n}.png`
             );
           }
           if (n <= 649) {
             candidates.push(
-              `http://localhost:8888/sprites/pokemon/versions/generation-v/black-white/animated/${isShiny ? "shiny/" : ""}${n}.gif`
+              `${SPRITE_BASE_URL}/sprites/pokemon/versions/generation-v/black-white/animated/${isShiny ? "shiny/" : ""}${n}.gif`
             );
           }
           // 常に通常のスプライトも
           candidates.push(
-            `http://localhost:8888/sprites/pokemon/${isShiny ? "shiny/" : ""}${n}.png`
+            `${SPRITE_BASE_URL}/sprites/pokemon/${isShiny ? "shiny/" : ""}${n}.png`
           );
 
           // 候補からランダムに1つ選ぶ
