@@ -71,10 +71,15 @@ export const useInitializeGame = (
         );
         const pokeData = await pokeResponse.data;
         const pokemonSprite = pokeData.sprites?.front_default;
-
+        const localSprite = pokemonSprite
+          ? pokemonSprite.replace(
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/",
+            "http://localhost:8888/"
+          )
+          : undefined;
         // const pokemonSprite = getPokemonSpriteUrl(n);
         const imgElement = new Image();
-        imgElement.src = pokemonSprite;
+        imgElement.src = localSprite;
         await new Promise<void>((resolve) => {
           imgElement.onload = () => {
             images.push({ id: i, img: imgElement.src });

@@ -10,4 +10,13 @@ services:
       POSTGRES_PASSWORD: "admin"
       POSTGRES_DB: "card_game"
     command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
-#todo test用のDBコンテナの作成
+
+  sprites:
+    image: nginx:alpine
+    container_name: my-local-pokemon-sprites-server
+    volumes:
+      - ../pokeapi/data/v2/sprites/sprites:/usr/share/nginx/html/sprites:ro
+      # spritesディレクトリ（pokeapiのスプライト）をローカルからマウント
+    ports:
+      - "8888:80"
+    # オプションでカスタムnginx.confを設定可能
