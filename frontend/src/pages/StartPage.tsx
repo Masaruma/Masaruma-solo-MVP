@@ -1,10 +1,11 @@
 import { useState } from "react";
 
+import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useGameSound } from "@/hooks/useGameSound.ts";
+import { gameSoundAtom } from "@/utils/atom.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
 
@@ -36,7 +37,8 @@ export const StartPage = () => {
     IsOkLevelSelect: false,
     isOkNumberSelect: false,
   });
-  const gameSound = useGameSound();
+
+  const gameSound = useAtomValue(gameSoundAtom);
 
   const navigate = useNavigate();
 
@@ -52,6 +54,8 @@ export const StartPage = () => {
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
       <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
       <div className={"m-2.5 w-1/2"}>
+        <button onClick={()=>{gameSound?.setEffectVolume(prevState => prevState +0.1)}}>音量をあげる</button>
+        <button onClick={()=>{gameSound?.setEffectVolume(prevState => prevState -0.1)}}>音量を下げる</button>
         <div aria-label={"ゲームの絵柄を選択"} className={"w-full"}>
           モードを選択してください
           <div className={"m-2.5 grid grid-cols-2 gap-2"}>
@@ -60,7 +64,7 @@ export const StartPage = () => {
                 className={""}
                 key={mode}
                 onClick={() => {
-                  gameSound.playClick();
+                  gameSound?.playClick();
                   setGameMode(mode);
                   setGameStart({
                     IsOkModeSelect: true,
@@ -85,7 +89,7 @@ export const StartPage = () => {
                   className={""}
                   key={level}
                   onClick={() => {
-                    gameSound.playClick();
+                    gameSound?.playClick();
 
                     setGameLevel(gameLevelIdMap[level]);
                     setGameStart({
@@ -116,7 +120,7 @@ export const StartPage = () => {
                 <Button
                   key={numberOfCard}
                   onClick={() => {
-                    gameSound.playClick();
+                    gameSound?.playClick();
 
                     setSelectedNumberOfCard(numberOfCard);
                     setGameStart({
@@ -147,7 +151,7 @@ export const StartPage = () => {
             />
             <Button
               onClick={() => {
-                gameSound.playClick();
+                gameSound?.playClick();
 
                 void navigate("/nervousbreakdown", {
                   state: {

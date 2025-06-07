@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 
-import { useGameSound } from "@/hooks/useGameSound.ts";
+import { useAtomValue } from "jotai/index";
+
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
+import { gameSoundAtom } from "@/utils/atom.ts";
 
 export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
@@ -19,7 +21,7 @@ export const useNervousBreakdownLogic = (
     useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
 
-  const gameSound = useGameSound();
+  const gameSound = useAtomValue(gameSoundAtom);
 
   // カードのシャッフル処理
   const shuffleCardsPercent = useCallback(
@@ -47,7 +49,7 @@ export const useNervousBreakdownLogic = (
   // １枚目のカードと2枚目のカードのマッチ判定
   const checkMatch = useCallback(() => {
     if (selectedCards[0].id === selectedCards[1].id) {
-      setTimeout(gameSound.playSuccess, 300);
+      gameSound && setTimeout(gameSound.playSuccess, 300);
 
       setCards((prevCards) =>
         prevCards.map((card) =>
@@ -55,10 +57,10 @@ export const useNervousBreakdownLogic = (
         )
       );
     } else if (selectedCards[0].id !== selectedCards[1].id) {
-      setTimeout(gameSound.playFailed, 300);
+      gameSound && setTimeout(gameSound.playFailed, 300);
       setMissCount((prev) => prev + 1);
     }
-  }, [gameSound.playFailed, gameSound.playSuccess, selectedCards, setCards]);
+  }, [gameSound, selectedCards, setCards]);
 
   // 選択処理
   useEffect(() => {
@@ -89,7 +91,7 @@ export const useNervousBreakdownLogic = (
   const handleCardClick = (card: CardsWithMatchKeyType) => {
     if (isShuffling) return; // シャッフル中はクリックを無効化
     if (!selectedCards.includes(card) && !card.isMatched) {
-      gameSound.playCardClick();
+      gameSound?.playCardClick();
       setSelectedCards((prev) => {
         const cleared = prev.length === 2 ? [] : prev;
         return [...cleared, card];

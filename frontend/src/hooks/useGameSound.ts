@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import useSound from "use-sound";
 
 import cardClickSound from "@/sounds/cardClick.mp3";
@@ -9,16 +11,21 @@ import shuffleSound from "@/sounds/shuffle.mp3";
 import successSound from "@/sounds/success.mp3";
 
 export const useGameSound = () => {
-  const [playSuccess] = useSound(successSound, { volume: 0.5 });
-  const [playFailed] = useSound(failedSound, { volume: 0.5, interrupt: false });
-  const [playClick] = useSound(clickSound, { volume: 0.2 });
-  const [playCardClick] = useSound(cardClickSound, { volume: 0.4 });
-  const [playShuffle] = useSound(shuffleSound, {
-    volume: 0.4,
+  const [effectVolume, setEffectVolume] = useState(0.3);
+
+  const [playSuccess] = useSound(successSound, { volume: effectVolume });
+  const [playFailed] = useSound(failedSound, {
+    volume: effectVolume,
     interrupt: false,
   });
-  const [playClear] = useSound(gameClearSound, { volume: 0.1 });
-  const [playGameFailed] = useSound(gameFailedSound, { volume: 0.2 });
+  const [playClick] = useSound(clickSound, { volume: effectVolume });
+  const [playCardClick] = useSound(cardClickSound, { volume: effectVolume });
+  const [playShuffle] = useSound(shuffleSound, {
+    volume: effectVolume,
+    interrupt: false,
+  });
+  const [playClear] = useSound(gameClearSound, { volume: effectVolume });
+  const [playGameFailed] = useSound(gameFailedSound, { volume: effectVolume });
 
   return {
     playSuccess,
@@ -28,5 +35,8 @@ export const useGameSound = () => {
     playClear,
     playGameFailed,
     playCardClick,
+    setEffectVolume,
   };
 };
+
+export type GameSoundType = ReturnType<typeof useGameSound>;
