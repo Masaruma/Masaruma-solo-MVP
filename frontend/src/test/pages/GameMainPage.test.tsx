@@ -476,9 +476,8 @@ describe(`${GameMainPage.name}`, () => {
       };
       render(<GameMain__test state={state} />);
 
-      // カードが2枚以上表示されるまで待つ
-      const cards = await screen.findAllByRole("button");
-      expect(cards.length).toBeGreaterThanOrEqual(2);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
       // 2枚クリック
       act(() => {
         fireEvent.click(cards[0]);
@@ -499,7 +498,8 @@ describe(`${GameMainPage.name}`, () => {
       };
       render(<GameMain__test state={state} />);
 
-      const cards = await screen.findAllByRole("button");
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
 
       // 2枚クリックしてシャッフルを発生させる
       await userEvent.click(cards[0]);
