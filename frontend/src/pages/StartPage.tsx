@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { Slider } from "@/components/ui/slider.tsx";
 import { gameSoundAtom } from "@/utils/atom.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
@@ -38,8 +39,6 @@ export const StartPage = () => {
     isOkNumberSelect: false,
   });
 
-  const gameSound = useAtomValue(gameSoundAtom);
-
   const navigate = useNavigate();
 
   const gameModeArray: GameModeType[] = ["irasutoya", "pokemon"];
@@ -50,12 +49,35 @@ export const StartPage = () => {
     ...Array.from({ length: (100 - 60) / 10 }, (_, i) => 60 + (i + 1) * 10),
   ];
 
+  const gameSound = useAtomValue(gameSoundAtom);
+  useEffect(() => {
+    gameSound?.playBGMSound();
+  }, [gameSound]);
+
   return (
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
       <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
       <div className={"m-2.5 w-1/2"}>
-        <button onClick={()=>{gameSound?.setEffectVolume(prevState => prevState +0.1)}}>音量をあげる</button>
-        <button onClick={()=>{gameSound?.setEffectVolume(prevState => prevState -0.1)}}>音量を下げる</button>
+        効果音:
+        <Slider
+          defaultValue={[gameSound?.effectVolumeGet() ?? 0.4]}
+          max={1}
+          min={0}
+          onValueChange={(value) => {
+            gameSound?.effectVolumeSet(value[0]);
+          }}
+          step={0.1}
+        />
+        ゲームサウンド
+        <Slider
+          defaultValue={[gameSound?.bgmVolumeGet() ?? 0.0]}
+          max={0.05}
+          min={0}
+          onValueChange={(value) => {
+            gameSound?.bgmVolumeSet(value[0]);
+          }}
+          step={0.005}
+        />
         <div aria-label={"ゲームの絵柄を選択"} className={"w-full"}>
           モードを選択してください
           <div className={"m-2.5 grid grid-cols-2 gap-2"}>
