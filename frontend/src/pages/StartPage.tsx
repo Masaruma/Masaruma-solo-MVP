@@ -104,7 +104,12 @@ export const StartPage = () => {
           </TabsList>
 
           {/* 1. モード選択 */}
-          <TabsContent value={"mode"}>
+          <TabsContent className={`
+            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+            backdrop-blur-xl
+          `}           value={"mode"}>
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"flex gap-4"}>
                 {gameModeArray.map((mode) => (
@@ -125,7 +130,13 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 2. 難易度 */}
-          <TabsContent value={"level"}>
+          <TabsContent value={"level"} className={`
+            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+            backdrop-blur-xl
+            animate-fade-left
+          `} >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"flex gap-2"}>
                 {gameLevelArray.map((level) => (
@@ -150,7 +161,14 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 3. 枚数 */}
-          <TabsContent value={"card"}>
+          <TabsContent value={"card"} className={`
+            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+            backdrop-blur-xl
+            animate-fade-left
+            
+          `} >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"grid grid-cols-5 gap-2"}>
                 {numberOfCardArray.map((number) => (
@@ -173,7 +191,14 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 4. 確認 */}
-          <TabsContent value={"confirm"}>
+          <TabsContent value={"confirm"} className={`
+            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+            backdrop-blur-xl
+            animate-fade-left
+            
+          `} >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"mb-2"}>
                 <b>{gameMode === "irasutoya" ? "いらすとや" : "ポケモン"}</b>／
