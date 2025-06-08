@@ -128,8 +128,8 @@ export const GameMainPage = () => {
         <div
           className={`
             bg-beige-100 flex w-fit justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12
-            shadow-[inset_0_0_18px_2px_rgba(0,0,0,0.35),inset_0_1.5px_18px_0_rgba(0,0,0,0.25)]
+            border-[#e0dcbc] p-4
+            shadow-[inset_0_0_10px_2px_rgba(0,0,0,0.25),inset_0_1.5px_18px_0_rgba(0,0,0,0.15)]
             backdrop-blur-xl
           `}
         >

@@ -22,9 +22,9 @@ export const Card = ({
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- enterで押さないため
     <div
       className={`
-        relative flex h-40 w-32.5 flex-col items-center justify-center
-        bg-transparent
-        max-sm:h-17.5 max-sm:w-[55px]
+        relative flex h-[134px] w-[107px] flex-col items-center justify-center
+        bg-transparent 
+        max-sm:h-[70px] max-sm:w-[58px]
       `}
       onClick={() => {
         startWithCardClick();
@@ -43,9 +43,9 @@ export const Card = ({
         aria-label={"裏のカード"}
         className={`
           background absolute h-full w-full bg-[url('/images/cardImage.png')]
-          bg-auto bg-center bg-no-repeat
+          bg-center bg-no-repeat bg-[length:100%_100%]
           shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
-          bg-[length:150%]
+  
         `}
         style={{
           position: "absolute",
@@ -64,9 +64,9 @@ export const Card = ({
         <img
           alt={""}
           className={`
-            h-[158px] w-[130px] overflow-hidden rounded-[10px] border-[0.15rem]
-            border-solid border-red-500 bg-white object-contain
-            max-sm:h-[70px] max-sm:w-[55px]
+            h-[134px] w-[107px] overflow-hidden rounded-[10px] border-[0.2rem]
+            border-solid border-[#7a0000] bg-white object-contain
+            max-sm:h-[70px] max-sm:w-[58px]
           `}
           src={card.img}
         />
