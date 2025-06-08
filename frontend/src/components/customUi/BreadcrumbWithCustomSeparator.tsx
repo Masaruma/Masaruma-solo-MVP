@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,11 +10,19 @@ import {
 } from "@/components/ui/breadcrumb.tsx";
 
 export const BreadcrumbWithCustomSeparator = () => {
+  const navigate = useNavigate();
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href={"/"}>Home</BreadcrumbLink>
+          <BreadcrumbLink
+            onClick={() => {
+              void navigate("/");
+            }}
+          >
+            Home
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

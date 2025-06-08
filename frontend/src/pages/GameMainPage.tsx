@@ -19,6 +19,7 @@ import {
   calcAllowMissCount,
   calcGridTemplateColumns,
 } from "@/utils/calcGameLevel.ts";
+import { GameSettingDialog } from "@/components/customUi/GameSettingDialog.tsx";
 
 export interface GameMainProps {
   gameLevel: number;
@@ -105,7 +106,11 @@ export const GameMainPage = () => {
             message={"カードがシャッフルされます！"}
           />
         )}
-        <BreadcrumbWithCustomSeparator />
+        <div className={"mt-4 mb-2 flex w-full flex-row justify-around gap-4"}>
+          <BreadcrumbWithCustomSeparator />
+          <GameSettingDialog />
+        </div>
+
         <div className={"mt-4 mb-2 flex w-1/3 flex-row justify-around gap-4"}>
           <div aria-label={"現在の手数"} className={"text-2l text-center"}>
             <Hand className={"inline-block"} /> {score}
@@ -205,6 +210,7 @@ export const GameMainPage = () => {
             すべて表を見る
           </Button>
         </div>
+
       </div>
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>

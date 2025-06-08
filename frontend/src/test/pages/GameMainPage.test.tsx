@@ -521,7 +521,8 @@ describe(`${GameMainPage.name}`, () => {
       };
       render(<GameMain__test state={state} />);
 
-      const cards = await screen.findAllByRole("button");
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
 
       // 2枚クリック
       await userEvent.click(cards[0]);

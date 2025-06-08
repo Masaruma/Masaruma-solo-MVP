@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useAtomValue } from "jotai";
 import { ChevronRight } from "lucide-react";
@@ -53,9 +53,6 @@ export const StartPage = () => {
   ];
 
   const gameSound = useAtomValue(gameSoundAtom);
-  useEffect(() => {
-    gameSound?.playBGMSound();
-  }, [gameSound]);
 
   return (
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>

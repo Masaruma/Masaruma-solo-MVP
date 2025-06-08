@@ -5,6 +5,7 @@ import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
 import { GameMainPage } from "@/pages/GameMainPage.tsx";
 import { StartPage } from "@/pages/StartPage.tsx";
 import "@/App.css";
+import { MusicLayout } from "@/Layout/MusicLayout.tsx";
 
 const GameMainPageWithKey = () => {
   const location = useLocation();
@@ -17,10 +18,12 @@ const GameMainPageWithKey = () => {
 export const App = () => {
   return (
     <GameSoundProvider>
-      <Routes>
-        <Route element={<StartPage />} path={"/"} />
-        <Route element={<GameMainPageWithKey />} path={"/nervousbreakdown"} />
-      </Routes>
+      <MusicLayout>
+        <Routes>
+          <Route element={<StartPage />} path={"/"} />
+          <Route element={<GameMainPageWithKey />} path={"/nervousbreakdown"} />
+        </Routes>
+      </MusicLayout>
     </GameSoundProvider>
   );
 };
