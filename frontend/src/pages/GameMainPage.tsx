@@ -18,6 +18,7 @@ import {
   calcAllowMissCount,
   calcGridTemplateColumns,
 } from "@/utils/calcGameLevel.ts";
+import { CircleX, Hand } from "lucide-react";
 
 export interface GameMainProps {
   gameLevel: number;
@@ -98,27 +99,30 @@ export const GameMainPage = () => {
           bg-transparent
         `}
       >
-        <BreadcrumbWithCustomSeparator />
-
-        <GameTimer
-          milliseconds={
-            gameLevel === 1
-              ? gameTimer.elapsedMilliseconds
-              : gameTimer.totalMilliseconds
-          }
-        />
         {isShowReverseNotification && (
           <Notification
             duration={2000}
             message={"カードがシャッフルされます！"}
           />
         )}
-        <div aria-label={"現在の手数"} className={"text-2l text-center"}>
-          現在の手数:{score}
-        </div>
-        <div aria-label={"ミス回数"} className={"text-center text-2xl"}>
-          ミス回数:{missCount} /{" "}
-          {calcAllowMissCount(selectedNumberOfCard, gameLevel)}
+        <BreadcrumbWithCustomSeparator />
+        <div className={"mt-4 mb-2 flex w-1/3 flex-row justify-around gap-4"}>
+          <div aria-label={"現在の手数"} className={"text-2l text-center"}>
+            <Hand className={"inline-block"}/> {score}
+          </div>
+          <GameTimer
+            milliseconds={
+              gameLevel === 1
+                ? gameTimer.elapsedMilliseconds
+                : gameTimer.totalMilliseconds
+            }
+          />
+          <div aria-label={"ミス回数"} className={"text-1xl text-center"}>
+            <CircleX className={"inline-block"}/>
+            {missCount}/{calcAllowMissCount(selectedNumberOfCard, gameLevel)}
+          </div>
+
+
         </div>
 
         <div

@@ -1,8 +1,10 @@
 // components/GameTimer.tsx
+import { Timer } from "lucide-react";
+
 export const GameTimer = ({ milliseconds }: { milliseconds: number }) => (
   <div aria-label={"現在のタイム"} style={{ textAlign: "center" }}>
-    <div className={"text-2xl"}>
-      <span>{(milliseconds / 1000).toFixed(2)}</span>
+    <div className={"text-1xl"}>
+      <Timer size={"24px"} strokeWidth={"2px"} className={"inline-block"}/>{(milliseconds / 1000).toFixed(2)}
     </div>
   </div>
 );
