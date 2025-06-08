@@ -119,7 +119,6 @@
   }
 }
 
-
 @tailwind utilities;
 
 @keyframes fadeInOut {
@@ -196,4 +195,9 @@
 }
 .animate-fade-left {
   animation: fade-left 0.8s ease;
+}
+
+.text-outline {
+  color: #ffca02;
+  -webkit-text-stroke: 4px #336bb3;
 }

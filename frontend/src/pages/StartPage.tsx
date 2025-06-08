@@ -59,7 +59,9 @@ export const StartPage = () => {
 
   return (
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
-      <h1 className={"m-2.5 w-1/2 text-center text-5xl"}>神経衰弱</h1>
+      <h1 className={"text-outline m-2.5 mb-15 w-full text-center text-7xl"}>
+        神経衰弱
+      </h1>
       <div className={"flex h-1/3 w-full max-w-sm flex-col gap-6"}>
         <Tabs className={"w-full max-w-md"} onValueChange={setTab} value={tab}>
           <TabsList className={"mb-6 grid w-full grid-cols-4"}>
@@ -104,12 +106,14 @@ export const StartPage = () => {
           </TabsList>
 
           {/* 1. モード選択 */}
-          <TabsContent className={`
-            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+          <TabsContent
+            className={`
+            bg-beige-100 flex h-full justify-center rounded-2xl border-[2px]
+            border-[#e0dcbc] p-12 shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
             backdrop-blur-xl
-          `}           value={"mode"}>
+          `}
+            value={"mode"}
+          >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"flex gap-4"}>
                 {gameModeArray.map((mode) => (
@@ -130,13 +134,14 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 2. 難易度 */}
-          <TabsContent value={"level"} className={`
-            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
-            backdrop-blur-xl
-            animate-fade-left
-          `} >
+          <TabsContent
+            className={`
+            bg-beige-100 animate-fade-left flex h-full justify-center
+            rounded-2xl border-[2px] border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+          `}
+            value={"level"}
+          >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"flex gap-2"}>
                 {gameLevelArray.map((level) => (
@@ -161,14 +166,14 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 3. 枚数 */}
-          <TabsContent value={"card"} className={`
-            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
-            backdrop-blur-xl
-            animate-fade-left
-            
-          `} >
+          <TabsContent
+            className={`
+            bg-beige-100 animate-fade-left flex h-full justify-center
+            rounded-2xl border-[2px] border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+            overflow-hidden`}
+            value={"card"}
+          >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"grid grid-cols-5 gap-2"}>
                 {numberOfCardArray.map((number) => (
@@ -191,14 +196,14 @@ export const StartPage = () => {
           </TabsContent>
 
           {/* 4. 確認 */}
-          <TabsContent value={"confirm"} className={`
-            bg-beige-100 h-full flex justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
-            backdrop-blur-xl
-            animate-fade-left
-            
-          `} >
+          <TabsContent
+            className={`
+            bg-beige-100 animate-fade-left flex h-full justify-center
+            rounded-2xl border-[2px] border-[#e0dcbc] p-12
+            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+          `}
+            value={"confirm"}
+          >
             <div className={"flex flex-col items-center gap-4"}>
               <div className={"mb-2"}>
                 <b>{gameMode === "irasutoya" ? "いらすとや" : "ポケモン"}</b>／

@@ -40,7 +40,7 @@ describe("NervousBreakdownのテスト", () => {
   });
 
   it("tabListをクリックするとタブを行き来でき、全ての項目を選択しないと確認タブへ到達できない。", async () => {
-    const tablist =  screen.getByRole("tablist");
+    const tablist = screen.getByRole("tablist");
     const tabChildren = Array.from(tablist.children);
 
     await userEvent.click(tabChildren[0]);
@@ -57,11 +57,8 @@ describe("NervousBreakdownのテスト", () => {
     await userEvent.click(tabChildren[3]);
 
     expect(tabChildren[3]).toHaveAttribute("aria-selected", "true");
-
-
   });
 });
-
 
 describe("ルーティング関連", () => {
   it("ゲームスタートボタンを押すと必要な'state'をもちゲームページへのnavigationが行われる", async () => {
