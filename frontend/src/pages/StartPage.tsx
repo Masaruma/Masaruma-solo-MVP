@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 
 import { useAtomValue } from "jotai";
+import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { GameSettingDialog } from "@/components/customUi/GameSettingDialog.tsx";
 import { Ranking } from "@/components/Ranking.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  Tabs,
+  TabsContent,
+  TabsTrigger,
+  TabsList,
+} from "@/components/ui/tabs.tsx";
 import { gameSoundAtom } from "@/utils/atom.ts";
 
 export type GameModeType = "irasutoya" | "pokemon";
@@ -29,15 +36,11 @@ const gameLevelIdMap: Record<
 };
 
 export const StartPage = () => {
+  const [tab, setTab] = useState("mode");
   const [gameMode, setGameMode] = useState<GameModeType>("irasutoya");
   const [gameLevel, setGameLevel] = useState(1);
 
   const [selectedNumberOfCard, setSelectedNumberOfCard] = useState<number>(0);
-  const [gameStart, setGameStart] = useState({
-    IsOkModeSelect: false,
-    IsOkLevelSelect: false,
-    isOkNumberSelect: false,
-  });
 
   const navigate = useNavigate();
 
@@ -56,122 +59,154 @@ export const StartPage = () => {
 
   return (
     <div className={"flex h-lvh w-full flex-col items-center justify-center"}>
-      <h1 className={"m-2.5 w-1/2 text-5xl"}>神経衰弱:{gameMode}</h1>
-      <div className={"m-2.5 w-1/2"}>
-        <GameSettingDialog />
-        <div aria-label={"ゲームの絵柄を選択"} className={"w-full"}>
-          モードを選択してください
-          <div className={"m-2.5 grid grid-cols-2 gap-2"}>
-            {gameModeArray.map((mode) => (
-              <Button
-                className={""}
-                key={mode}
-                onClick={() => {
-                  gameSound?.playClick();
-                  setGameMode(mode);
-                  setGameStart({
-                    IsOkModeSelect: true,
-                    IsOkLevelSelect: false,
-                    isOkNumberSelect: false,
-                  });
-                }}
-                size={"default"}
-                variant={gameMode === mode ? "default" : "secondary"}
-              >
-                {mode}
-              </Button>
-            ))}
-          </div>
-        </div>
-        {gameStart.IsOkModeSelect && (
-          <div aria-label={"ゲームの難易度を選択"} className={`w-full`}>
-            難易度を選択してください
-            <div className={"m-2.5 grid grid-cols-3 gap-2"}>
-              {gameLevelArray.map((level) => (
-                <Button
-                  className={""}
-                  key={level}
-                  onClick={() => {
-                    gameSound?.playClick();
-
-                    setGameLevel(gameLevelIdMap[level]);
-                    setGameStart({
-                      IsOkModeSelect: true,
-                      IsOkLevelSelect: true,
-                      isOkNumberSelect: false,
-                    });
-                  }}
-                  size={"default"}
-                  variant={
-                    gameLevel === gameLevelIdMap[level]
-                      ? "default"
-                      : "secondary"
-                  }
-                >
-                  {level}
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-        {gameStart.IsOkLevelSelect && (
-          <div aria-label={"カードの枚数を選択"} className={"w-full"}>
-            マス目を選択してください
-            <h6>10×10はポケモンのみ。</h6>
-            <div className={"m-2.5 grid grid-cols-10 grid-rows-3 gap-2"}>
-              {numberOfCardArray.map((numberOfCard) => (
-                <Button
-                  key={numberOfCard}
-                  onClick={() => {
-                    gameSound?.playClick();
-
-                    setSelectedNumberOfCard(numberOfCard);
-                    setGameStart({
-                      IsOkModeSelect: true,
-                      IsOkLevelSelect: true,
-                      isOkNumberSelect: true,
-                    });
-                  }}
-                  size={"default"}
-                  variant={
-                    selectedNumberOfCard === numberOfCard
-                      ? "default"
-                      : "secondary"
-                  }
-                >
-                  {numberOfCard}枚
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-        {gameStart.isOkNumberSelect && (
-          <>
-            <Ranking
-              gameLevelId={gameLevel}
-              gameMode={gameMode}
-              selectedNumberOfCard={selectedNumberOfCard}
-            />
-            <Button
+      <h1 className={"m-2.5 w-1/2 text-center text-5xl"}>神経衰弱</h1>
+      <div className={"flex h-1/3 w-full max-w-sm flex-col gap-6"}>
+        <Tabs className={"w-full max-w-md"} onValueChange={setTab} value={tab}>
+          <TabsList className={"mb-6 grid w-full grid-cols-4"}>
+            <TabsTrigger
               onClick={() => {
                 gameSound?.playClick();
-
-                void navigate("/nervousbreakdown", {
-                  state: {
-                    gameLevel,
-                    gameMode,
-                    selectedNumberOfCard: selectedNumberOfCard,
-                  },
-                });
               }}
-              size={"lg"}
-              variant={"outline"}
+              value={"mode"}
             >
-              ゲームスタート
-            </Button>
-          </>
-        )}
+              モード
+              <ChevronRight />
+            </TabsTrigger>
+            <TabsTrigger
+              disabled={!gameMode}
+              onClick={() => {
+                gameSound?.playClick();
+              }}
+              value={"level"}
+            >
+              難易度
+              <ChevronRight />
+            </TabsTrigger>
+            <TabsTrigger
+              disabled={!gameLevel}
+              onClick={() => {
+                gameSound?.playClick();
+              }}
+              value={"card"}
+            >
+              枚数
+              <ChevronRight />
+            </TabsTrigger>
+            <TabsTrigger
+              disabled={!selectedNumberOfCard}
+              onClick={() => {
+                gameSound?.playClick();
+              }}
+              value={"confirm"}
+            >
+              確認
+            </TabsTrigger>
+          </TabsList>
+
+          {/* 1. モード選択 */}
+          <TabsContent value={"mode"}>
+            <div className={"flex flex-col items-center gap-4"}>
+              <div className={"flex gap-4"}>
+                {gameModeArray.map((mode) => (
+                  <Button
+                    key={mode}
+                    onClick={() => {
+                      setGameMode(mode);
+                      setTab("level");
+                      gameSound?.playClick();
+                    }}
+                    variant={gameMode === mode ? "default" : "secondary"}
+                  >
+                    {mode === "irasutoya" ? "いらすとや" : "ポケモン"}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 2. 難易度 */}
+          <TabsContent value={"level"}>
+            <div className={"flex flex-col items-center gap-4"}>
+              <div className={"flex gap-2"}>
+                {gameLevelArray.map((level) => (
+                  <Button
+                    key={level}
+                    onClick={() => {
+                      setGameLevel(gameLevelIdMap[level]);
+                      setTab("card");
+                      gameSound?.playClick();
+                    }}
+                    variant={
+                      gameLevel === gameLevelIdMap[level]
+                        ? "default"
+                        : "secondary"
+                    }
+                  >
+                    {level}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 3. 枚数 */}
+          <TabsContent value={"card"}>
+            <div className={"flex flex-col items-center gap-4"}>
+              <div className={"grid grid-cols-5 gap-2"}>
+                {numberOfCardArray.map((number) => (
+                  <Button
+                    key={number}
+                    onClick={() => {
+                      setSelectedNumberOfCard(number);
+                      setTab("confirm");
+                      gameSound?.playClick();
+                    }}
+                    variant={
+                      selectedNumberOfCard === number ? "default" : "secondary"
+                    }
+                  >
+                    {number}枚
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 4. 確認 */}
+          <TabsContent value={"confirm"}>
+            <div className={"flex flex-col items-center gap-4"}>
+              <div className={"mb-2"}>
+                <b>{gameMode === "irasutoya" ? "いらすとや" : "ポケモン"}</b>／
+                <b>{gameLevel && gameLevelMap[gameLevel]}</b>／
+                <b>{selectedNumberOfCard}枚</b>
+              </div>
+              <Ranking
+                gameLevelId={gameLevel ?? 1}
+                gameMode={gameMode ?? "irasutoya"}
+                selectedNumberOfCard={selectedNumberOfCard ?? 12}
+              />
+              <Button
+                disabled={!gameLevel || !gameMode || !selectedNumberOfCard}
+                onClick={() => {
+                  gameSound?.playClick();
+                  void navigate("/nervousbreakdown", {
+                    state: {
+                      gameLevel,
+                      gameMode,
+                      selectedNumberOfCard,
+                    },
+                  });
+                }}
+                size={"lg"}
+                variant={"outline"}
+              >
+                ゲームスタート
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
+      <GameSettingDialog />
     </div>
   );
 };

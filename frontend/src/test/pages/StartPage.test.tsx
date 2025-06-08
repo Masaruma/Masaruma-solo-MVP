@@ -23,48 +23,58 @@ describe("NervousBreakdownのテスト", () => {
       );
     });
   });
-  it("vitestが動いてるかテスト", () => {
-    const headerText = screen.getByText("モードを選択してください");
+  it("タイトル", () => {
+    const headerText = screen.getByText("神経衰弱");
 
     expect(headerText).toBeInTheDocument();
   });
 
   it("GameMode⇨ゲームレベル⇨カードの枚数選択画面⇨スタートとランキングが出現する", async () => {
-    const gameModeButton = screen.getByRole("button", { name: "irasutoya" });
-    await userEvent.click(gameModeButton);
-
-    const selectGameLevel = screen.getByLabelText("ゲームの難易度を選択");
-    expect(selectGameLevel).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "いらすとや" }));
     await userEvent.click(screen.getByRole("button", { name: "優しい" }));
+    await userEvent.click(screen.getByRole("button", { name: "6枚" }));
 
-    const selectNumberOfCards = screen.getByLabelText("カードの枚数を選択");
+    expect(
+      screen.getByRole("button", { name: "ゲームスタート" })
+    ).toBeInTheDocument();
+  });
 
-    expect(selectNumberOfCards).toBeInTheDocument();
+  it("tabListをクリックするとタブを行き来でき、全ての項目を選択しないと確認タブへ到達できない。", async () => {
+    const tablist =  screen.getByRole("tablist");
+    const tabChildren = Array.from(tablist.children);
 
-    const cardSixButton = screen.getByRole("button", { name: "6枚" });
+    await userEvent.click(tabChildren[0]);
+    expect(tabChildren[0]).toHaveAttribute("aria-selected", "true");
 
-    await userEvent.click(cardSixButton);
-    const startButton = screen.getByRole("button", { name: "ゲームスタート" });
+    await userEvent.click(tabChildren[1]);
+    expect(tabChildren[1]).toHaveAttribute("aria-selected", "true");
 
-    expect(startButton).toBeInTheDocument();
+    await userEvent.click(tabChildren[2]);
+    expect(tabChildren[2]).toHaveAttribute("aria-selected", "true");
+
+    expect(tabChildren[3]).toHaveAttribute("aria-selected", "false");
+    await userEvent.click(screen.getByRole("button", { name: "6枚" }));
+    await userEvent.click(tabChildren[3]);
+
+    expect(tabChildren[3]).toHaveAttribute("aria-selected", "true");
+
+
   });
 });
+
 
 describe("ルーティング関連", () => {
   it("ゲームスタートボタンを押すと必要な'state'をもちゲームページへのnavigationが行われる", async () => {
     const history = createMemoryHistory({ initialEntries: ["/"] });
-
     render(
       <Router location={history.location} navigator={history}>
         <StartPage />
       </Router>
     );
-    const modeButton = screen.getByRole("button", { name: "irasutoya" });
-    await userEvent.click(modeButton);
+
+    await userEvent.click(screen.getByRole("button", { name: "いらすとや" }));
     await userEvent.click(screen.getByRole("button", { name: "優しい" }));
-
     await userEvent.click(screen.getByRole("button", { name: "12枚" }));
-
     await userEvent.click(
       screen.getByRole("button", { name: "ゲームスタート" })
     );
