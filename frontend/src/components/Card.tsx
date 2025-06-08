@@ -23,7 +23,7 @@ export const Card = ({
     <div
       className={`
         relative flex h-[134px] w-[107px] flex-col items-center justify-center
-        bg-transparent 
+        bg-transparent
         max-sm:h-[70px] max-sm:w-[58px]
       `}
       onClick={() => {
@@ -43,9 +43,8 @@ export const Card = ({
         aria-label={"裏のカード"}
         className={`
           background absolute h-full w-full bg-[url('/images/cardImage.png')]
-          bg-center bg-no-repeat bg-[length:100%_100%]
-          shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
-  
+          bg-center bg-no-repeat shadow-[4px_4px_13px_5px_rgba(0,0,0,0.1)]
+          bg-[length:100%_100%]
         `}
         style={{
           position: "absolute",

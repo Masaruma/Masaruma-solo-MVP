@@ -28,7 +28,7 @@ export default defineConfig({
           "dist/**",
           "public/**",
           "src/**/main.tsx",
-          "src/ui/**",
+          "src/components/ui/**",
           "src/**/*.d.ts",
           "vite.config.ts"
 

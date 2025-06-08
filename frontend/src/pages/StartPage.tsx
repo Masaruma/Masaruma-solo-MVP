@@ -108,10 +108,10 @@ export const StartPage = () => {
           {/* 1. モード選択 */}
           <TabsContent
             className={`
-            bg-beige-100 flex h-full justify-center rounded-2xl border-[2px]
-            border-[#e0dcbc] p-12 shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
-            backdrop-blur-xl
-          `}
+              bg-beige-100 flex h-full justify-center rounded-2xl border-[2px]
+              border-[#e0dcbc] p-12 shadow-[0_0_18px_2px_rgba(0,0,0,0.15)]
+              backdrop-blur-xl
+            `}
             value={"mode"}
           >
             <div className={"flex flex-col items-center gap-4"}>
@@ -136,10 +136,10 @@ export const StartPage = () => {
           {/* 2. 難易度 */}
           <TabsContent
             className={`
-            bg-beige-100 animate-fade-left flex h-full justify-center
-            rounded-2xl border-[2px] border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
-          `}
+              bg-beige-100 animate-fade-left flex h-full justify-center
+              rounded-2xl border-[2px] border-[#e0dcbc] p-12
+              shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+            `}
             value={"level"}
           >
             <div className={"flex flex-col items-center gap-4"}>
@@ -168,10 +168,10 @@ export const StartPage = () => {
           {/* 3. 枚数 */}
           <TabsContent
             className={`
-            bg-beige-100 animate-fade-left flex h-full justify-center
-            rounded-2xl border-[2px] border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
-            overflow-hidden`}
+              bg-beige-100 animate-fade-left flex h-full justify-center
+              overflow-hidden rounded-2xl border-[2px] border-[#e0dcbc] p-12
+              shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+            `}
             value={"card"}
           >
             <div className={"flex flex-col items-center gap-4"}>
@@ -198,10 +198,10 @@ export const StartPage = () => {
           {/* 4. 確認 */}
           <TabsContent
             className={`
-            bg-beige-100 animate-fade-left flex h-full justify-center
-            rounded-2xl border-[2px] border-[#e0dcbc] p-12
-            shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
-          `}
+              bg-beige-100 animate-fade-left flex h-full justify-center
+              rounded-2xl border-[2px] border-[#e0dcbc] p-12
+              shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
+            `}
             value={"confirm"}
           >
             <div className={"flex flex-col items-center gap-4"}>

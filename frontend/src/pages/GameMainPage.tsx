@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { CircleX, Hand } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 import { Card } from "@/components/Card.tsx";
@@ -18,7 +19,6 @@ import {
   calcAllowMissCount,
   calcGridTemplateColumns,
 } from "@/utils/calcGameLevel.ts";
-import { CircleX, Hand } from "lucide-react";
 
 export interface GameMainProps {
   gameLevel: number;
@@ -108,7 +108,7 @@ export const GameMainPage = () => {
         <BreadcrumbWithCustomSeparator />
         <div className={"mt-4 mb-2 flex w-1/3 flex-row justify-around gap-4"}>
           <div aria-label={"現在の手数"} className={"text-2l text-center"}>
-            <Hand className={"inline-block"}/> {score}
+            <Hand className={"inline-block"} /> {score}
           </div>
           <GameTimer
             milliseconds={
@@ -118,11 +118,9 @@ export const GameMainPage = () => {
             }
           />
           <div aria-label={"ミス回数"} className={"text-1xl text-center"}>
-            <CircleX className={"inline-block"}/>
+            <CircleX className={"inline-block"} />
             {missCount}/{calcAllowMissCount(selectedNumberOfCard, gameLevel)}
           </div>
-
-
         </div>
 
         <div
