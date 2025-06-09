@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table.tsx";
 import { GameModeType } from "@/pages/StartPage.tsx";
 import * as GameScoreRepository from "@/repository/GameScoreRepository.ts";
 import { GetGameScoreType } from "@/repository/GameScoreRepository.ts";
@@ -9,7 +17,6 @@ interface RankingProps {
   gameMode: GameModeType;
   selectedNumberOfCard: number;
 }
-
 export const Ranking = ({
   gameLevelId,
   gameMode,
@@ -17,7 +24,6 @@ export const Ranking = ({
 }: RankingProps) => {
   const [getGameScores, setGetGameScores] = useState<GetGameScoreType[]>([]);
 
-  // !初回更新でランキングデータ取得 モード変更で描画変更
   useEffect(() => {
     void (async () => {
       const getScoreResult = await GameScoreRepository.getGameScores(
@@ -28,68 +34,55 @@ export const Ranking = ({
       setGetGameScores(getScoreResult);
     })();
   }, [selectedNumberOfCard, gameMode, gameLevelId]);
+
   return (
-    <>
-      <div
-        aria-label={"ランキング"}
-        className={`
-          m-4 w-full rounded-2xl bg-transparent p-2.5
-          shadow-[4px_4px_13px_5px_rgba(0,0,0,0.25)] backdrop-blur-xl
-        `}
-      >
-        √<h1 className={"mb-2 text-center text-3xl"}>👑Ranking👑</h1>
-        <table border={1} className={"w-full table-fixed border-spacing-0"}>
-          <thead>
-            <tr>
-              {[
-                "Ranking",
-                "Date",
-                "User",
-                "score",
-                "level",
-                "タイム",
-                "ミス",
-              ].map((label) => (
-                <th
-                  className={`
-                    bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
-                    text-center text-base font-bold
-                  `}
-                  key={label}
-                >
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {getGameScores.map((getGameScore, tableIndex) => {
-              return (
-                <tr
-                  className={"border-b-1 border-solid border-[#b473bf]"}
-                  key={getGameScore.id}
-                >
-                  <th
-                    className={`
-                      bg-gradient-to-b from-[#ffb2c1] to-[#b473bf] px-4 py-2
-                      text-center text-base font-bold
-                    `}
-                    scope={"row"}
-                  >
-                    {tableIndex + 1}
-                  </th>
-                  <td>{new Date(getGameScore.createdAt).toLocaleString()}</td>
-                  <td>{getGameScore.user}</td>
-                  <td>{getGameScore.gameScore}手</td>
-                  <td>{getGameScore.numberOfCard}マス</td>
-                  <td>{getGameScore.elapsedTimeMillis / 1000}秒</td>
-                  <td>{getGameScore.missCount}ミス</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
+    <div
+      className={`
+        grid w-full
+        [&>div]:max-h-[300px] [&>div]:rounded [&>div]:border
+      `}
+    >
+      <Table>
+        <TableHeader>
+          <TableRow
+            className={`
+              bg-background sticky top-0
+              after:bg-border after:absolute after:inset-x-0 after:bottom-0
+              after:h-px after:content-['']
+              [&>*]:whitespace-nowrap
+            `}
+          >
+            <TableHead className={"pl-2"}>No</TableHead>
+            <TableHead>日付</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>time</TableHead>
+            <TableHead>miss</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className={"overflow-hidden"}>
+          {getGameScores.map((getGameScore, tableIndex) => (
+            <TableRow
+              className={`
+                odd:bg-muted/50
+                [&>*]:whitespace-nowrap
+              `}
+              key={getGameScore.id}
+            >
+              <TableCell className={"pl-2"}>{tableIndex + 1}</TableCell>
+              <TableCell className={"font-medium"}>
+                {new Date(getGameScore.createdAt).toLocaleDateString("ja-JP", {
+                  year: "2-digit",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}
+              </TableCell>
+              <TableCell>{getGameScore.user}</TableCell>
+              <TableCell>{getGameScore.elapsedTimeMillis / 1000}秒</TableCell>
+              <TableCell>{getGameScore.missCount}ミス</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };

@@ -196,7 +196,7 @@ export const StartPage = () => {
           <TabsContent
             className={`
               bg-beige-100 animate-fade-left flex h-full justify-center
-              rounded-2xl border-[2px] border-[#e0dcbc] p-12
+              rounded-2xl border-[2px] border-[#e0dcbc] p-4
               shadow-[0_0_18px_2px_rgba(0,0,0,0.15)] backdrop-blur-xl
             `}
             value={"confirm"}

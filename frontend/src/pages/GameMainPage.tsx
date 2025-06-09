@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { Card } from "@/components/Card.tsx";
 import { BreadcrumbWithCustomSeparator } from "@/components/customUi/BreadcrumbWithCustomSeparator.tsx";
 import { DialogCustom } from "@/components/customUi/DialogCustom.tsx";
+import { GameSettingDialog } from "@/components/customUi/GameSettingDialog.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { Notification } from "@/components/Notification.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
@@ -19,7 +20,6 @@ import {
   calcAllowMissCount,
   calcGridTemplateColumns,
 } from "@/utils/calcGameLevel.ts";
-import { GameSettingDialog } from "@/components/customUi/GameSettingDialog.tsx";
 
 export interface GameMainProps {
   gameLevel: number;
@@ -210,7 +210,6 @@ export const GameMainPage = () => {
             すべて表を見る
           </Button>
         </div>
-
       </div>
       <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
       <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
