@@ -1,13 +1,13 @@
 import useSound from "use-sound";
 
-import cardClickSound from "@/sounds/cardClick.mp3";
-import BGMSound from "@/sounds/CassetteBGM.mp3";
-import clickSound from "@/sounds/click.mp3";
-import failedSound from "@/sounds/failed.mp3";
-import gameClearSound from "@/sounds/gameClear.mp3";
-import gameFailedSound from "@/sounds/gameFailed.mp3";
-import shuffleSound from "@/sounds/shuffle.mp3";
-import successSound from "@/sounds/success.mp3";
+import cardClickSound from "@/assets/sounds/cardClick.mp3";
+import BGMSound from "@/assets/sounds/CassetteBGM.mp3";
+import clickSound from "@/assets/sounds/click.mp3";
+import failedSound from "@/assets/sounds/failed.mp3";
+import gameClearSound from "@/assets/sounds/gameClear.mp3";
+import gameFailedSound from "@/assets/sounds/gameFailed.mp3";
+import shuffleSound from "@/assets/sounds/shuffle.mp3";
+import successSound from "@/assets/sounds/success.mp3";
 
 export const useGameSound = () => {
   const [playSuccess, { sound: playSuccessConfig }] = useSound(successSound, {
