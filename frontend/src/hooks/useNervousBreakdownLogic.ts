@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAtomValue } from "jotai/index";
 
@@ -47,37 +47,48 @@ export const useNervousBreakdownLogic = (
   );
 
   // １枚目のカードと2枚目のカードのマッチ判定
-  const checkMatch = useCallback(() => {
-    if (selectedCards[0].id === selectedCards[1].id) {
+  const checkMatch = useCallback((selectedCardsToCheck: CardsWithMatchKeyType[]) => {
+    if (selectedCardsToCheck[0].id === selectedCardsToCheck[1].id) {
       gameSound && setTimeout(gameSound.playSuccess, 300);
 
       setCards((prevCards) =>
         prevCards.map((card) =>
-          card.id === selectedCards[0].id ? { ...card, isMatched: true } : card
+          card.id === selectedCardsToCheck[0].id ? { ...card, isMatched: true } : card
         )
       );
-    } else if (selectedCards[0].id !== selectedCards[1].id) {
+    } else if (selectedCardsToCheck[0].id !== selectedCardsToCheck[1].id) {
       gameSound && setTimeout(gameSound.playFailed, 300);
       setMissCount((prev) => prev + 1);
     }
-  }, [gameSound, selectedCards, setCards]);
+  }, [gameSound, setCards]);
 
   // 選択処理
   useEffect(() => {
-    if (selectedCards.length === 2) {
+    const selectedCardsInState = cards.filter((card) => card.isSelected);
+    
+    if (selectedCardsInState.length === 2) {
       setScore((prev) => prev + 1);
-      checkMatch();
+      checkMatch(selectedCardsInState);
 
       if (gameLevel === 5) {
         shuffleCardsPercent(0.15);
       }
 
       const timeoutId = setTimeout(() => {
-        setSelectedCards([]);
+        setCards((prev) =>
+          prev.map((card) => {
+            if (card.isSelected) {
+              return { ...card, isSelected: false };
+            } else {
+              return card;
+            }
+          })
+        );
       }, 800);
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedCards, checkMatch, gameLevel, shuffleCardsPercent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards.map(card => card.isSelected).join(','), checkMatch, gameLevel, setCards, shuffleCardsPercent]);
 
   // クリア判定
   useEffect(() => {
@@ -86,47 +97,69 @@ export const useNervousBreakdownLogic = (
       setIsCleared(true);
       // gameSound.playClear()
     }
-  }, [cards, gameSound]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards.map(card => card.isMatched).join(',')]);
 
-  const handleCardClick = (card: CardsWithMatchKeyType) => {
+  const handleCardClick = (clicked: CardsWithMatchKeyType) => {
     if (isShuffling) return; // シャッフル中はクリックを無効化
-    if (!selectedCards.includes(card) && !card.isMatched) {
+    if (!clicked.isSelected && !clicked.isMatched) {
       gameSound?.playCardClick();
-      setSelectedCards((prev) => {
-        const cleared = prev.length === 2 ? [] : prev;
-        return [...cleared, card];
+      setCards((prev) => {
+        const currentSelected = prev.filter((card) => card.isSelected);
+        
+        if (currentSelected.length === 2) {
+          // 既に2枚選択されている場合は選択をリセット
+          return prev.map((card) => ({ ...card, isSelected: card.idx === clicked.idx }));
+
+        } else {
+          // 新しいカードを選択
+          return prev.map((card) => {
+            if (card.idx === clicked.idx) {
+              return { ...card, isSelected: true };
+            } else {
+              return card;
+            }
+          });
+        }
       });
     }
   };
 
+  // 以下のhelper機能は既存のselectedCardsを使用しているため修正が必要
   const [remainHelpsFindPairCard, setRemainHelpsFindPairCard] = useState(1);
 
   const handleFindPairCard = useCallback(() => {
     if (remainHelpsFindPairCard === 0) return;
-    if (selectedCards.length === 1) {
-      const selectedCardId = selectedCards[0].id;
-      const pairCard = cards.find((card) => card.id === selectedCardId)!!;
-      setSelectedCards((prev) => [...prev, pairCard]);
+    
+    const currentSelected = cards.filter((card) => card.isSelected);
+    
+    if (currentSelected.length === 1) {
+      const selectedCardId = currentSelected[0].id;
+      const pairCard = cards.find((card) => card.id === selectedCardId && card.idx !== currentSelected[0].idx);
+      if (pairCard) {
+        setCards(prev => prev.map(card => 
+          card.idx === pairCard.idx ? { ...card, isSelected: true } : card
+        ));
+      }
     } else {
       const noMatchedAllCards = cards.filter((card) => !card.isMatched);
-
       const randomIdNoMatchedCard =
-        noMatchedAllCards[Math.floor(Math.random() * noMatchedAllCards.length)]
-          .id;
+        noMatchedAllCards[Math.floor(Math.random() * noMatchedAllCards.length)]?.id;
 
-      const noMatchedPairCards = cards.filter(
-        (card) => card.id === randomIdNoMatchedCard
-      );
+      if (randomIdNoMatchedCard) {
+        const noMatchedPairCards = cards.filter(
+          (card) => card.id === randomIdNoMatchedCard && !card.isMatched
+        );
 
-      setSelectedCards(noMatchedPairCards);
+        setCards(prev => prev.map(card => 
+          noMatchedPairCards.some(pair => pair.idx === card.idx) 
+            ? { ...card, isSelected: true } 
+            : { ...card, isSelected: false }
+        ));
+      }
     }
     setRemainHelpsFindPairCard((prev) => prev - 1);
-  }, [
-    cards,
-    remainHelpsFindPairCard,
-    selectedCards,
-    setRemainHelpsFindPairCard,
-  ]);
+  }, [cards, remainHelpsFindPairCard, setCards]);
 
   const [remainHelpsTurnAll, setRemainHelpsTurnAll] = useState(
     gameLevel >= 3 ? 1 : 0
@@ -159,9 +192,24 @@ export const useNervousBreakdownLogic = (
     setRemainHelpsTurnAll((prev) => prev - 1);
   }, [cards, remainHelpsTurnAll]);
 
+  const onLogicReset = useCallback(() => {
+    setIsCleared(false);
+    setScore(0);
+    setMissCount(0);
+    setRemainHelpsTurnAll(gameLevel >= 3 ? 1 : 0);
+    setRemainHelpsFindPairCard(1);
+    setSelectedCards([]);
+    setIsShowReverseNotification(false);
+    setIsShuffling(false);
+    setHelperFlipCards([]);
+  }, [gameLevel]);
+
+  // selectedCardsを計算で求める
+  const computedSelectedCards = cards.filter((card) => card.isSelected);
+
   return {
     helperFlipCards,
-    selectedCards,
+    selectedCards: computedSelectedCards,
     handleCardClick,
     score,
     isCleared,
@@ -171,5 +219,6 @@ export const useNervousBreakdownLogic = (
     remainHelpsFindPairCard,
     handleTurnAllCardOut,
     remainHelpsTurnAll,
+    onLogicReset,
   };
 };

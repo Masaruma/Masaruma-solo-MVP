@@ -13,10 +13,12 @@ export const Card = ({
   selectedCards: CardsWithMatchKeyType[];
   startWithCardClick: () => void;
 }) => {
+  // todo isFlippedの処理を変える
   const isFlipped =
     selectedCards.includes(card) ||
     card.isMatched ||
-    helperFlipCards.includes(card);
+    helperFlipCards.includes(card) ||
+  card.isSelected;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- enterで押さないため

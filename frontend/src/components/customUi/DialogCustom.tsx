@@ -13,24 +13,20 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { GameMainProps } from "@/pages/GameMainPage.tsx";
 
-// reloadPage関数をexport
-const reloadPage = () => window.location.reload();
-
 export const DialogCustom = ({
   children,
   dialogTitle,
   isOpen,
+  onClick,
 }: {
   children?: ReactNode;
   dialogTitle: string;
   isOpen: boolean;
+  onClick: () => void;
 }) => {
   const { state } = useLocation();
   const { gameLevel, gameMode, selectedNumberOfCard } =
     (state as GameMainProps) || {};
-  const handleRetry = () => {
-    reloadPage();
-  };
   const navigate = useNavigate();
   return (
     <Dialog open={isOpen}>
@@ -48,7 +44,19 @@ export const DialogCustom = ({
           {children}
         </div>
         <DialogFooter>
-          <Button onClick={handleRetry} variant={"default"}>
+          <Button
+            onClick={() => {
+              onClick();
+              void navigate("/nervousbreakdown", {
+                state: {
+                  gameLevel,
+                  gameMode,
+                  selectedNumberOfCard: selectedNumberOfCard,
+                },
+              });
+            }}
+            variant={"default"}
+          >
             リトライ
           </Button>
           <Button type={"button"}>
@@ -57,6 +65,7 @@ export const DialogCustom = ({
           {dialogTitle === "GAME CLEAR" && (
             <Button
               onClick={() => {
+                onClick();
                 void navigate("/nervousbreakdown", {
                   state: {
                     gameLevel,

@@ -86,6 +86,7 @@ export const useInitializeGame = (
         ...obj,
         idx,
         isMatched: false,
+        isSelected: false,
       }))
       .sort(() => Math.random() - 0.5);
 
