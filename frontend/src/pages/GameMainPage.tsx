@@ -37,6 +37,9 @@ export type CardsWithMatchKeyType = CardImageType & {
 };
 
 export const GameMainPage = () => {
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+
   const { state } = useLocation();
   const { gameLevel, gameMode, selectedNumberOfCard } =
     (state as GameMainProps) || {};
@@ -54,18 +57,12 @@ export const GameMainPage = () => {
     isCleared,
     isShowReverseNotification,
     missCount,
+    onLogicReset,
     remainHelpsFindPairCard,
     remainHelpsTurnAll,
     score,
     selectedCards,
   } = useNervousBreakdownLogic(cards, setCards, gameLevel);
-
-  useEffect(() => {
-    void initializeGame();
-  }, [initializeGame]);
-
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isStarted, setIsStarted] = useState<boolean>(false);
 
   const gameTimer = useGameTimer(
     calcGameSeconds(selectedNumberOfCard, gameLevel),
@@ -73,6 +70,20 @@ export const GameMainPage = () => {
       setIsGameOver(true);
     }
   );
+
+  const resetGameState = useCallback(async () => {
+    onLogicReset();
+    setIsGameOver(false);
+    setIsStarted(false);
+    gameTimer.restart();
+  }, [onLogicReset, gameTimer]);
+
+  useEffect(() => {
+    void resetGameState();
+    void initializeGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 無限ループするため
+  }, [initializeGame]);
+
   const startWithCardClick = useCallback(() => {
     if (!isStarted) {
       setIsStarted(true);
@@ -211,8 +222,22 @@ export const GameMainPage = () => {
           </Button>
         </div>
       </div>
-      <DialogCustom dialogTitle={"GAME OVER"} isOpen={isGameOver} />
-      <DialogCustom dialogTitle={"GAME CLEAR"} isOpen={isCleared}>
+      <DialogCustom
+        dialogTitle={"GAME OVER"}
+        isOpen={isGameOver}
+        onClick={() => {
+          void resetGameState();
+          void initializeGame();
+        }}
+      />
+      <DialogCustom
+        dialogTitle={"GAME CLEAR"}
+        isOpen={isCleared}
+        onClick={() => {
+          void resetGameState();
+          void initializeGame();
+        }}
+      >
         <ScoreInput
           elapsedTimeMillis={gameTimer.elapsedMilliseconds}
           gameLevel={gameLevel}

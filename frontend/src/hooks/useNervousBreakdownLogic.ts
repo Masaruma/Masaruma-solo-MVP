@@ -159,6 +159,18 @@ export const useNervousBreakdownLogic = (
     setRemainHelpsTurnAll((prev) => prev - 1);
   }, [cards, remainHelpsTurnAll]);
 
+  const onLogicReset = useCallback(() => {
+    setIsCleared(false);
+    setScore(0);
+    setMissCount(0);
+    setRemainHelpsTurnAll(gameLevel >= 3 ? 1 : 0);
+    setRemainHelpsFindPairCard(1);
+    setSelectedCards([]);
+    setIsShowReverseNotification(false);
+    setIsShuffling(false);
+    setHelperFlipCards([]);
+  }, [gameLevel]);
+
   return {
     helperFlipCards,
     selectedCards,
@@ -171,5 +183,6 @@ export const useNervousBreakdownLogic = (
     remainHelpsFindPairCard,
     handleTurnAllCardOut,
     remainHelpsTurnAll,
+    onLogicReset,
   };
 };

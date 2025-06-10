@@ -7,6 +7,7 @@ import {
   screen,
   fireEvent,
   waitFor,
+  within,
 } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
@@ -603,12 +604,7 @@ describe(`${GameMainPage.name}`, () => {
   });
 
   describe("ゲーム終了後モーダル", () => {
-    it("リトライボタンをクリックするとページがリロードされる", async () => {
-      const reloadMock = vi.fn();
-      vi.stubGlobal("location", {
-        ...window.location,
-        reload: reloadMock,
-      });
+    it("クリア:リトライボタンをクリックするとページがリロードされる", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
       const cards = Array.from(cardArea.children);
@@ -626,20 +622,21 @@ describe(`${GameMainPage.name}`, () => {
         vi.advanceTimersByTime(1000);
       });
 
-      // ゲームクリア状態を確認
       expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
 
-      // リトライボタンを取得
-      const retryButton = screen.getByRole("button", { name: "リトライ" });
-      await userEvent.click(retryButton);
+      await userEvent.click(screen.getByRole("button", { name: "リトライ" }));
 
-      // reloadPageが呼ばれたことを確認
-      expect(reloadMock).toHaveBeenCalled();
-
-      vi.unstubAllGlobals();
-      reloadMock.mockReset();
+      expect(
+        within(screen.getByLabelText("現在の手数")).getByText("0")
+      ).toBeInTheDocument();
+      expect(
+        within(screen.getByLabelText("ミス回数")).getByText(/0/)
+      ).toBeInTheDocument();
+      expect(
+        within(screen.getByLabelText("現在のタイム")).getByText("NaN")
+      ).toBeInTheDocument();
     });
-    it("次のレベルボタンをクリックすると次のレベルになる。", async () => {
+    it("クリア:次のレベルボタンをクリックすると次のレベルになりゲームがリセットされる。", async () => {
       render(<GameMain__test />);
       const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
       const cards = Array.from(cardArea.children);
@@ -661,10 +658,59 @@ describe(`${GameMainPage.name}`, () => {
       expect(screen.getByText("GAME CLEAR")).toBeInTheDocument();
 
       await userEvent.click(screen.getByRole("button", { name: "次のレベル" }));
-
       await waitFor(() => {
+        expect(
+          within(screen.getByLabelText("現在の手数")).getByText("0")
+        ).toBeInTheDocument();
+        expect(
+          within(screen.getByLabelText("ミス回数")).getByText(/0/)
+        ).toBeInTheDocument();
         expect(screen.getByText(/8/)).toBeInTheDocument();
       });
+    });
+    it("ゲームオーバー:次のレベルボタンが表示されておらず、リトライをクリックすると正常に動作する", async () => {
+      const state: GameMainProps = {
+        selectedNumberOfCard: 4,
+        gameMode: "irasutoya",
+        gameLevel: 3,
+      };
+
+      render(<GameMain__test state={state} />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+
+      const cards = Array.from(cardArea.children);
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      expect(screen.getByText("GAME OVER")).toBeInTheDocument();
+
+      expect(
+        screen.queryByRole("button", { name: "次のレベル" })
+      ).not.toBeInTheDocument();
+      await userEvent.click(screen.getByRole("button", { name: "リトライ" }));
+      expect(
+        within(screen.getByLabelText("現在の手数")).getByText("0")
+      ).toBeInTheDocument();
+      expect(
+        within(screen.getByLabelText("ミス回数")).getByText(/0/)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/3/)).toBeInTheDocument();
     });
   });
 
