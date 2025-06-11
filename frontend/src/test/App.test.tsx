@@ -9,7 +9,9 @@ vi.mock("@/pages/GameMainPage.tsx", () => ({
 vi.mock("@/pages/StartPage.tsx", () => ({
   StartPage: vi.fn(() => <div data-testid={"mock-start-page"} />),
 }));
-
+vi.mock("@/pages/CpuGameMainPage.tsx", () => ({
+  CpuGameMainPage: vi.fn(() => <div data-testid={"mock-cpu-page"} />),
+}));
 describe("App.tsx", () => {
   it("/のルートはStartPageが表示される", () => {
     render(
@@ -38,5 +40,13 @@ describe("App.tsx", () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId("mock-start-page")).toBeInTheDocument();
+  });
+  it("/cpuのルートはCpuGameMainPageが表示される", () => {
+    render(
+      <MemoryRouter initialEntries={[{ pathname: "/cpu" }]}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId("mock-cpu-page")).toBeInTheDocument();
   });
 });

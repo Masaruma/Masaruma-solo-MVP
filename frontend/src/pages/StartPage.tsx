@@ -34,7 +34,7 @@ export const StartPage = () => {
           <Button
             onClick={() => {
               gameSound?.playClick();
-              void navigate("/nervousbreakdown", {
+              void navigate("/cpu", {
                 state: {
                   gameLevel: 1,
                   gameMode: "pokemon",

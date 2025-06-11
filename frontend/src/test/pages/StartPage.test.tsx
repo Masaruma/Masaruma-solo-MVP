@@ -86,4 +86,18 @@ describe("ルーティング関連", () => {
       selectedNumberOfCard: 12,
     });
   });
+
+  it("cpu戦でゲームスタートボタンを押すとcpuページへのnavigationが行われる", async () => {
+    const history = createMemoryHistory({ initialEntries: ["/"] });
+    render(
+      <Router location={history.location} navigator={history}>
+        <StartPage />
+      </Router>
+    );
+    await userEvent.click(screen.getByRole("button", { name: "CPU" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "ゲームスタート" })
+    );
+    expect(history.location.pathname).toBe("/cpu");
+  });
 });
