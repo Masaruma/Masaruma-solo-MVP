@@ -10,11 +10,11 @@ import { GameSettingDialog } from "@/components/customUi/GameSettingDialog.tsx";
 import { GameTimer } from "@/components/GameTimer.tsx";
 import { Notification } from "@/components/Notification.tsx";
 import { ScoreInput } from "@/components/ScoreInput.tsx";
+import { GameModeType } from "@/components/SingleModeTab.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useGameTimer } from "@/hooks/useGameTimer.ts";
 import { useInitializeGame } from "@/hooks/useInitializeGame.ts";
 import { useNervousBreakdownLogic } from "@/hooks/useNervousBreakdownLogic.ts";
-import { GameModeType } from "@/pages/StartPage.tsx";
 import {
   calcGameSeconds,
   calcAllowMissCount,

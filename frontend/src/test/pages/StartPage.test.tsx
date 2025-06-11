@@ -30,9 +30,10 @@ describe("NervousBreakdownのテスト", () => {
   });
 
   it("GameMode⇨ゲームレベル⇨カードの枚数選択画面⇨スタートとランキングが出現する", async () => {
-    await userEvent.click(screen.getByRole("button", { name: "いらすとや" }));
+    await userEvent.click(screen.getByRole("button", { name: "シングル" }));
+    await userEvent.click(screen.getByRole("button", { name: "irasutoya" }));
     await userEvent.click(screen.getByRole("button", { name: "優しい" }));
-    await userEvent.click(screen.getByRole("button", { name: "6枚" }));
+    await userEvent.click(screen.getByRole("button", { name: "6" }));
 
     expect(
       screen.getByRole("button", { name: "ゲームスタート" })
@@ -53,7 +54,8 @@ describe("NervousBreakdownのテスト", () => {
     expect(tabChildren[2]).toHaveAttribute("aria-selected", "true");
 
     expect(tabChildren[3]).toHaveAttribute("aria-selected", "false");
-    await userEvent.click(screen.getByRole("button", { name: "6枚" }));
+    await userEvent.click(screen.getByRole("button", { name: "シングル" }));
+    await userEvent.click(screen.getByRole("button", { name: "6" }));
     await userEvent.click(tabChildren[3]);
 
     expect(tabChildren[3]).toHaveAttribute("aria-selected", "true");
@@ -69,9 +71,10 @@ describe("ルーティング関連", () => {
       </Router>
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "いらすとや" }));
+    await userEvent.click(screen.getByRole("button", { name: "シングル" }));
+    await userEvent.click(screen.getByRole("button", { name: "irasutoya" }));
     await userEvent.click(screen.getByRole("button", { name: "優しい" }));
-    await userEvent.click(screen.getByRole("button", { name: "12枚" }));
+    await userEvent.click(screen.getByRole("button", { name: "12" }));
     await userEvent.click(
       screen.getByRole("button", { name: "ゲームスタート" })
     );
