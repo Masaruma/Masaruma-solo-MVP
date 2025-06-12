@@ -24,6 +24,7 @@ import {
 export interface GameMainProps {
   gameLevel: number;
   gameMode: GameModeType;
+  isVsCpu?: boolean;
   selectedNumberOfCard: number;
 }
 
@@ -41,7 +42,7 @@ export const GameMainPage = () => {
   const [isStarted, setIsStarted] = useState<boolean>(false);
 
   const { state } = useLocation();
-  const { gameLevel, gameMode, selectedNumberOfCard } =
+  const { gameLevel, gameMode, isVsCpu, selectedNumberOfCard } =
     (state as GameMainProps) || {};
 
   const { cards, initializeGame, setCards } = useInitializeGame(
@@ -62,7 +63,7 @@ export const GameMainPage = () => {
     remainHelpsTurnAll,
     score,
     selectedCards,
-  } = useNervousBreakdownLogic(cards, setCards, gameLevel);
+  } = useNervousBreakdownLogic(cards, setCards, gameLevel, isVsCpu);
 
   const gameTimer = useGameTimer(
     calcGameSeconds(selectedNumberOfCard, gameLevel),

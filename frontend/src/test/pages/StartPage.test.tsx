@@ -98,6 +98,12 @@ describe("ルーティング関連", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "ゲームスタート" })
     );
-    expect(history.location.pathname).toBe("/cpu");
+    expect(history.location.pathname).toBe("/nervousbreakdown");
+    expect(history.location.state).toEqual({
+      gameLevel: 1,
+      gameMode: "pokemon",
+      selectedNumberOfCard: 10,
+      isVsCpu: true,
+    });
   });
 });

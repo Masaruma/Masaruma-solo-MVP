@@ -6,12 +6,13 @@ import { useAtomValue } from "jotai/index";
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 import { gameSoundAtom } from "@/utils/atom.ts";
 
-const isVsCPU = false;
+const cardTurnDuration = 800;
 
 export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
   setCards: React.Dispatch<React.SetStateAction<CardsWithMatchKeyType[]>>,
-  gameLevel: number
+  gameLevel: number,
+  isVsCpu: boolean | undefined
 ) => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
@@ -27,6 +28,7 @@ export const useNervousBreakdownLogic = (
   const [isCpuTurn, setIsCpuTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [cpuScore, setCpuScore] = useState(0);
+  const [isTurnSwitching, setIsTurnSwitching] = useState(false);
 
   const gameSound = useAtomValue(gameSoundAtom);
 
@@ -61,30 +63,36 @@ export const useNervousBreakdownLogic = (
           card.id === selectedCards[0].id ? { ...card, isMatched: true } : card
         )
       );
-      if (isVsCPU) {
+      if (isVsCpu) {
         isCpuTurn && setCpuScore((prevState) => prevState + 2);
         isPlayerTurn && setPlayerScore((prevState) => prevState + 2);
       }
     } else if (selectedCards[0].id !== selectedCards[1].id) {
       gameSound && setTimeout(gameSound.playFailed, 300);
       setMissCount((prev) => prev + 1);
+      if (isVsCpu) {
+        setIsTurnSwitching(true);
 
-      if (isVsCPU) {
-        if (isCpuTurn) {
-          setIsCpuTurn(false);
-          setIsPlayerTurn(true);
-        } else if (isPlayerTurn) {
-          setIsCpuTurn(true);
-          setIsPlayerTurn(false);
+        if (isCpuTurn && !isPlayerTurn) {
+          setTimeout(() => {
+            setIsCpuTurn(false);
+            setIsPlayerTurn(true);
+            setIsTurnSwitching(false);
+          }, cardTurnDuration);
+        } else if (isPlayerTurn && !isCpuTurn) {
+          setTimeout(() => {
+            setIsCpuTurn(true);
+            setIsPlayerTurn(false);
+            setIsTurnSwitching(false);
+          }, cardTurnDuration);
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- 無限ループするため todo いずれ直す
-  }, [gameSound, selectedCards, setCards]);
+  }, [gameSound, isCpuTurn, isPlayerTurn, isVsCpu, selectedCards, setCards]);
 
   useEffect(() => {
     // player match judge
-    if (isPlayerTurn && selectedCards.length === 2) {
+    if (isPlayerTurn && !isCpuTurn && selectedCards.length === 2) {
       setScore((prev) => prev + 1);
       checkMatch();
 
@@ -94,10 +102,17 @@ export const useNervousBreakdownLogic = (
 
       const timeoutId = setTimeout(() => {
         setSelectedCards([]);
-      }, 800);
+      }, cardTurnDuration);
       return () => clearTimeout(timeoutId);
     }
-  }, [selectedCards, checkMatch, gameLevel, shuffleCardsPercent, isPlayerTurn]);
+  }, [
+    selectedCards,
+    checkMatch,
+    gameLevel,
+    shuffleCardsPercent,
+    isPlayerTurn,
+    isCpuTurn,
+  ]);
 
   useEffect(() => {
     // clear judge
@@ -110,7 +125,8 @@ export const useNervousBreakdownLogic = (
 
   const handleCardClick = (card: CardsWithMatchKeyType) => {
     if (isShuffling) return;
-    if (isVsCPU && !isPlayerTurn) return;
+    if (isVsCpu && !isPlayerTurn) return;
+    if (isTurnSwitching) return;
     if (!selectedCards.includes(card) && !card.isMatched) {
       gameSound?.playCardClick();
       setSelectedCards((prev) => {
@@ -194,7 +210,7 @@ export const useNervousBreakdownLogic = (
 
   useEffect(() => {
     // early or later
-    if (!isVsCPU) {
+    if (!isVsCpu) {
       setIsPlayerTurn(true);
       setIsCpuTurn(false);
     } else {
@@ -204,7 +220,7 @@ export const useNervousBreakdownLogic = (
         setIsCpuTurn(!isEarlyOrLater);
       }, 1000);
     }
-  }, []);
+  }, [isVsCpu]);
 
   const cpuCardClick = useCallback(() => {
     const noMatchedAndNoSelectedAllCards = cards
@@ -224,24 +240,39 @@ export const useNervousBreakdownLogic = (
   useEffect(() => {
     // cpu click
     if (isCleared) return;
-    if (isVsCPU && isCpuTurn && selectedCards.length <= 1) {
+    if (isTurnSwitching) return;
+    if (isVsCpu && isCpuTurn && selectedCards.length <= 1) {
       setTimeout(() => {
         cpuCardClick();
       }, 1100);
     }
-  }, [cpuCardClick, isCleared, isCpuTurn, selectedCards.length]);
+  }, [
+    cpuCardClick,
+    isCleared,
+    isCpuTurn,
+    isTurnSwitching,
+    isVsCpu,
+    selectedCards.length,
+  ]);
 
   useEffect(() => {
     // cpu match judge
     if (isCleared) return;
-    if (isVsCPU && isCpuTurn && selectedCards.length === 2) {
+    if (isVsCpu && isCpuTurn && !isPlayerTurn && selectedCards.length === 2) {
       checkMatch();
       const timeoutId = setTimeout(() => {
         setSelectedCards([]);
-      }, 800);
+      }, cardTurnDuration);
       return () => clearTimeout(timeoutId);
     }
-  }, [checkMatch, isCleared, isCpuTurn, selectedCards.length]);
+  }, [
+    checkMatch,
+    isCleared,
+    isCpuTurn,
+    isPlayerTurn,
+    isVsCpu,
+    selectedCards.length,
+  ]);
 
   return {
     helperFlipCards,
@@ -261,6 +292,7 @@ export const useNervousBreakdownLogic = (
       isCpuTurn,
       playerScore,
       cpuScore,
+      isTurnSwitching, // 新しい状態を返り値に追加
     },
   };
 };

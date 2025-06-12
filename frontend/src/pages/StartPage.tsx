@@ -34,11 +34,12 @@ export const StartPage = () => {
           <Button
             onClick={() => {
               gameSound?.playClick();
-              void navigate("/cpu", {
+              void navigate("/nervousbreakdown", {
                 state: {
                   gameLevel: 1,
                   gameMode: "pokemon",
-                  selectedNumberOfCard: 20,
+                  selectedNumberOfCard: 10,
+                  isVsCpu: true,
                 },
               });
             }}
