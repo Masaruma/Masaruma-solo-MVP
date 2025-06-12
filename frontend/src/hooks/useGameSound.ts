@@ -15,7 +15,7 @@ export const useGameSound = () => {
   });
   const [playFailed, { sound: playFailedConfig }] = useSound(failedSound, {
     volume: 0.3,
-    interrupt: false,
+    interrupt: true,
   });
   const [playClick, { sound: playClickConfig }] = useSound(clickSound, {
     volume: 0.4,
