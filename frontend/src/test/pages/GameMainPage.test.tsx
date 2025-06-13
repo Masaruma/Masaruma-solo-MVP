@@ -815,4 +815,211 @@ describe(`${GameMainPage.name}`, () => {
       expect(cards[3]).toHaveStyle({ transform: "rotateY(0deg)" });
     });
   });
+
+  describe("vs Cpu", () => {
+    const vsState: GameMainProps = {
+      selectedNumberOfCard: 4,
+      gameMode: "irasutoya",
+      gameLevel: 1,
+      isVsCpu: true,
+      cpuLevel: 1,
+    };
+    it("開始から1秒はターンが選ばれているため何もできない", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.9);
+
+      render(<GameMain__test state={vsState} />);
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(0deg)" });
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      await userEvent.click(cards[0]);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+
+    it("自分のターンになるとカードをクリックでき、間違えると相手のターンになる=カードをクリックできない", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.9);
+
+      render(<GameMain__test state={vsState} />);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[1]);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
+
+      await userEvent.click(cards[2]);
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(0deg)" });
+    });
+    it("自分のターン、カードがマッチするとターンが継続する=カードをクリックできる", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.9);
+
+      render(<GameMain__test state={vsState} />);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(180deg)" });
+      await userEvent.click(cards[1]);
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+    it("自分のターン、マッチするとポイントが2ポイント増える", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0.9);
+
+      render(<GameMain__test state={vsState} />);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      await userEvent.click(cards[2]);
+
+      expect(
+        within(screen.getByLabelText("現在のPlayerスコア")).getByText(/2/)
+      ).toBeInTheDocument();
+      expect(
+        within(screen.getByLabelText("現在のCPUスコア")).getByText(/0/)
+      ).toBeInTheDocument();
+    });
+
+    it("相手のターン、自分はカードをクリックできない", async () => {
+      vi.spyOn(Math, "random").mockReturnValue(0);
+
+      render(<GameMain__test state={vsState} />);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+
+      await userEvent.click(cards[0]);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(0deg)" });
+    });
+
+    it("相手のターン、cpuはカードを自動でクリックし、間違えると800ms後自分のターンになる", async () => {
+      vi.spyOn(Math, "random")
+        .mockReturnValueOnce(0)
+        .mockReturnValueOnce(0)
+        .mockReturnValueOnce(0);
+
+      render(<GameMain__test state={vsState} />);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
+
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      await userEvent.click(cards[1]);
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+    it("相手のターン、cpuはカードをクリックし、正解するとcpuのターンは継続する", async () => {
+      vi.spyOn(Math, "random")
+        // - 先攻後攻決定
+        .mockReturnValueOnce(0)
+        // 4枚中の最初の１枚
+        .mockReturnValueOnce(0)
+        // 3枚中の2番目
+        .mockReturnValueOnce(1 / 2)
+        //残りの2枚中 1枚目
+        .mockReturnValueOnce(0)
+        //最後の1枚
+        .mockReturnValueOnce(0);
+
+      render(<GameMain__test state={vsState} />);
+
+      // 初期化とCPU先攻決定
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      // CPU 1枚目クリック
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+
+      // CPU 2枚目クリック（正解）
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(180deg)" });
+
+      // selectedCardsリセット待ち（800ms）
+      act(() => {
+        vi.advanceTimersByTime(800);
+      });
+
+      // CPU 3枚目クリック
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+
+      expect(cards[1]).toHaveStyle({ transform: "rotateY(180deg)" });
+    });
+    it("相手のターン、マッチするとポイントが2ポイント増える", async () => {
+      vi.spyOn(Math, "random")
+        // - 先攻後攻決定
+        .mockReturnValueOnce(0)
+        // 4枚中の最初の１枚
+        .mockReturnValueOnce(0)
+        // 3枚中の2番目
+        .mockReturnValueOnce(1 / 2);
+
+      render(<GameMain__test state={vsState} />);
+
+      // 初期化とCPU先攻決定
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      // CPU 1枚目クリック
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      const cardArea = screen.getByLabelText("神経衰弱のカードエリア");
+      const cards = Array.from(cardArea.children);
+      expect(cards[0]).toHaveStyle({ transform: "rotateY(180deg)" });
+
+      // CPU 2枚目クリック（正解）
+      act(() => {
+        vi.advanceTimersByTime(1100);
+      });
+      expect(cards[2]).toHaveStyle({ transform: "rotateY(180deg)" });
+      expect(
+        within(screen.getByLabelText("現在のPlayerスコア")).getByText(/0/)
+      ).toBeInTheDocument();
+      expect(
+        within(screen.getByLabelText("現在のCPUスコア")).getByText(/2/)
+      ).toBeInTheDocument();
+    });
+  });
 });

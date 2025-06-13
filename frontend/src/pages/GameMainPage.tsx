@@ -22,6 +22,7 @@ import {
 } from "@/utils/calcGameLevel.ts";
 
 export interface GameMainProps {
+  cpuLevel?: number;
   gameLevel: number;
   gameMode: GameModeType;
   isVsCpu?: boolean;
@@ -42,7 +43,7 @@ export const GameMainPage = () => {
   const [isStarted, setIsStarted] = useState<boolean>(false);
 
   const { state } = useLocation();
-  const { gameLevel, gameMode, isVsCpu, selectedNumberOfCard } =
+  const { cpuLevel, gameLevel, gameMode, isVsCpu, selectedNumberOfCard } =
     (state as GameMainProps) || {};
 
   const { cards, initializeGame, setCards } = useInitializeGame(
@@ -63,7 +64,8 @@ export const GameMainPage = () => {
     remainHelpsTurnAll,
     score,
     selectedCards,
-  } = useNervousBreakdownLogic(cards, setCards, gameLevel, isVsCpu);
+    vsCpuState,
+  } = useNervousBreakdownLogic(cards, setCards, gameLevel, isVsCpu, cpuLevel);
 
   const gameTimer = useGameTimer(
     calcGameSeconds(selectedNumberOfCard, gameLevel),
@@ -222,6 +224,23 @@ export const GameMainPage = () => {
             すべて表を見る
           </Button>
         </div>
+        {isVsCpu && (
+          <>
+            <div aria-label={"現在のCPUスコア"}>
+              cpuスコア {vsCpuState.cpuScore}
+            </div>
+            <div aria-label={"現在のPlayerスコア"}>
+              playerスコア {vsCpuState.playerScore}
+            </div>
+            <div>{vsCpuState.isCpuTurn && "cpuターン"}</div>
+            <div>{vsCpuState.isPlayerTurn && "playerターン"}</div>
+            <div>
+              {!vsCpuState.isCpuTurn &&
+                !vsCpuState.isPlayerTurn! &&
+                "ターン決め中"}
+            </div>
+          </>
+        )}
       </div>
       <DialogCustom
         dialogTitle={"GAME OVER"}

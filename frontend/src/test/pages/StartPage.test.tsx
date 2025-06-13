@@ -102,8 +102,9 @@ describe("ルーティング関連", () => {
     expect(history.location.state).toEqual({
       gameLevel: 1,
       gameMode: "pokemon",
-      selectedNumberOfCard: 10,
+      selectedNumberOfCard: 16,
       isVsCpu: true,
+      cpuLevel: 1,
     });
   });
 });

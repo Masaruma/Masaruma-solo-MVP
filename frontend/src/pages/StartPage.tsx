@@ -38,8 +38,9 @@ export const StartPage = () => {
                 state: {
                   gameLevel: 1,
                   gameMode: "pokemon",
-                  selectedNumberOfCard: 10,
+                  selectedNumberOfCard: 16,
                   isVsCpu: true,
+                  cpuLevel: 1,
                 },
               });
             }}

@@ -3,11 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import { GameSoundProvider } from "@/Layout/GameSoundProvider.tsx";
 import { MusicLayout } from "@/Layout/MusicLayout.tsx";
 import { ProtectedRoute } from "@/Layout/ProtectedRoute.tsx";
+import { CpuGameMainPage } from "@/pages/CpuGameMainPage.tsx";
 import { GameMainPage } from "@/pages/GameMainPage.tsx";
 import { StartPage } from "@/pages/StartPage.tsx";
 
 import "@/App.css";
-import { CpuGameMainPage } from "./pages/CpuGameMainPage.tsx";
 
 export const App = () => {
   return (
@@ -29,5 +29,3 @@ export const App = () => {
     </GameSoundProvider>
   );
 };
-//カードはリセットされる。
-//クリア判定 ミス回数 手数 時間 ゲームオーバー判定

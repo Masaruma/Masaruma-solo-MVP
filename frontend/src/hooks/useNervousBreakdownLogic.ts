@@ -5,6 +5,7 @@ import { useAtomValue } from "jotai/index";
 
 import { CardsWithMatchKeyType } from "@/pages/GameMainPage.tsx";
 import { gameSoundAtom } from "@/utils/atom.ts";
+import { randomSelectLogic } from "@/utils/cpuSelectLogic.ts";
 
 const cardTurnDuration = 800;
 
@@ -12,7 +13,8 @@ export const useNervousBreakdownLogic = (
   cards: CardsWithMatchKeyType[],
   setCards: React.Dispatch<React.SetStateAction<CardsWithMatchKeyType[]>>,
   gameLevel: number,
-  isVsCpu: boolean | undefined
+  isVsCpu: boolean | undefined,
+  cpuLevel?: number | undefined
 ) => {
   const [selectedCards, setSelectedCards] = useState<CardsWithMatchKeyType[]>(
     []
@@ -29,6 +31,9 @@ export const useNervousBreakdownLogic = (
   const [playerScore, setPlayerScore] = useState(0);
   const [cpuScore, setCpuScore] = useState(0);
   const [isTurnSwitching, setIsTurnSwitching] = useState(false);
+  const [cpuMemoryCards, setCpuMemoryCards] = useState<CardsWithMatchKeyType[]>(
+    []
+  );
 
   const gameSound = useAtomValue(gameSoundAtom);
 
@@ -227,15 +232,102 @@ export const useNervousBreakdownLogic = (
       .filter((card) => !card.isMatched)
       .filter((card) => !selectedCards.includes(card));
 
-    const cpuRandomSelectedCard =
-      noMatchedAndNoSelectedAllCards[
-        Math.floor(Math.random() * noMatchedAndNoSelectedAllCards.length)
-      ];
+    let cpuSelectedCard: CardsWithMatchKeyType;
+
+    if (cpuLevel === 1) {
+      cpuSelectedCard = randomSelectLogic(noMatchedAndNoSelectedAllCards);
+    }
+
+    // todo cpu レベル2
+    if (cpuLevel === 2) {
+      if (selectedCards.length === 0) {
+        //   cpuMemoryの中を見てcpuMemoryでマッチできるかつマッチしていないカードがある。idが等しいものが一つ以上ある。
+
+        //   重複のない同じ絵柄がわかっているカードのid
+        let noDuplicatedCardIdWithCanMatch: Set<number> = new Set();
+
+        // cpuはどのカードがこのターン ゲットできるか知っている。 Array.fromですでにマッチしていればそのカードは除外する
+        cpuMemoryCards.forEach((memoryCard) => {
+          const isCpuKnowThisCardGet =
+            cpuMemoryCards.filter(
+              (confirmCard) =>
+                memoryCard.id === confirmCard.id &&
+                memoryCard.idx !== confirmCard.idx
+            ).length >= 1;
+
+          isCpuKnowThisCardGet &&
+            noDuplicatedCardIdWithCanMatch.add(memoryCard.id);
+        });
+
+        Array.from(noDuplicatedCardIdWithCanMatch).forEach((id) => {
+          const temp = noMatchedAndNoSelectedAllCards.filter(
+            (confirmCard) => id === confirmCard.id
+          );
+          const isThisCardAlreadyMatched = temp.length === 0;
+          if (isThisCardAlreadyMatched) {
+            noDuplicatedCardIdWithCanMatch.delete(id);
+          }
+        });
+
+        console.log(noDuplicatedCardIdWithCanMatch);
+
+        // todo cpuはこのターン ゲットできるカードがあるか知っているならそれを優先して選ぶ。そうでないならランダム
+        if (noDuplicatedCardIdWithCanMatch.size > 0) {
+          console.log("1枚目知っている");
+          const wouldSelectCardIdList = Array.from(
+            noDuplicatedCardIdWithCanMatch
+          );
+          const wouldSelectCardId =
+            wouldSelectCardIdList[
+              Math.floor(Math.random() * wouldSelectCardIdList.length)
+            ];
+
+          cpuSelectedCard = noMatchedAndNoSelectedAllCards.filter(
+            (card) => card.id === wouldSelectCardId
+          )[Math.random() > 0.5 ? 0 : 1];
+        } else if (noDuplicatedCardIdWithCanMatch.size === 0) {
+          cpuSelectedCard =
+            noMatchedAndNoSelectedAllCards[
+              Math.floor(Math.random() * noMatchedAndNoSelectedAllCards.length)
+            ];
+          console.log("1枚目知らない");
+        }
+      } else if (selectedCards.length === 1) {
+        //   selectedCardのidと等しいものを知って入れば。それを選び知らなければランダム。
+
+        const isCpuKnown =
+          cpuMemoryCards.filter(
+            (card) =>
+              card.id === selectedCards[0].id &&
+              card.idx !== selectedCards[0].idx
+          ).length >= 1;
+
+        if (isCpuKnown) {
+          console.log("2枚目知っている");
+          cpuSelectedCard = noMatchedAndNoSelectedAllCards.find(
+            (card) => card.id === selectedCards[0].id
+          )!!;
+        } else {
+          console.log("2枚目知らない");
+          // todo ここでメモリーにあるカードは除外する。
+          cpuSelectedCard =
+            noMatchedAndNoSelectedAllCards[
+              Math.floor(Math.random() * noMatchedAndNoSelectedAllCards.length)
+            ];
+        }
+      }
+    }
+
+    setCpuMemoryCards((prev) => [...prev, cpuSelectedCard]);
     setSelectedCards((prev) => {
       const cleared = prev.length === 2 ? [] : prev;
-      return [...cleared, cpuRandomSelectedCard];
+      return [...cleared, cpuSelectedCard];
     });
-  }, [cards, selectedCards]);
+  }, [cards, cpuLevel, cpuMemoryCards, selectedCards]);
+
+  useEffect(() => {
+    console.log({ cpuMemoryCards });
+  }, [cpuMemoryCards]);
 
   useEffect(() => {
     // cpu click
